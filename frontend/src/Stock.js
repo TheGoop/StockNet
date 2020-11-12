@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import Post from './Post'
 import {
     BrowserRouter as Router,
-    Switch,
+    // Switch,
     Link,
-    Route,
+    // Route,
     useParams
 } from "react-router-dom";
 // import ApexCharts from 'apexcharts'
@@ -30,28 +30,69 @@ const finnhubClient = new finnhub.DefaultApi()
 function ChartComponent(props) {
     const [mdata, setmdata] = useState(null)
     const [moptions, setmoptions] = useState(null)
-    const [res, setres] = useState(5)
+    const [timescale, setTimescale] = useState(1)
+    const [res, setRes] = useState(5)
+    const [loading, setloading] = useState(false)
+    const [daydata, setdaydata] = useState(false)
+    const [weekdata, setweekdata] = useState(false)
+    const [monthdata, setmonthdata] = useState(false)
 
-    console.log(props.t1)
-    let t1 = props.t1
-    let t2 = props.t2
     let tick = props.tick
-    
-    if (props.res !== props.res){
-        setres(props.res)
-    }
+    console.log(loading)
 
     useEffect(() => {
 
         async function fetchChart() {
+            if (daydata !== false && timescale == 1)
+                return daydata
+
+            if (weekdata !== false && timescale == 7)
+                return weekdata
+            if (monthdata !== false && timescale == 31)
+                return monthdata
+
+            //UNIX time 2:30 PM to 9 PM for NYSE
+            let date = new Date()
+            let UTCDate = date - date.getTimezoneOffset() * 60000
+            UTCDate = new Date(UTCDate)
+
+            let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
+            if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 9.5) {
+                normalize += 24 * 3600
+            }
+
+            let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
+
+            // finnhubClient.stockCandles(ticker, "5", open, open + (3600 * 10.5), {}, (error, data, response) => {
+            //     console.log(data)
+            // });
+
+            let TIMEDIFF = timescale//3600 * 24 * 7
+            let t1 = []
+            let t2 = []
+            for (let i = TIMEDIFF - 1; i >= 0; i--) {
+                t1.push(open - (3600 * 24) * i)
+                t2.push(open + (3600 * 10.5) - (3600 * 24) * i)
+            }
+
             let fullchart = []
             for (let i = 0; i < t1.length; i++) {
                 const response = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${tick}&resolution=${res}&from=${t1[i]}&to=${t2[i]}&token=${api_key.apiKey}`)
                 const chart = await response.json();
                 await fullchart.push(chart)
             }
+            if (timescale == 1)
+                setdaydata(fullchart)
+            else if (timescale == 7)
+                setweekdata(fullchart)
+            else
+                setmonthdata(fullchart)
+
             return fullchart;
         }
+
+        // use a candle to create a graph
+
 
         fetchChart().then(data => {
             // const charts = [];
@@ -60,7 +101,7 @@ function ChartComponent(props) {
 
             let newchart = []
             for (let dates = 0; dates < data.length; dates++) {
-                if (data[dates]['s'] === "no_data"){
+                if (data[dates]['s'] === "no_data") {
                     continue
                 }
                 for (let i = 0; i < data[dates]['c'].length; i++) {
@@ -100,26 +141,35 @@ function ChartComponent(props) {
                     },
                 },
                 title: {
-                    text: 'CandleStick Chart',
+                    text: tick,
                     align: 'left'
                 },
                 xaxis: {
                     type: 'category',
                     labels: {
+                        rotate: 0,
                         formatter: function (val) {
                             val = new Date(val)
                             let hr = val.getUTCHours() - 5
                             let min = val.getUTCMinutes()
+
+                            let str2 = ""
+                            let str3 = " PM"
                             if (hr <= 12 && hr >= 0) {
-                                return dayjs(val).format('MMM DD') + ` ${hr}:` + dayjs(val).format('mm') + " AM"
+                                str3 = " AM"
                             }
                             else if (hr < 0) {
                                 hr += 24
                             }
-                            return dayjs(val).format('MMM DD') + ` ${hr % 12}:` + dayjs(val).format('mm') + " PM"
+                            str2 += ` ${hr % 12}:` + dayjs(val).format('mm') + str3
+
+                            if (timescale !== 1){
+                                return dayjs(val).format('MMM DD')
+                            }
+                            else return str2
                         }
                     },
-                    tickAmount: 10
+                    tickAmount: 5
                 },
                 yaxis: {
                     tooltip: {
@@ -136,20 +186,53 @@ function ChartComponent(props) {
             // chart.render();
             setmoptions(options)
             setmdata(series);
+            setloading(false)
         })
-    }, [res])
+    }, [timescale])
+
+    const dayUpdate = (event) => {
+        if (!loading && timescale !== 1) {
+            event.preventDefault()
+            setTimescale(1)
+            setRes(5)
+            setloading(true)
+        }
+    }
+
+    const weekUpdate = (event) => {
+        if (!loading && timescale !== 7) {
+            event.preventDefault()
+            setTimescale(7)
+            setRes(30)
+            setloading(true)
+        }
+    }
+
+    const monthUpdate = (event) => {
+        if (!loading && timescale !== 31) {
+            event.preventDefault()
+            setTimescale(31)
+            setRes('D')
+            setloading(true)
+        }
+    }
 
     if (mdata == null || moptions == null) {
         return <div></div>
     }
     else {
         return (
-            <ApexCharts
-                options={moptions}
-                series={mdata}
-                type={"candlestick"}
-                width={"500"}
-            />
+            <div>
+                <ApexCharts
+                    options={moptions}
+                    series={mdata}
+                    type={"candlestick"}
+                    width={"500"}
+                />
+                <button onClick={dayUpdate}> Day </button>
+                <button onClick={weekUpdate}> Week </button>
+                {/* <button onClick={monthUpdate}> Month </button> */}
+            </div>
             // <div/>
         )
     }
@@ -158,10 +241,6 @@ function ChartComponent(props) {
 function Stock() {
     const [stockData, setStock] = useState([])
     const [loadedBool, setBool] = useState(null)
-    const [startTime, setStart] = useState(null)
-    const [closeTime, setClose] = useState(null)
-    const [timescale, setTimescale] = useState(1)
-    const [res, setRes] = useState(5)
     let { ticker } = useParams()
 
     //useEffect analagous to component did mount and component did update
@@ -179,66 +258,14 @@ function Stock() {
         // })
     }, [])
 
-    useEffect(() => {
-        //UNIX time 2:30 PM to 9 PM for NYSE
-        let date = new Date()
-        let UTCDate = date - date.getTimezoneOffset() * 60000
-        UTCDate = new Date(UTCDate)
-
-        let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
-        if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 9.5) {
-            normalize += 24 * 3600
-        }
-
-        let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
-
-        // finnhubClient.stockCandles(ticker, "5", open, open + (3600 * 10.5), {}, (error, data, response) => {
-        //     console.log(data)
-        // });
-
-        let TIMEDIFF = timescale//3600 * 24 * 7
-        let t1 = []
-        let t2 = []
-        for (let i = TIMEDIFF - 1; i >= 0; i--) {
-            t1.push(open - (3600 * 24) * i)
-            t2.push(open + (3600 * 10.5) - (3600 * 24) * i)
-        }
-
-        setStart(t1)
-        setClose(t2)
-
-        // use a candle to create a graph
-    }, [timescale])
-
     if (!loadedBool) {
         return <div />
-    }
-
-    const dayUpdate = (event) => {
-        event.preventDefault()
-        setTimescale(1)
-        setRes(5)
-    }
-
-    const weekUpdate = (event) => {
-        event.preventDefault()
-        setTimescale(7)
-        setRes(30)
-    }
-
-    const monthUpdate = (event) => {
-        event.preventDefault()
-        setTimescale(31)
-        setRes('D')
     }
 
     //put onclick button into chart component from here
     return (
         <div>
-            <ChartComponent t1={startTime} t2={closeTime} tick={ticker} res={res}/>
-            <button onClick={dayUpdate}> Day </button>
-            <button onClick={weekUpdate}> Week </button>
-            <button onClick={monthUpdate}> Month </button>
+            <ChartComponent tick={ticker} />
             <h1>{`${ticker}`}</h1>
             <h2>{`Current Price: ${stockData.c}`}</h2>
             <h2>{`High: ${stockData.h}`}</h2>
