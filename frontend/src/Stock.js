@@ -38,17 +38,18 @@ function ChartComponent(props) {
     const [monthdata, setmonthdata] = useState(false)
 
     let tick = props.tick
+    let pc = props.pc
     console.log(loading)
 
     useEffect(() => {
 
         async function fetchChart() {
-            if (daydata !== false && timescale == 1)
+            if (daydata !== false && timescale === 1)
                 return daydata
 
-            if (weekdata !== false && timescale == 7)
+            if (weekdata !== false && timescale === 7)
                 return weekdata
-            if (monthdata !== false && timescale == 31)
+            if (monthdata !== false && timescale === 31)
                 return monthdata
 
             //UNIX time 2:30 PM to 9 PM for NYSE
@@ -81,9 +82,10 @@ function ChartComponent(props) {
                 const chart = await response.json();
                 await fullchart.push(chart)
             }
-            if (timescale == 1)
+
+            if (timescale === 1)
                 setdaydata(fullchart)
-            else if (timescale == 7)
+            else if (timescale === 7)
                 setweekdata(fullchart)
             else
                 setmonthdata(fullchart)
@@ -115,15 +117,29 @@ function ChartComponent(props) {
                         // volume: chart['v'][i]
                         {
                             x: new Date(data[dates]['t'][i] * 1000),
-                            y: [data[dates]['o'][i], data[dates]['h'][i], data[dates]['l'][i], data[dates]['c'][i]]
+                            y: [Math.round(data[dates]['o'][i] * 1000) / 1000, Math.round(data[dates]['h'][i] * 1000) / 1000, Math.round(data[dates]['l'][i] * 1000) / 1000, Math.round(data[dates]['c'][i] * 1000) / 1000]
                         }
                     )
                 }
             }
+
+            //
+            let date = new Date()
+            let UTCDate = date - date.getTimezoneOffset() * 60000
+            UTCDate = new Date(UTCDate)
+
+            let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
+            if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 9.5) {
+                normalize += 24 * 3600
+            }
+
+            let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
+            console.log(open, 'OPEN1')
+            //
+
             console.log(newchart, 'NEWCHART')
             let options = {
                 chart: {
-                    height: 350,
                     toolbar: {
                         show: true,
                         offsetX: 0,
@@ -163,18 +179,42 @@ function ChartComponent(props) {
                             }
                             str2 += ` ${hr % 12}:` + dayjs(val).format('mm') + str3
 
-                            if (timescale !== 1){
+                            if (timescale !== 1) {
                                 return dayjs(val).format('MMM DD')
                             }
                             else return str2
-                        }
+                        },
                     },
                     tickAmount: 5
                 },
                 yaxis: {
+                    decimalsInFloat: 2,
                     tooltip: {
                         enabled: true
-                    }
+                    },
+                    tickAmount: 6
+                },
+                annotations: {
+                    yaxis: [
+                        (timescale === 1 ?
+                            {
+                                y: pc,
+                                strokeDashArray: 2,
+                                borderColor: '#464646',
+                                label: {
+                                    //borderColor: '#00E396',
+                                    // style: {
+                                    //   color: '#fff',
+                                    //   background: '#00E396'
+                                    // },
+                                    text: `Previous Close ${pc}`
+                                }
+                            }
+                            :
+                            {}
+                        )
+
+                    ]
                 }
             };
 
@@ -184,6 +224,25 @@ function ChartComponent(props) {
 
             // let chart = new ApexCharts(document.querySelector("#chart"), options);
             // chart.render();
+            // if (timescale == 1){
+            //     // console.log(open, 'OPEN2')
+            //     // console.log(new Date(open), 'OPEN')
+            //     options['annotations']['xaxis'].x = open * 1000
+            //     options['annotations']['xaxis'].x2 = open * 1000 + (3600 * 10.5) * 1000
+            //     options['annotations']['xaxis'].fillColor = '#B3F7CA'
+            //     options['annotations']['xaxis'].label = {text: 'X-axis range'}
+            //     console.log(options['annotations'])
+            //     console.log(options['annotations']['xaxis'])
+            //     setmoptions(options)
+            // }
+            // else{
+            //     delete options['annotations']['xaxis'].x
+            //     delete options['annotations']['xaxis'].x2
+            //     delete options['annotations']['xaxis'].fillColor
+            //     delete options['annotations']['xaxis'].label
+            //     setmoptions(options)
+            // }
+            console.log(options)
             setmoptions(options)
             setmdata(series);
             setloading(false)
@@ -227,7 +286,8 @@ function ChartComponent(props) {
                     options={moptions}
                     series={mdata}
                     type={"candlestick"}
-                    width={"500"}
+                    width={'50%'}
+                    height={300}
                 />
                 <button onClick={dayUpdate}> Day </button>
                 <button onClick={weekUpdate}> Week </button>
@@ -265,7 +325,7 @@ function Stock() {
     //put onclick button into chart component from here
     return (
         <div>
-            <ChartComponent tick={ticker} />
+            <ChartComponent tick={ticker} pc={stockData.pc} />
             <h1>{`${ticker}`}</h1>
             <h2>{`Current Price: ${stockData.c}`}</h2>
             <h2>{`High: ${stockData.h}`}</h2>
