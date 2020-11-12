@@ -9,20 +9,21 @@ import {
   useParams
 } from "react-router-dom";
 
-function App(){
-  return(
+function App() {
+  return (
     <div className="App">
-        <Router>
-          <Switch>
-            <Route exact path='/:ticker' component= {Stock} /> 
-            {/* When only inputting stock */}
+      <Router>
+        <Switch>
+          {/* Top bar included here */}
+          <Route exact path='/' render={() => <h1>Home page</h1>} />
+          <Route exact path='/:ticker' component={Stock} />
+          {/* When only inputting stock */}
 
-            <Route exact path='/:ticker/:postID' component= {Post} /> 
-            {/* Usually comment accessible from stock page -> comments, but you can directly put in url */}
-            
-            <Route exact render={() => <h1>404: page not found</h1>} />
-          </Switch>
-        </Router>
+          <Route exact path='/:ticker/:postID' component={Post} />
+          {/* Usually comment accessible from stock page -> comments, but you can directly put in url */}
+          <Route render={() => <h1>404: page not found</h1>} />
+        </Switch>
+      </Router>
     </div>
   )
 }
