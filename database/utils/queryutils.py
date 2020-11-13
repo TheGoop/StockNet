@@ -1,9 +1,29 @@
+from firebase_admin import firestore
+
 from database.payloadClasses.postcontententry import PostContentEntry
 
 
 def storePost(db,postID,postContent):
     postID = str(postID)
     db.collection('Posts').document(postID).set(postContent.to_dict())
+
+def storePostTag(db,tag,postID, taggedPostEntry):
+    postID = str(postID)
+    db.collection('Tags').collection(tag).document(postID).set(taggedPostEntry.to_dict())
+
+def storeAuthentication(db, username, authenticationEntry):
+    db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
+
+def storeUserProfile(db, userID, userProfileEntry):
+    userID = str(userID)
+    db.collection('Users').document(userID).set(userProfileEntry.to_dict())
+
+def addComment(db,postID,commentEntry):
+    postID = str(postID)
+    try:
+        db.collection('Posts').document(postID).update({'comments': firestore.ArrayUnion([commentEntry.to_dict()])})
+    except Exception:
+        raise KeyError("Post ID not found in database", postID)
 
 
 def readPostbyID(db,postID):
@@ -14,13 +34,6 @@ def readPostbyID(db,postID):
         return PostContentEntry.from_dict(doc.to_dict())
     else:
         raise KeyError("Post ID not found in database",postID)
-
-def storePostTag(db,tag,postID, taggedPostEntry):
-    postID = str(postID)
-    db.collection('Tags').collection(tag).document(postID).set(taggedPostEntry.to_dict())
-
-def storeAuthentication(db, username, authenticationEntry):
-    db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
 
 def fetchDocumentsUnderTag(db,tag):
     return db.collection('Tags').collection(tag).stream()
