@@ -1,14 +1,16 @@
 class PostContentEntry(object):
-    def __init__(self, userID, time, message, upvoteCount=0,comments=[]):
-        self.userID = userID
+    def __init__(self, userName, postTitle, time, message, flair, upvoteCount=0,comments=[]):
+        self.userName = userName
+        self.postTitle = postTitle
         self.time = time
         self.message = message
+        self.flair = flair
         self.upvoteCount = upvoteCount
         self.comments = comments
 
     @staticmethod
     def from_dict(source):
-        postEntry = PostContentEntry(source['userID'], source['time'], source['message'])
+        postEntry = PostContentEntry(source['userName'], source['postTitle'],source['time'], source['message'], source['flair'])
 
         if 'upvoteCount' in source:
             postEntry.upvoteCount = source['upvoteCount']
@@ -18,9 +20,11 @@ class PostContentEntry(object):
 
     def to_dict(self):
         dest = {
-            'userID': self.userID,
+            'userName': self.userName,
+            'postTitle': self.postTitle,
             'time': self.time,
-            'message': self.message
+            'message': self.message,
+            'flair': self.flair,
         }
 
         if self.upvoteCount:
@@ -33,17 +37,19 @@ class PostContentEntry(object):
     def __repr__(self):
         return(
             f'PostContentEntry(\
-                userID={self.userID}, \
+                userName={self.userName}, \
+                postTitle={self.postTitle}, \
                 time={self.time}, \
                 message={self.message}, \
+                flair={self.flair}, \
                 upvoteCount={self.upvoteCount}, \
                 comments={self.comments}\
             )'
         )
 
 def runTests():
-    entry1 = PostContentEntry("goop", "3AM","Monday is Wednesday",-4,["no", "u"])
-    entry2 = PostContentEntry("blizzardgale", "5AM", "I lost because I dont have a chair, I can't sit down")
+    entry1 = PostContentEntry("goop", "jello dealer", "3AM","Monday is Wednesday", "fluff",-4,["no", "u"])
+    entry2 = PostContentEntry("blizzardgale", "please, no johns","5AM", "I lost because I dont have a chair, I can't sit down", "salt")
     print(entry1)
     print(entry2)
     dict1 = entry1.to_dict()

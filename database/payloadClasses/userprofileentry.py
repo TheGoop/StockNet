@@ -1,13 +1,12 @@
 class UserProfileEntry(object):
-    def __init__(self, userName, joinDate, favStocks=[],posts=[]):
-        self.userName = userName
+    def __init__(self, joinDate, favStocks=[],posts=[]):
         self.joinDate = joinDate
         self.favStocks = favStocks
         self.posts = posts
 
     @staticmethod
     def from_dict(source):
-        userEntry = UserProfileEntry(source['userName'],source['joinDate'])
+        userEntry = UserProfileEntry(source['joinDate'])
         if 'favStocks' in source:
             userEntry.favStocks = source['favStocks']
         if 'posts' in source:
@@ -16,7 +15,6 @@ class UserProfileEntry(object):
 
     def to_dict(self):
         dest = {
-            'userName': self.userName,
             'joinDate': self.joinDate,
         }
 
@@ -30,7 +28,6 @@ class UserProfileEntry(object):
     def __repr__(self):
         return(
             f'UserProfileEntry(\
-                userName={self.userName}, \
                 joinDate={self.joinDate}, \
                 favStocks={self.favStocks}, \
                 posts={self.posts}\
@@ -38,8 +35,8 @@ class UserProfileEntry(object):
         )
 
 def runTests():
-    entry1 = UserProfileEntry("goop", "01/23/2019",["Market","up","2","points"],["hello","there"])
-    entry2 = UserProfileEntry("blizzardgale", "02/31/2020")
+    entry1 = UserProfileEntry("01/23/2019",["Market","up","2","points"],["hello","there"])
+    entry2 = UserProfileEntry("02/31/2020")
     print(entry1)
     print(entry2)
     dict1 = entry1.to_dict()
