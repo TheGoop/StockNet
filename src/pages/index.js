@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import HeroSection from '../components/HeroSection';
+import StockSection from '../components/StockSection';
 import InfoSection from '../components/InfoSection';
 import { homeObjOne, homeObjTwo, homeObjThree, homeObjFour } from '../components/InfoSection/Data';
 import Footer from '../components/Footer';
@@ -31,7 +32,7 @@ const Substock = () => {
     return (
         <>
         <Navbar/>
-        <HeroSection />
+        <StockSection />
         <Footer />
         </>
     )
