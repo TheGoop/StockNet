@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import dayjs from "dayjs"
 import ApexCharts from "react-apexcharts"
+import './StockStyling.css'
 let utc = require('dayjs/plugin/utc')
 let timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)
@@ -54,7 +55,7 @@ function ChartComponent(props) {
             let t1 = []
             let t2 = []
 
-            
+
             for (let i = TIMEDIFF - 1; i >= 0; i--) {
                 t1.push(open - (3600 * 24) * i)
                 t2.push(open + (3600 * 10.5) - (3600 * 24) * i)
@@ -67,7 +68,7 @@ function ChartComponent(props) {
                 await fullchart.push(chart)
             }
 
-            while (TIMEDIFF === 1 && fullchart[0]['s'] === 'no_data'){ //Accounts for holidays or weekends
+            while (TIMEDIFF === 1 && fullchart[0]['s'] === 'no_data') { //Accounts for holidays or weekends
                 fullchart = []
                 t1[0] -= (3600 * 24)
                 t2[0] += (3600 * 10.5) - (3600 * 24)
@@ -133,6 +134,7 @@ function ChartComponent(props) {
             console.log(newchart, 'NEWCHART')
             let options = {
                 chart: {
+                    background: '#ffffff',
                     toolbar: {
                         show: true,
                         offsetX: 0,
@@ -264,7 +266,7 @@ function ChartComponent(props) {
         if (!loading && timescale !== 31) {
             event.preventDefault()
             setTimescale(31)
-            setRes('D')
+            setRes(60)
             setloading(true)
         }
     }
@@ -279,11 +281,16 @@ function ChartComponent(props) {
                     options={moptions}
                     series={mdata}
                     type={"candlestick"}
-                    width={'50%'}
-                    height={300}
+                    // width={450}
+                    // height={300}
+                    width={"1000px"}
+                    height={"300px"}
                 />
-                <button onClick={dayUpdate}> Day </button>
-                <button onClick={weekUpdate}> Week </button>
+                <div class="multi-button">
+                    <button onClick={dayUpdate}> 1 Day </button>
+                    <button onClick={weekUpdate}> 5 Days </button>
+                    <button onClick={monthUpdate}>  1 Month </button>
+                </div>
                 {/* <button onClick={monthUpdate}> Month </button> */}
             </div>
             // <div/>

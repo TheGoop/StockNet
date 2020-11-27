@@ -52,13 +52,13 @@ function Stock() {
     //put onclick button into chart component from here
     return (
         <div>
-            <ChartComponent tick={ticker} pc={stockData.pc} />
             <h1>{`${ticker}`}</h1>
             <h2>{`Current Price: ${stockData.c}`}</h2>
             <h2>{`High: ${stockData.h}`}</h2>
             <h2>{`Low: ${stockData.l}`}</h2>
             <h2>{`Open: ${stockData.o}`}</h2>
             <h2>{`Previous Close: ${stockData.pc}`}</h2>
+            <ChartComponent tick={ticker} pc={stockData.pc} />
 
             {/* <Route exact path={`/${ticker}/:postID`} component={Post}/>  */}
 

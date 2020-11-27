@@ -19,6 +19,23 @@ export const Nav = styled.nav`
     }
 `;
 
+export const Nav2 = styled.nav`
+    background: #fff;
+    height: 80px;
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    @media screen and (max-width: 960px) {
+        transition: 0.8s all ease;
+    }
+`;
+
 export const NavbarContainer = styled.div`
     display: flex;
     justify-content: space-between;
@@ -31,6 +48,18 @@ export const NavbarContainer = styled.div`
 
 export const NavLogo = styled(LinkR)`
     color: white;
+    justify-self: flex-start;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    font-weight: bold;
+    text-decoration: none;
+`;
+
+export const NavLogo2 = styled(LinkR)`
+    color: black;
     justify-self: flex-start;
     cursor: pointer;
     font-size: 1.5rem;
@@ -115,12 +144,22 @@ export const NavButtonLink = styled(LinkR)`
     }
 `;
 
+
 export const SearchBar = styled.input`
     padding: 0.5em;
     margin: 1.75em;
-    max-width: 280px;
+    max-width: 600px;
     display: flex;
     border: none;
     border-radius: 25px;
     outline-width: 0;
+    color: black;
+    background: #f6f7f8;
+    &:hover {
+        background: #ffffff;
+        box-shadow: 0px 0px 2px #0e5aa5;
+    &:focus {
+        outline: blue;
+        box-shadow: 0px 0px 2px #0e5aa5;
+    }
 `;
