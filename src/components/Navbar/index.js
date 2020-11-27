@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {FaBars} from 'react-icons/fa';
 import { animateScroll as scroll} from 'react-scroll';
+
 import { 
     Nav,
     NavbarContainer,
@@ -10,19 +11,26 @@ import {
     NavItem,  
     NavLinks,
     NavButton,
-    NavButtonLink
+    NavButtonLink,
+    SearchBar
 } from './NavbarElements';
 
 const Navbar = ({ toggle }) => {
+    const [input, setInput] = useState('');
     const [scrollNav, setScrollNav] = useState(false)
 
+    //ScrollNav makes the nav bar transparent when you scroll down
     const changeNav = ()=> {
         if(window.scrollY >= 80) {
             setScrollNav(true)
         } else {
-            setScrollNav(false)
+            setScrollNav(true)
         }
     }
+
+    const updateInput = (e) => {
+        setInput(e.target.value);
+     }
 
     useEffect(() => {
         window.addEventListener('scroll', changeNav)
@@ -64,6 +72,14 @@ const Navbar = ({ toggle }) => {
                             exact='true' offset={0}>Sign Up</NavLinks>
                         </NavItem> 
                     </NavMenu>
+
+                    <SearchBar 
+                    placeholder="Input Stock Ticker"
+                    value={input} 
+                    onChange={updateInput}
+                    onKeyPress={event => event.key === 'Enter' ? window.location.href = `/${input}` : null}
+                    />
+
                     <NavButton>
                         <NavButtonLink to='/signin'>Sign In</NavButtonLink>
                     </NavButton>

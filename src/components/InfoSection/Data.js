@@ -25,7 +25,7 @@ export const homeObjTwo = {
     description: 'Trade stocks and make money like a true gambler, only your luck will never run out.',
     buttonLabel: 'Dive in',
     imgStart: true,
-    img: require('../../images/svg-1.svg'),
+    img: require('../../images/svg-2.svg'),
     alt: 'Investing',
     dark: true,
     primary: true,

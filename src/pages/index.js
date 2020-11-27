@@ -13,7 +13,7 @@ const Home = () => {
         setIsOpen(!isOpen);
     };
 
-    return (
+    return ( //IsOpen deals with the sidebar on mobile devices
         <>
             <Sidebar isOpen={isOpen} toggle={toggle} />
             <Navbar toggle={toggle} />
@@ -27,4 +27,20 @@ const Home = () => {
     );
 };
 
-export default Home
+const Substock = () => {
+    return (
+        <>
+        <Navbar/>
+        <HeroSection />
+        <Footer />
+        </>
+    )
+}
+
+const Post = () => {
+    return (
+        <Navbar/>
+    )
+}
+
+export {Home, Substock, Post}

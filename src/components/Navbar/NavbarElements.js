@@ -3,7 +3,7 @@ import { Link as LinkR} from 'react-router-dom'
 import { Link as LinkS } from 'react-scroll'
 
 export const Nav = styled.nav`
-    background: ${({scrollNav}) => (scrollNav ? '#000' : 'transparent')};
+    background: ${({scrollNav}) => (scrollNav ? '#0c0c0c' : '#0c0c0c')};
     height: 80px;
     margin-top: -80px;
     display: flex;
@@ -113,4 +113,14 @@ export const NavButtonLink = styled(LinkR)`
         background: white;
         color: #010606;
     }
+`;
+
+export const SearchBar = styled.input`
+    padding: 0.5em;
+    margin: 1.75em;
+    max-width: 280px;
+    display: flex;
+    border: none;
+    border-radius: 25px;
+    outline-width: 0;
 `;
