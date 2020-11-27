@@ -1,12 +1,31 @@
 from firebase_admin import firestore
 
+from database.payloadClasses.authenticationEntry import AuthenticationEntry
 from database.payloadClasses.postcontententry import PostContentEntry
 from database.payloadClasses.taggedpostentry import TaggedPostEntry
+from database.payloadClasses.userprofileentry import UserProfileEntry
 
 
 def storePost(db,postID,postContent):
     postID = str(postID)
     db.collection('Posts').document(postID).set(postContent.to_dict())
+
+def addComment(db,postID,commentEntry):
+    postID = str(postID)
+    try:
+        db.collection('Posts').document(postID).update({'comments': firestore.ArrayUnion([commentEntry.to_dict()])})
+    except Exception:
+        raise KeyError("Post ID not found in database", postID)
+
+
+def readPostbyID(db,postID):
+    postID = str(postID)
+    doc_ref = db.collection('Posts').document(postID)
+    doc = doc_ref.get()
+    if doc.exists:
+        return PostContentEntry.from_dict(doc.to_dict())
+    else:
+        raise KeyError("Post ID not found in database",postID)
 
 def storePostTag(db,tag, taggedPostEntry):
     #document 'tag' format
@@ -40,36 +59,13 @@ def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
         return True
     return False
 
-
-
-def storeAuthentication(db, username, authenticationEntry):
-    db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
-
-def storeUserProfile(db, userID, userProfileEntry):
-    userID = str(userID)
-    db.collection('Users').document(userID).set(userProfileEntry.to_dict())
-
-def addComment(db,postID,commentEntry):
-    postID = str(postID)
-    try:
-        db.collection('Posts').document(postID).update({'comments': firestore.ArrayUnion([commentEntry.to_dict()])})
-    except Exception:
-        raise KeyError("Post ID not found in database", postID)
-
-
-def readPostbyID(db,postID):
-    postID = str(postID)
-    doc_ref = db.collection('Posts').document(postID)
-    doc = doc_ref.get()
-    if doc.exists:
-        return PostContentEntry.from_dict(doc.to_dict())
-    else:
-        raise KeyError("Post ID not found in database",postID)
-
-#TODO change tag subcollection to a document containing a list of taggedPostEntry
 def fetchDocumentsUnderTag(db,tag):
-    return db.collection('Tags').collection(tag).stream()
-
+    tagRef = db.collection('Tags').document(tag)
+    tagData = tagRef.get()
+    if tagData.exists():
+        return tagData.to_dict()['posts']
+    else:
+        raise KeyError("No posts found under tag", tag)
 
 def fetchPostsUnderTag(db,tag):
     docs = fetchDocumentsUnderTag(db,tag)
@@ -79,6 +75,27 @@ def fetchPostsUnderTag(db,tag):
     for doc in docs:
         postContents.append(PostContentEntry.from_dict(doc.to_dict))
     return postContents
+
+def storeAuthentication(db, username, authenticationEntry):
+    db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
+
+def fetchAuthentication(db,username):
+    authenticationData = db.collection('Authentication').document(username).get()
+    if authenticationData.exists:
+        return AuthenticationEntry.from_dict(authenticationData.to_dict())
+    else:
+        raise KeyError("No authentication data found for user", username)
+
+def storeUserProfile(db, userName, userProfileEntry):
+    db.collection('Users').document(userName).set(userProfileEntry.to_dict())
+
+def fetchUserProfile(db,userName):
+    profiledata = db.collection('Users').document(userName).get()
+    if profiledata.exists:
+        return UserProfileEntry.from_dict(profiledata.to_dict())
+    else:
+        raise KeyError("No profile data found for user", userName)
+
 
 
 def __testSinglePostStore(manager):
