@@ -7,13 +7,13 @@ let timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-const apiKey = 'bul520v48v6p6i26q6kg'
+const apiKey = 'bv0ve6n48v6u4eacgpmg'
 
 function ChartComponent(props) {
     const [mdata, setmdata] = useState(null)
     const [moptions, setmoptions] = useState(null)
     const [timescale, setTimescale] = useState(1)
-    const [res, setRes] = useState(5)
+    const [res, setRes] = useState(1)
     const [loading, setloading] = useState(false)
     const [daydata, setdaydata] = useState(false)
     const [weekdata, setweekdata] = useState(false)
@@ -37,14 +37,25 @@ function ChartComponent(props) {
             //UNIX time 2:30 PM to 9 PM for NYSE
             let date = new Date()
             let UTCDate = date - date.getTimezoneOffset() * 60000
+
+            console.log('OFFSET', Math.abs(date.getTimezoneOffset()) % 60)
+            // let OFFSET = (Math.abs(date.getTimezoneOffset()) % 100) * 60000
+            // let tmp = UTCDate - OFFSET
+            // console.log(tmp)
+            // console.log('OFF',OFFSET)
+
             UTCDate = new Date(UTCDate)
+            // console.log(UTCDate)
 
             let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
-            if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 9.5) {
+            if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 14.5) { //Accounts for market not open yet
                 normalize += 24 * 3600
             }
 
             let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
+            console.log(open)
+
+
 
             // finnhubClient.stockCandles(ticker, "5", open, open + (3600 * 10.5), {}, (error, data, response) => {
             //     console.log(data)
@@ -93,7 +104,20 @@ function ChartComponent(props) {
         fetchChart().then(data => {
             // const charts = [];
             // charts.push(<Chart data={chart} />);
-            console.log(data)
+            //console.log(data)
+
+            let tmpdate = new Date()
+            console.log(tmpdate.getTimezoneOffset())
+            console.log('OFFSET', Math.abs(tmpdate.getTimezoneOffset()) % 60)
+            let OFFSET = Math.abs(tmpdate.getTimezoneOffset()) % 60;
+
+            let timefix = 0;
+            if (OFFSET === 30){
+                timefix = -60000 * 30;
+            }
+            else if (OFFSET === 45){
+                timefix = 60000 * 15;
+            }
 
             let newchart = []
             for (let dates = 0; dates < data.length; dates++) {
@@ -110,28 +134,28 @@ function ChartComponent(props) {
                         // close: chart['c'][i],
                         // volume: chart['v'][i]
                         {
-                            x: new Date(data[dates]['t'][i] * 1000),
+                            x: new Date(data[dates]['t'][i] * 1000 + timefix), //Passing in time in UTC that gets converted to own user timezone
                             y: [Math.round(data[dates]['o'][i] * 1000) / 1000, Math.round(data[dates]['h'][i] * 1000) / 1000, Math.round(data[dates]['l'][i] * 1000) / 1000, Math.round(data[dates]['c'][i] * 1000) / 1000]
                         }
                     )
                 }
             }
 
-            //
-            let date = new Date()
-            let UTCDate = date - date.getTimezoneOffset() * 60000
-            UTCDate = new Date(UTCDate)
+            // //
+            // let date = new Date()
+            // let UTCDate = date - date.getTimezoneOffset() * 60000
+            // UTCDate = new Date(UTCDate)
 
-            let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
-            if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 9.5) {
-                normalize += 24 * 3600
-            }
+            // let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
+            // if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 14.5) {
+            //     normalize += 24 * 3600
+            // }
 
-            let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
-            console.log(open, 'OPEN1')
-            //
+            // let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
+            // console.log(open, 'OPEN1')
+            // //
 
-            console.log(newchart, 'NEWCHART')
+            //console.log(newchart, 'NEWCHART')
             let options = {
                 chart: {
                     background: '#ffffff',
@@ -152,7 +176,7 @@ function ChartComponent(props) {
                     },
                 },
                 title: {
-                    text: tick,
+                    // text: tick,
                     align: 'left'
                 },
                 xaxis: {
@@ -161,18 +185,24 @@ function ChartComponent(props) {
                         rotate: 0,
                         formatter: function (val) {
                             val = new Date(val)
+
+                            // console.log(val)
                             let hr = val.getUTCHours() - 5
                             let min = val.getUTCMinutes()
 
                             let str2 = ""
                             let str3 = " PM"
-                            if (hr <= 12 && hr >= 0) {
+
+                            if (hr < 12 && !(hr >= 12 && min >= 0)) {
                                 str3 = " AM"
                             }
-                            else if (hr < 0) {
-                                hr += 24
+ 
+                            if(hr === 12){
+                                str2 += ` 12:` + dayjs(val).format('mm') + str3
                             }
-                            str2 += ` ${hr % 12}:` + dayjs(val).format('mm') + str3
+                            else{
+                                str2 += ` ${hr % 12}:` + dayjs(val).format('mm') + str3
+                            }
 
                             if (timescale !== 1) {
                                 return dayjs(val).format('MMM DD')
@@ -248,7 +278,7 @@ function ChartComponent(props) {
         if (!loading && timescale !== 1) {
             event.preventDefault()
             setTimescale(1)
-            setRes(5)
+            setRes(1)
             setloading(true)
         }
     }
@@ -257,7 +287,7 @@ function ChartComponent(props) {
         if (!loading && timescale !== 7) {
             event.preventDefault()
             setTimescale(7)
-            setRes(30)
+            setRes(15)
             setloading(true)
         }
     }

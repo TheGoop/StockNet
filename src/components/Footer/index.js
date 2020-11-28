@@ -29,10 +29,10 @@ const Footer = () => {
                 <SocialMedia>
                     <SocialMediaWrap>
                         <SocialLogo to='/' onClick={toggleHome}>
-                            StonksNet
+                            StockNet
                         </SocialLogo>
                         <WebsiteRights>
-                            StonksNet © {new Date().getFullYear()}
+                            StockNet © {new Date().getFullYear()}
                         All rights reserved.</WebsiteRights>
                         <SocialMediaIcons>
                             <SocialMediaIconsLink href='//www.facebook.com' target='_blank'

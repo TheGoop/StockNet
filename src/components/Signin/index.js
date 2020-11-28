@@ -7,7 +7,7 @@ export const SignIn = () => {
         <>
             <Container>
                 <FormWrap>
-                    <Icon to='/'>StonksNet</Icon>
+                    <Icon to='/'>StockNet</Icon>
                     <FormContent>
                         <Form action='#'>
                             <FormH1>Sign in to your account</FormH1>

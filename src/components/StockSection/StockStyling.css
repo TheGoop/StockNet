@@ -67,3 +67,33 @@
   .multi-button button:active {
     transform: translateY(var(--border-size));
   }
+
+
+
+  #stockbox {
+    display: flex;
+    padding: 10px;
+    border: 2px solid #cccccc;
+    margin: 0;
+    background-color: #ffffff;
+    max-width: 1215px;
+  }
+
+  #serif {
+    padding-left: 6px;
+    font-family: Courier, monospace;
+  }
+
+  #smalltext {
+    font-size: 12px;
+  }
+
+  #green {
+    color: green;
+    line-height: 2;
+  }
+
+  #red {
+    color: red;
+    line-height: 2;
+  }
