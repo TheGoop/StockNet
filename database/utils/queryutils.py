@@ -27,6 +27,10 @@ def readPostbyID(db,postID):
     else:
         raise KeyError("Post ID not found in database",postID)
 
+
+def deletePostEntry(db, postID):
+    db.collection('Posts').document(postID).delete()
+
 def storePostTag(db,tag, taggedPostEntry):
     #document 'tag' format
     transaction = db.transaction()
@@ -88,6 +92,30 @@ def fetchPostsUnderTag(db,tag):
     for doc in docs:
         postContents.append(readPostbyID(db,doc['postID']))
     return postContents
+
+def deletePostUnderTag(db,tag,postID):
+    transaction = db.transaction()
+    postRef = db.collection("Tags").document(tag)
+    result = __transactionalPostTagDelete(transaction, postRef, postID)
+    if not result:
+        raise KeyError("Tag does not exist", tag)
+
+@firestore.transactional
+def __transactionalPostTagDelete(transaction, postRef, postID):
+    snapshot = postRef.get(transaction=transaction)
+    if snapshot.exists:
+        prevPosts = snapshot.to_dict()['posts']
+        for (i,post) in enumerate(prevPosts):
+            if post['postID'] == postID:
+                prevPosts.pop(i)
+                break
+        transaction.update(postRef, {
+            'posts': prevPosts
+        })
+        return True
+    else:
+        return False
+
 
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
