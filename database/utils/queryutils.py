@@ -10,13 +10,14 @@ def storePost(db,postID,postContent):
     postID = str(postID)
     db.collection('Posts').document(postID).set(postContent.to_dict())
 
+'''
 def addComment(db,postID,commentEntry):
     postID = str(postID)
     try:
         db.collection('Posts').document(postID).update({'comments': firestore.ArrayUnion([commentEntry.to_dict()])})
     except Exception:
         raise KeyError("Post ID not found in database", postID)
-
+'''
 
 def readPostbyID(db,postID):
     postID = str(postID)
@@ -122,6 +123,8 @@ def removePost(db, tag, postID):
     deletePostEntry(db,postID)
     deletePostUnderTag(db,tag, postID)
 
+
+'''
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
 
@@ -141,7 +144,7 @@ def fetchUserProfile(db,userName):
         return UserProfileEntry.from_dict(profiledata.to_dict())
     else:
         raise KeyError("No profile data found for user", userName)
-
+'''
 
 if __name__ == "__main__":
     from database.unitTesting.queryTests.queryTestRunner import runTests

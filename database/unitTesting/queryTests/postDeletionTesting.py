@@ -55,4 +55,4 @@ def deletePropagatedPostsTogether(db):
 if __name__ == "__main__":
     from database.utils.dbclientmanager import DBClientManager
     clientManager = DBClientManager()
-    deletePropagatedPostsTogether(clientManager.getDBConnection())
+    propagatePostsForDeletion(clientManager.getDBConnection())
