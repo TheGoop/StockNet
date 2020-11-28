@@ -29,6 +29,7 @@ def readPostbyID(db,postID):
 
 
 def deletePostEntry(db, postID):
+    postID = str(postID)
     db.collection('Posts').document(postID).delete()
 
 def storePostTag(db,tag, taggedPostEntry):
