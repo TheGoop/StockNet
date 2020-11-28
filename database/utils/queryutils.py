@@ -116,6 +116,10 @@ def __transactionalPostTagDelete(transaction, postRef, postID):
     else:
         return False
 
+#Todo remove post from user profile also
+def removePost(db, tag, postID):
+    deletePostEntry(db,postID)
+    deletePostUnderTag(db,tag, postID)
 
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
