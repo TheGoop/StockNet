@@ -7,12 +7,12 @@ app = Flask(__name__)
 def index():
     return "Hello, World!"
 
-@app.route('/endpoint/singlepost/<int:id>', methods=['GET'])
+@app.route('/post/<int:id>', methods=['GET'])
 def get_tasks(id):
     return str(id)
 
-@app.route('/endpoint/postpreview', methods=['get'])
-def create_cm():
+@app.route('/postpreview', methods=['get'])
+def getPostPreview():
     stock = request.args.get('stock', None) # use default value repalce 'None'
     num = request.args.get('num', None)
     # do something, eg. return json response
