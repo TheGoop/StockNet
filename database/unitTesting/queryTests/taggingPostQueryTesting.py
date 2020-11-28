@@ -12,10 +12,10 @@ def testTagging(manager):
     postID3 = 1003
     postID4 = 1004
 
-    time1 = datetime.datetime(1000, 10, 23, 10, 8, 0, 89,datetime.timezone.utc)
-    time2 = datetime.datetime(999, 10, 23, 10, 8, 0, 5, datetime.timezone.utc)
-    time3 = datetime.datetime(998, 10, 23, 10, 8, 0, 89, datetime.timezone.utc)
-    time4 = datetime.datetime(997, 10, 23, 10, 8, 0, 5, datetime.timezone.utc)
+    time1 = 46
+    time2 = 314
+    time3 = 13646
+    time4 = 314631474
 
     post1 = PostContentEntry("User 1", "Sample Post Title 1", time1,
                              "Sample Post Message 1", "Sample Post Flair 1", 3,

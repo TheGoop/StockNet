@@ -11,10 +11,10 @@ def propagatePostsForDeletion(db):
     postID3 = 2003
     postID4 = 2004
 
-    time1 = datetime.datetime(2000, 10, 23, 10, 8, 0, 89, datetime.timezone.utc)
-    time2 = datetime.datetime(2001, 10, 23, 10, 8, 0, 5, datetime.timezone.utc)
-    time3 = datetime.datetime(2002, 10, 23, 10, 8, 0, 89, datetime.timezone.utc)
-    time4 = datetime.datetime(2003, 10, 23, 10, 8, 0, 5, datetime.timezone.utc)
+    time1 = 15
+    time2 = 16
+    time3 = 13
+    time4 = 10
 
     post1 = PostContentEntry("User 1", "Sample Post Title 1", time1,
                              "Sample Post Message 1", "Sample Post Flair 1", 3,
@@ -55,4 +55,4 @@ def deletePropagatedPostsTogether(db):
 if __name__ == "__main__":
     from database.utils.dbclientmanager import DBClientManager
     clientManager = DBClientManager()
-    propagatePostsForDeletion(clientManager.getDBConnection())
+    deletePropagatedPostsTogether(clientManager.getDBConnection())
