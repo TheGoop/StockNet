@@ -31,8 +31,18 @@ def storePostTag(db,tag, taggedPostEntry):
     #document 'tag' format
     transaction = db.transaction()
     postRef = db.collection("Tags").document(tag)
-    result = __transactionalPostTagStore(transaction,postRef)
-    return result
+    result = __transactionalPostTagStore(transaction,postRef,taggedPostEntry)
+    if not result:
+        raise KeyError("Post ID attempting to be stored is already in the database", taggedPostEntry.postID)
+
+
+def checkForRepeatedPostIDs(prevPosts, postID):
+    for post in prevPosts:
+        if post['postID'] == postID:
+            return False
+
+    return True
+
 
 @firestore.transactional
 def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
@@ -40,6 +50,8 @@ def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
     prevPosts = []
     if snapshot.exists:
         prevPosts = snapshot.to_dict()['posts']
+        if not checkForRepeatedPostIDs(prevPosts,taggedPostEntry.postID):
+            return False
         currTime = taggedPostEntry.time
         inserted = False
         for (i, prevPostEntries) in enumerate(prevPosts):
@@ -55,14 +67,15 @@ def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
         return True
     else:
         prevPosts.append(taggedPostEntry.to_dict())
-        transaction.set(postRef,prevPosts)
+        transaction.set(postRef,{
+            'posts' : prevPosts
+        })
         return True
-    return False
 
 def fetchDocumentsUnderTag(db,tag):
     tagRef = db.collection('Tags').document(tag)
     tagData = tagRef.get()
-    if tagData.exists():
+    if tagData.exists:
         return tagData.to_dict()['posts']
     else:
         raise KeyError("No posts found under tag", tag)
@@ -73,7 +86,7 @@ def fetchPostsUnderTag(db,tag):
         raise KeyError("No posts found under tag",tag)
     postContents = []
     for doc in docs:
-        postContents.append(PostContentEntry.from_dict(doc.to_dict))
+        postContents.append(readPostbyID(db,doc['postID']))
     return postContents
 
 def storeAuthentication(db, username, authenticationEntry):
