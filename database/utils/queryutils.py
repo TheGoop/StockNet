@@ -124,7 +124,7 @@ def removePost(db, tag, postID):
     deletePostUnderTag(db,tag, postID)
 
 
-'''
+
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
 
@@ -135,6 +135,10 @@ def fetchAuthentication(db,username):
     else:
         raise KeyError("No authentication data found for user", username)
 
+def removeAuthenticationEntry(db,username):
+    db.collection('Authentication').document(username).delete()
+
+'''
 def storeUserProfile(db, userName, userProfileEntry):
     db.collection('Users').document(userName).set(userProfileEntry.to_dict())
 
