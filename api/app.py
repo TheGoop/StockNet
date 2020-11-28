@@ -7,16 +7,52 @@ app = Flask(__name__)
 def index():
     return "Hello, World!"
 
-@app.route('/post/<int:id>', methods=['GET'])
-def get_tasks(id):
-    return str(id)
+@app.route('/singlepost', methods=['GET'])
+def get_post():
+    #id defaults to None
+    id = request.args.get('postID', None)
+    return jsonify(id)
 
-@app.route('/postpreview', methods=['get'])
+@app.route('/postpreview', methods=['GET'])
 def getPostPreview():
-    stock = request.args.get('stock', None) # use default value repalce 'None'
+    #both default to None
+    stock = request.args.get('stock', None) 
     num = request.args.get('num', None)
     # do something, eg. return json response
     return jsonify({'stock': stock, 'num': num})
+
+@app.route('/updatepost', methods=['PUT'])
+def updatePost():
+    #with PUT, we will update some resource
+
+
+    #all will default to None if nothing given
+    id = request.args.get('postID', None)
+    upvote = request.args.get('upvote', None)
+    #upvote will either be 1 or -1, 
+    commentID = request.args.get('commentID', None)
+    return jsonify(id)
+
+# we deal with giving this post an ID
+@app.route('/singlepost', methods=["POST"])
+def createPost():
+    return -1
+
+# we deal with giving this comment an ID
+@app.route('/comment', methods=['POST'])
+def createComment():
+    #id of the post, defaults to None
+    id = request.args.get('postID', None)
+    return jsonify(id)
+
+@app.route('/singlepost', methods=['DELETE'])
+def deletePost():
+    #id of the post, defaults to None
+    id = request.args.get('postID', None)
+    return jsonify(id)
+    
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
