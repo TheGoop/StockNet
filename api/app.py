@@ -11,16 +11,12 @@ def index():
 def get_tasks(id):
     return str(id)
 
-@app.route('/endpoint/postpreview?stock=<name>&num=<int:X>', methods = ['GET'])
-def get_user(name, X = 0):
-    return str((name, str(x)))
-
-@app.route('/createcm', methods=['get'])
+@app.route('/endpoint/postpreview', methods=['get'])
 def create_cm():
-    summary = request.args.get('summary', None) # use default value repalce 'None'
-    change = request.args.get('change', None)
+    stock = request.args.get('stock', None) # use default value repalce 'None'
+    num = request.args.get('num', None)
     # do something, eg. return json response
-    return jsonify({'summary': summary, 'change': change})
+    return jsonify({'stock': stock, 'num': num})
 
 if __name__ == '__main__':
     app.run(debug=True)
