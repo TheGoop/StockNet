@@ -6,7 +6,23 @@ from database.utils import queryutils
 
 
 def get_post(db,body):
-    return None
+    post = None
+    try:
+        post = queryutils.readPostbyID(db,body['postID'])
+    except KeyError:
+        return (None,1)
+    except Exception:
+        return (None,2)
+
+    returnPayload = {}
+    returnPayload['user'] = post.userName
+    returnPayload['title'] = post.postTitle
+    returnPayload['content'] = post.message
+    returnPayload['flair'] = post.flair
+    returnPayload['time'] = post.time
+    returnPayload['upvotes'] = post.upvoteCount
+    returnPayload['comments'] = []
+    return (returnPayload,0)
 
 def get_post_preview(db, body):
     return None

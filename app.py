@@ -19,9 +19,14 @@ def index():
 def singlePostGet():
     # id defaults to None
     db = manager.getDBConnection()
-    body = request.json
-    return postAPI.get_post(db,body)
-
+    body = request.args
+    returnPayloadTuple = postAPI.get_post(db,body)
+    if returnPayloadTuple[1] == 1:
+        return Response("{ 'Result': 'Error: Post ID was not found in database' }", status=400, mimetype='application/json')
+    elif returnPayloadTuple[1] == 2:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+    else:
+        return jsonify(returnPayloadTuple[0])
 
 @app.route('/postpreview', methods=['GET'])
 def getPostPreview():
