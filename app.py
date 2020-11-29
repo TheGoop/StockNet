@@ -32,9 +32,16 @@ def singlePostGet():
 def getPostPreview():
     # both default to None
     db = manager.getDBConnection()
-    body = request.json
+    body = request.args
+    returnPayloadTuple = postAPI.get_post_preview(db, body)
     # do something, eg. return json response
-    return postAPI.get_post_preview(db,body)
+    if returnPayloadTuple[1] == 1:
+        return Response("{ 'Result': 'Error: No Posts under Tag' }", status=404, mimetype='application/json')
+    elif returnPayloadTuple[1] == 2:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+    else:
+        return jsonify(returnPayloadTuple[0])
+
 
 
 @app.route('/singlepost', methods=['PUT'])

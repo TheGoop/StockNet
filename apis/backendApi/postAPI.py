@@ -25,7 +25,28 @@ def get_post(db,body):
     return (returnPayload,0)
 
 def get_post_preview(db, body):
-    return None
+    postsUnderTag = None
+    try:
+        postsUnderTag = queryutils.fetchPostsUnderTag(db,body['stock'])
+    except KeyError:
+        return (None,1)
+    except Exception:
+        return (None,2)
+
+    postsToFormat = postsUnderTag[0:int(body['num'])]
+    returnPayload = []
+    for (postID,post) in postsToFormat:
+        returnPost = {}
+        returnPost['user'] = post.userName
+        returnPost['title'] = post.postTitle
+        returnPost['content'] = post.message[0:100] + "..."
+        returnPost['postID'] = postID
+        returnPost['time'] = post.time
+        returnPost['upvotes'] = post.upvoteCount
+        returnPost['flair'] = post.flair
+        returnPayload.append(returnPost)
+    return (returnPayload,0)
+
 
 
 def update_post(db, body):

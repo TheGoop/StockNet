@@ -97,7 +97,7 @@ def fetchPostsUnderTag(db,tag):
         raise KeyError("No posts found under tag",tag)
     postContents = []
     for doc in docs:
-        postContents.append(readPostbyID(db,doc['postID']))
+        postContents.append((doc['postID'],readPostbyID(db,doc['postID'])))
     return postContents
 
 def deletePostUnderTag(db,tag,postID):
