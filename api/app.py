@@ -12,10 +12,15 @@ def index():
 def get_post():
     #id defaults to None
     x = request.json
-    
-    z = ""
+    z = "body   {"
     for i in x:
         z+= str(i) + " : " + str(x[i]) + "\n"
+    z += "}"
+    z += "\n args {"
+    w = request.args
+    for i in w:
+        z+= str(i) + " : " + str(w[i]) + "\n"
+    z += "}"
     return z
 '''
     id = request.args.get('postID', None)
