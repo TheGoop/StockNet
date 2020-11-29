@@ -49,8 +49,26 @@ def get_post_preview(db, body):
 
 
 
-def update_post(db, body):
-    return None
+def update_post(db, body,args):
+    postID = args['postID']
+    updateDict = {}
+    if 'title' in body:
+        updateDict['postTitle'] = body['title']
+    if 'flair' in body:
+        updateDict['flair'] = body['flair']
+    if 'content' in body:
+        updateDict['message'] = body['content']
+    if not updateDict:
+        return 2
+    try:
+        queryutils.updatePost(db,postID,updateDict)
+    except KeyError:
+        return 1
+    except Exception:
+        return 3
+
+    return 0
+
 
 
 def create_post(db, body):

@@ -20,6 +20,10 @@ def singlePostGet():
     # id defaults to None
     db = manager.getDBConnection()
     body = request.args
+    if not body:
+        return Response("{ 'Result': 'Error: No args given' }", status=400, mimetype='application/json')
+    if 'postID' not in body or len(body)>1:
+        return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
     returnPayloadTuple = postAPI.get_post(db,body)
     if returnPayloadTuple[1] == 1:
         return Response("{ 'Result': 'Error: Post ID was not found in database' }", status=400, mimetype='application/json')
@@ -33,6 +37,18 @@ def getPostPreview():
     # both default to None
     db = manager.getDBConnection()
     body = request.args
+    if not body:
+        return Response("{ 'Result': 'Error: No arguments given' }", status=400, mimetype='application/json')
+    correctArgs = ['stock','num']
+    validated = True
+    for key in body:
+        if key not in correctArgs:
+            validated = False
+            break
+
+    if not validated or len(body) != 2:
+        return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
+
     returnPayloadTuple = postAPI.get_post_preview(db, body)
     # do something, eg. return json response
     if returnPayloadTuple[1] == 1:
@@ -48,8 +64,24 @@ def getPostPreview():
 def updatePost():
     db = manager.getDBConnection()
     body = request.json
+    args = request.args
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+    if not args:
+        return Response("{ 'Result': 'Error: No args given' }", status=400, mimetype='application/json')
+    if 'postID' not in args or len(args)>1:
+        return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
+
     # do something, eg. return json response
-    return postAPI.update_post(db, body)
+    result = postAPI.update_post(db, body,args)
+    if result == 0:
+        return Response("{ 'Result': 'Post Updated' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Error: No Posts with given ID exist' }", status=400, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'Error: Empty Body given' }", status=400, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
 
 # we deal with giving this post an ID
@@ -57,10 +89,12 @@ def updatePost():
 def createPost():
     db = manager.getDBConnection()
     body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
     # do something, eg. return json response
     result = postAPI.create_post(db, body)
     if result == 0:
-        return Response("{ 'Result': 'Created Post' }", status=201, mimetype='application/json')
+        return Response("{ 'Result': 'Created Post' }", status=200, mimetype='application/json')
     elif result == 1:
         return Response("{ 'Result': 'Error: Post ID already exists, did not create post' }", status=304, mimetype='application/json')
     else:
