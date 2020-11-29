@@ -46,10 +46,13 @@ def createPost():
     db = manager.getDBConnection()
     body = request.json
     # do something, eg. return json response
-    if postAPI.create_post(db, body):
+    result = postAPI.create_post(db, body)
+    if result == 0:
         return Response("{ 'Result': 'Created Post' }", status=201, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Error: Post ID already exists, did not create post' }", status=304, mimetype='application/json')
     else:
-        return Response("{ 'Result': 'Error: could not create post' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
 # # we deal with giving this comment an ID
 # @app.route('/comment', methods=['POST'])

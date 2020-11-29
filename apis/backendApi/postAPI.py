@@ -1,6 +1,7 @@
 import random
 
 from database.payloadClasses.postcontententry import PostContentEntry
+from database.payloadClasses.taggedpostentry import TaggedPostEntry
 from database.utils import queryutils
 
 
@@ -22,13 +23,17 @@ def create_post(db, body):
         postID = random.randint(0,1000000)
         if queryutils.validatePostID(db,postID):
             break
+    taggedEntry = TaggedPostEntry(postID,body['time'])
 
     try:
+        queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
+    except KeyError:
+        return 1
     except Exception:
-       return False
+       return 2
 
-    return True
+    return 0
 
 
 def delete_post(db, body):
