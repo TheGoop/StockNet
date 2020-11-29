@@ -12,7 +12,15 @@
     max-width: 1215px;
     width: 1215px;
     font-family: monospace;
+    border-radius: 6px;
+    cursor: pointer;
 }
+
+#post-preview-container:hover {
+    border-color: #7e7e7e;
+    border-radius: 6px;
+    cursor: hand;
+ }
 
 #stats{
     border: 5px solid #45a163;

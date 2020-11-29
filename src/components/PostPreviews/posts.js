@@ -1,5 +1,8 @@
 import React from 'react'
 import './posts.css'
+import {
+    useParams
+} from "react-router-dom";
 
 //
 
@@ -10,6 +13,7 @@ const Posts = ({posts}) => (
 )
 
 const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
+    let { ticker } = useParams()
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -18,9 +22,13 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
         stattext = "upvotes"
     }
 
+    const handleClick = () => {
+        window.location.href = `/${ticker}/${postID}`
+    }
 
+    
     return(
-        <div id="post-preview-container">
+        <div id="post-preview-container" onClick={handleClick}>
             <div id={statcolor}>
                 <h1>{`${Math.abs(upvotes)}`}</h1>
                 <h3>{`${stattext}`}</h3>
