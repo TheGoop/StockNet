@@ -10,6 +10,13 @@ def storePost(db,postID,postContent):
     postID = str(postID)
     db.collection('Posts').document(postID).set(postContent.to_dict())
 
+def updatePost(db,postID,updateDict):
+    postID = str(postID)
+    try:
+        db.collection('Posts').document(postID).update(updateDict)
+    except Exception:
+        raise KeyError("Post ID not found in database",postID)
+
 '''
 def addComment(db,postID,commentEntry):
     postID = str(postID)
@@ -42,13 +49,18 @@ def storePostTag(db,tag, taggedPostEntry):
         raise KeyError("Post ID attempting to be stored is already in the database", taggedPostEntry.postID)
 
 
-def checkForRepeatedPostIDs(prevPosts, postID):
+def __checkForRepeatedPostIDs(prevPosts, postID):
     for post in prevPosts:
         if post['postID'] == postID:
             return False
 
     return True
 
+def validatePostID(db, postID):
+    postID = str(postID)
+    doc_ref = db.collection('Posts').document(postID)
+    doc = doc_ref.get()
+    return not doc.exists
 
 @firestore.transactional
 def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
@@ -56,7 +68,7 @@ def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
     prevPosts = []
     if snapshot.exists:
         prevPosts = snapshot.to_dict()['posts']
-        if not checkForRepeatedPostIDs(prevPosts,taggedPostEntry.postID):
+        if not __checkForRepeatedPostIDs(prevPosts,taggedPostEntry.postID):
             return False
         currTime = taggedPostEntry.time
         inserted = False
@@ -92,7 +104,7 @@ def fetchPostsUnderTag(db,tag):
         raise KeyError("No posts found under tag",tag)
     postContents = []
     for doc in docs:
-        postContents.append(readPostbyID(db,doc['postID']))
+        postContents.append((doc['postID'],readPostbyID(db,doc['postID'])))
     return postContents
 
 def deletePostUnderTag(db,tag,postID):
@@ -100,28 +112,41 @@ def deletePostUnderTag(db,tag,postID):
     postRef = db.collection("Tags").document(tag)
     result = __transactionalPostTagDelete(transaction, postRef, postID)
     if not result:
-        raise KeyError("Tag does not exist", tag)
+        raise KeyError("Tag does not exist, or post not found under Tag", tag)
 
 @firestore.transactional
 def __transactionalPostTagDelete(transaction, postRef, postID):
     snapshot = postRef.get(transaction=transaction)
+    postID = int(postID)
     if snapshot.exists:
         prevPosts = snapshot.to_dict()['posts']
+        postRemoved = False
+        # print(prevPosts)
         for (i,post) in enumerate(prevPosts):
+            # print(postID)
+            # print(post['postID'])
+            # print(post['postID'] == postID)
+            # print(type(post['postID']))
+            # print(type(postID))
             if post['postID'] == postID:
-                prevPosts.pop(i)
+                popped = prevPosts.pop(i)
+                postRemoved = True
+                #print(popped)
                 break
-        transaction.update(postRef, {
-            'posts': prevPosts
-        })
-        return True
+        if postRemoved:
+            transaction.update(postRef, {
+                'posts': prevPosts
+            })
+            return True
+        else:
+            return False
     else:
         return False
 
 #Todo remove post from user profile also
 def removePost(db, tag, postID):
+    deletePostUnderTag(db, tag, postID)
     deletePostEntry(db,postID)
-    deletePostUnderTag(db,tag, postID)
 
 
 
