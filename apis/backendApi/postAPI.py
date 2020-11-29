@@ -16,7 +16,7 @@ def update_post(db, body):
 
 
 def create_post(db, body):
-    postEntry = PostContentEntry(body['username'],body['postTitle'],body['time'],body['message'],body['flair'],body['upvotes'],body['comments'])
+    postEntry = PostContentEntry(body['user'],body['title'],body['time'],body['content'],body['flair'],body['upvotes'])
     postID = 0
     while True:
         postID = random.randint(0,1000000)

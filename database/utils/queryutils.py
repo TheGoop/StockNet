@@ -50,6 +50,7 @@ def __checkForRepeatedPostIDs(prevPosts, postID):
     return True
 
 def validatePostID(db, postID):
+    postID = str(postID)
     doc_ref = db.collection('Posts').document(postID)
     doc = doc_ref.get()
     return not doc.exists
