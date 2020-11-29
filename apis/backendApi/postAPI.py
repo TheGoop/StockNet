@@ -92,4 +92,13 @@ def create_post(db, body):
 
 
 def delete_post(db, body):
-    return None
+    postID = body['postID']
+    tag = body['stock']
+    try:
+        queryutils.removePost(db,tag,postID)
+    except KeyError:
+        return 1
+    except Exception:
+        return 2
+
+    return 0

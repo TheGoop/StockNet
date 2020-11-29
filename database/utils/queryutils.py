@@ -112,28 +112,41 @@ def deletePostUnderTag(db,tag,postID):
     postRef = db.collection("Tags").document(tag)
     result = __transactionalPostTagDelete(transaction, postRef, postID)
     if not result:
-        raise KeyError("Tag does not exist", tag)
+        raise KeyError("Tag does not exist, or post not found under Tag", tag)
 
 @firestore.transactional
 def __transactionalPostTagDelete(transaction, postRef, postID):
     snapshot = postRef.get(transaction=transaction)
+    postID = int(postID)
     if snapshot.exists:
         prevPosts = snapshot.to_dict()['posts']
+        postRemoved = False
+        # print(prevPosts)
         for (i,post) in enumerate(prevPosts):
+            # print(postID)
+            # print(post['postID'])
+            # print(post['postID'] == postID)
+            # print(type(post['postID']))
+            # print(type(postID))
             if post['postID'] == postID:
-                prevPosts.pop(i)
+                popped = prevPosts.pop(i)
+                postRemoved = True
+                #print(popped)
                 break
-        transaction.update(postRef, {
-            'posts': prevPosts
-        })
-        return True
+        if postRemoved:
+            transaction.update(postRef, {
+                'posts': prevPosts
+            })
+            return True
+        else:
+            return False
     else:
         return False
 
 #Todo remove post from user profile also
 def removePost(db, tag, postID):
+    deletePostUnderTag(db, tag, postID)
     deletePostEntry(db,postID)
-    deletePostUnderTag(db,tag, postID)
 
 
 
