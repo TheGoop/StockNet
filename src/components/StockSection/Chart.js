@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import dayjs from "dayjs"
 import ApexCharts from "react-apexcharts"
 import './StockStyling.css'
+import '../Multibutton/Multibutton.css'
 let utc = require('dayjs/plugin/utc')
 let timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)
@@ -22,7 +23,6 @@ function ChartComponent(props) {
     let tick = props.tick
     let pc = props.pc
     console.log(loading)
-
     useEffect(() => {
 
         async function fetchChart() {

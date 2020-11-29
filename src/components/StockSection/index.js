@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
-import { Button } from '../ButtonElements'
 import Stock from './Stock'
 import { PageSetup, PostSetup } from './StockStyling'
 import './StockStyling.css'
-import Posts from '../PostPreviews/posts'
+import '../Multibutton/Multibutton2.css'
+import Posts from './PostPreviews/posts'
+
+import {
+    useParams
+} from "react-router-dom";
 
 let temptest = [
     {
@@ -32,16 +36,38 @@ let temptest = [
         upvotes: 1284,
         postID: 'X86',
         time: 'Dec 8888, 12:19 PM'
+    },
+    {
+        user: 'Neil Vaishamshayasmapayn',
+        title: 'Donec ultrices nisl in ligula euismod lobortis?',
+        content: 'In in volutpat nisl. Etiam id sem non nisl tincidunt rutrum in hendrerit sapien. Aliquam finibus ante id sapien dictum, et sodales est ultrices. Integer lacinia lobortis nibh, non posuere diam pretium',
+        flair: 'Lmao you think this is a flair',
+        upvotes: 1284,
+        postID: 'X86',
+        time: 'Dec 8888, 12:19 PM'
+    },
+    {
+        user: 'Neil Vaishamshayasmapayn',
+        title: 'Donec ultrices nisl in ligula euismod lobortis?',
+        content: 'In in volutpat nisl. Etiam id sem non nisl tincidunt rutrum in hendrerit sapien. Aliquam finibus ante id sapien dictum, et sodales est ultrices. Integer lacinia lobortis nibh, non posuere diam pretium',
+        flair: 'Lmao you think this is a flair',
+        upvotes: 1284,
+        postID: 'X86',
+        time: 'Dec 8888, 12:19 PM'
     }
 ]
 
 const StockSection = () => {
     const [hover, setHover] = useState(false);
+    let { ticker } = useParams()
 
-    const onHover = () => {
-        setHover(!hover)
+    const Submit = () => {
+        window.location.href = `/${ticker}/submit`
     }
 
+    const Load = () => {
+        //LOAD 20 more!!!
+    }
     //Need Fetch data here, then pass over props down to individual messages
 
     return (
@@ -54,6 +80,10 @@ const StockSection = () => {
                 </div>
             
                 <PostSetup>
+                <div class="multi-button2">
+                    <button onClick={Submit}> Submit New Post </button>
+                    <button onClick={Load}> Load More Posts </button>
+                </div>
                 <Posts posts={temptest}/>
                 </PostSetup>
 

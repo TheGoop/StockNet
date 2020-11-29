@@ -3,18 +3,17 @@ import { FaBars } from 'react-icons/fa';
 import { animateScroll as scroll } from 'react-scroll';
 
 import {
-    Nav,
     NavbarContainer,
-    NavLogo,
-    MobileIcon,
-    NavMenu,
-    NavItem,
-    NavLinks,
+    // NavLogo,
+    // MobileIcon,
+    // NavMenu,
+    // NavItem,
+    // NavLinks,
     Nav2,
     NavLogo2,
     NavButton,
     NavButtonLink,
-    NavButtonLink2,
+    // NavButtonLink2,
     SearchBar
 } from '../Navbar/NavbarElements';
 

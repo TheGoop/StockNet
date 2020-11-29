@@ -7,6 +7,7 @@ import StockSection from '../components/StockSection';
 import InfoSection from '../components/InfoSection';
 import { homeObjOne, homeObjTwo, homeObjThree, homeObjFour } from '../components/InfoSection/Data';
 import Footer from '../components/Footer';
+import PostSection from '../components/PostSection/index.js'
 
 import '../App.css';
 
@@ -45,7 +46,11 @@ const Substock = () => {
 
 const Post = () => {
     return (
-        <Navbar/>
+        <>
+        <SubstockNavbar/>
+        <PostSection/>
+        <Footer />
+        </>
     )
 }
 

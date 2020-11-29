@@ -1,16 +1,9 @@
+
 import React from 'react'
-import './posts.css'
+import './post.css'
 import {
     useParams
 } from "react-router-dom";
-
-//
-
-const Posts = ({posts}) => (
-    <>
-    {posts.map((post, i) => <div key={i}><Post post={post}/></div>)}
-    </>
-)
 
 const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
     let { ticker } = useParams()
@@ -26,11 +19,14 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
         window.location.href = `/${ticker}/${postID}`
     }
 
+    if (upvotes.toString().length > 3){
+        upvotes = `${(upvotes / 1000).toFixed(1)}k`
+    }
     
     return(
-        <div id="post-preview-container" onClick={handleClick}>
+        <div id="expanded-post-preview-container" onClick={handleClick}>
             <div id={statcolor}>
-                <h1>{`${Math.abs(upvotes)}`}</h1>
+                <h1>{`${upvotes}`}</h1>
                 <h3>{`${stattext}`}</h3>
             </div>
 
@@ -45,11 +41,11 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
                 <div id="lower">
                 </div>
 
-                <div id="timeuser">{`Last updated by ${user} on ${time}.`}</div>
+                <div id="timeuser">{`Posted by ${user} on ${time}.`}</div>
             </summary>
         </div>
     )
 
 }
 
-export default Posts
+export default Post

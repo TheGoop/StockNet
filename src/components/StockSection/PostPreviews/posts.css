@@ -10,14 +10,14 @@
     flex-direction: row;
     margin: 15px;
     max-width: 1215px;
-    width: 1215px;
+    /* width: 1215px; */
     font-family: monospace;
     border-radius: 6px;
     cursor: pointer;
 }
 
 #post-preview-container:hover {
-    border-color: #7e7e7e;
+    border-color: #777879;
     border-radius: 6px;
     cursor: hand;
  }
@@ -57,7 +57,7 @@
 
 #title{
     color: #2c5777;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 #content{
