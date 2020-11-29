@@ -42,13 +42,17 @@ def storePostTag(db,tag, taggedPostEntry):
         raise KeyError("Post ID attempting to be stored is already in the database", taggedPostEntry.postID)
 
 
-def checkForRepeatedPostIDs(prevPosts, postID):
+def __checkForRepeatedPostIDs(prevPosts, postID):
     for post in prevPosts:
         if post['postID'] == postID:
             return False
 
     return True
 
+def validatePostID(db, postID):
+    doc_ref = db.collection('Posts').document(postID)
+    doc = doc_ref.get()
+    return not doc.exists
 
 @firestore.transactional
 def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
@@ -56,7 +60,7 @@ def __transactionalPostTagStore(transaction, postRef, taggedPostEntry):
     prevPosts = []
     if snapshot.exists:
         prevPosts = snapshot.to_dict()['posts']
-        if not checkForRepeatedPostIDs(prevPosts,taggedPostEntry.postID):
+        if not __checkForRepeatedPostIDs(prevPosts,taggedPostEntry.postID):
             return False
         currTime = taggedPostEntry.time
         inserted = False
