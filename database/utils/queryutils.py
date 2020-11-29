@@ -10,6 +10,13 @@ def storePost(db,postID,postContent):
     postID = str(postID)
     db.collection('Posts').document(postID).set(postContent.to_dict())
 
+def updatePost(db,postID,updateDict):
+    postID = str(postID)
+    try:
+        db.collection('Posts').document(postID).update(updateDict)
+    except Exception:
+        raise KeyError("Post ID not found in database",postID)
+
 '''
 def addComment(db,postID,commentEntry):
     postID = str(postID)

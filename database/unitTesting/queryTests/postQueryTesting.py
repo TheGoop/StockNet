@@ -1,7 +1,8 @@
 import datetime
 
 from database.payloadClasses.postcontententry import PostContentEntry
-from database.utils.queryutils import storePost, readPostbyID
+from database.utils.dbclientmanager import DBClientManager
+from database.utils.queryutils import storePost, readPostbyID, updatePost
 
 
 def testSinglePostStore(manager):
@@ -19,3 +20,17 @@ def testSinglePostStore(manager):
     post4 = readPostbyID(db,2)
     print(post3)
     print(post4)
+
+def testSinglePostUpdate(manager):
+    db = manager.getDBConnection()
+    postID = 3596
+    updateDict = {
+        'flair': 'BACK IN THE USSR BA DA DUM',
+        'message': 'some other beatles reference',
+        'postTitle': 'Akshay "The GOOP" gupta'
+    }
+    updatePost(db,postID,updateDict)
+
+if __name__ == "__main__":
+    manager = DBClientManager()
+    testSinglePostUpdate(manager)
