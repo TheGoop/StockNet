@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import jsonify
+import flask
 app = Flask(__name__)
 
 @app.route('/')
@@ -10,9 +11,16 @@ def index():
 @app.route('/singlepost', methods=['GET'])
 def get_post():
     #id defaults to None
+    x = request.json
+    
+    z = ""
+    for i in x:
+        z+= str(i) + " : " + str(x[i]) + "\n"
+    return z
+'''
     id = request.args.get('postID', None)
     return jsonify(id)
-
+'''
 @app.route('/postpreview', methods=['GET'])
 def getPostPreview():
     #both default to None
@@ -50,8 +58,6 @@ def deletePost():
     #id of the post, defaults to None
     id = request.args.get('postID', None)
     return jsonify(id)
-    
-
 
 
 if __name__ == '__main__':
