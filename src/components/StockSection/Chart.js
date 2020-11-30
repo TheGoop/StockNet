@@ -267,7 +267,7 @@ function ChartComponent(props) {
             //     delete options['annotations']['xaxis'].label
             //     setmoptions(options)
             // }
-            console.log(options)
+            //console.log(options)
             setmoptions(options)
             setmdata(series);
             setloading(false)

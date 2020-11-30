@@ -10,7 +10,7 @@
     flex-direction: row;
     margin: 15px;
     max-width: 1215px;
-    /* width: 1215px; */
+    width: 1215px;
     font-family: monospace;
     border-radius: 6px;
     cursor: pointer;

@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './index.css'
 import Comments from './Comments/comments.js'
 import Post from './SinglePost/post.js'
+import Write from './Write/write.js'
+import {
+    useParams
+} from "react-router-dom";
 
-let tempcomments = [
+let tempcommentsREF = [
     {user: 'cootneyiscoolerthanbrandon', 
     time: 'Dec 4 2020, 4:20 PM', 
     content: "It's spelled fossit not faucet you dingleberry! BEAATCH! WOWSER!",
@@ -24,7 +28,7 @@ let tempcomments = [
     },
 ]
 
-let tempPost = {
+let temppostREF = {
     user: "foobar97",
     title: "Joe Mama's Body",
     content: `Gibbons (/ˈɡɪbənz/) are apes in the family Hylobatidae (/ˌhaɪləˈbætɪdiː/). The family historically contained one genus, but now is split into four extant genera and 18 species. Gibbons live in subtropical and tropical rainforest from eastern Bangladesh to Northeast India to southern China and Indonesia (including the islands of Sumatra, Borneo, and Java).
@@ -39,10 +43,41 @@ let tempPost = {
 
 }
 
-const PostSection = ({user, title, content, flair, upvotes, postID, time, comments}) => {
+let tempLoggedUser = "Eggert"
+
+//FETCH FROM WITHIN POSTSECTION
+
+const PostSection = () => {
+    let { ticker } = useParams()
+    let { postID } = useParams()
+
+    //const post = fetch post
+    //const comments = fetch comments
+    const [tempcomments, setComments] = useState([])
+    const [temppost, setPost] = useState(null)
+
+    const [loadedcomments, load1] = useState(null)
+    const [loadedpost, load2] = useState(null)
+
+    useEffect(() => {
+        //MOVED fetching comments into comments
+    }, [tempcomments])
+
+    useEffect(() => {
+        //FETCH POST HERE BASED ON TICKER/POSTID
+        //FETCH COMMENTS HERE ONE TIME
+        setComments(tempcommentsREF)
+        setPost(temppostREF)
+        load2(true)
+    }, [])
+
+    if (!loadedpost)
+        return(<div/>)
+
     return(
         <div id="post-container">
-            <Post post={tempPost}/>
+            <Post post={temppost}/>
+            <Write comments={tempcomments} setComments={setComments} loggeduser={tempLoggedUser}/>
             <Comments comments={tempcomments}/>
         </div>
     )

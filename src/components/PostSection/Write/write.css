@@ -1,0 +1,53 @@
+#write-container {
+    display: flex;
+    border: 2px solid #cccccc;
+    background-color: #ffffff;
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    padding: 20px 20px;
+
+    flex-direction: column;
+    margin: 5px;
+    max-width: 1215px;
+    width: 1215px;
+    font-family: monospace;
+    border-radius: 6px;
+}
+
+/* &:focus {
+    outline: blue;
+    box-shadow: 0px 0px 2px #0e5aa5;
+} */
+
+#user{
+    color: #2c5777;
+    font-size: 15px;
+    display: inline;
+    font-weight: 1000;
+}
+
+#user2{
+    color: #2c4177;
+    font-size: 15px;
+    display: inline;
+    font-weight: 1000;
+}
+
+#textbox{
+    margin-top: 12px;
+    height: 150px;
+    padding: 10px 10px;
+    border-color: #cccccc;
+}
+
+
+#textbox:focus {
+    border-color: #777879;
+ }
+
+.submit {
+    margin-top: 10px;
+    font-family: monospace;
+    padding: 5px;
+    width: 100px;
+}
