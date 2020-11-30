@@ -3,12 +3,11 @@ import dayjs from "dayjs"
 import ApexCharts from "react-apexcharts"
 import './StockStyling.css'
 import '../Multibutton/Multibutton.css'
+import {apiKey} from '../../CONSTANTS'
 let utc = require('dayjs/plugin/utc')
 let timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)
 dayjs.extend(timezone)
-
-const apiKey = 'bv0ve6n48v6u4eacgpmg'
 
 function ChartComponent(props) {
     const [mdata, setmdata] = useState(null)
@@ -316,7 +315,7 @@ function ChartComponent(props) {
                     width={"1000px"}
                     height={"300px"}
                 />
-                <div class="multi-button">
+                <div className="multi-button">
                     <button onClick={dayUpdate}> 1 Day </button>
                     <button onClick={weekUpdate}> 5 Days </button>
                     <button onClick={monthUpdate}>  1 Month </button>

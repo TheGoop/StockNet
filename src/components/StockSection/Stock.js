@@ -11,6 +11,7 @@ import {
 import ChartComponent from './Chart'
 import dayjs from "dayjs"
 import './StockStyling.css'
+import {apiKey} from '../../CONSTANTS'
 
 let utc = require('dayjs/plugin/utc')
 let timezone = require('dayjs/plugin/timezone')
@@ -22,8 +23,6 @@ dayjs.extend(timezone)
 // const api_key = finnhub.ApiClient.instance.authentications['api_key'];
 // api_key.apiKey = 'bul520v48v6p6i26q6kg' // Replace this
 // const finnhubClient = new finnhub.DefaultApi()
-
-const apiKey = 'bv0ve6n48v6u4eacgpmg'
 
 //IDEA: have S&P 500 loaded in for common stocks when searching
 

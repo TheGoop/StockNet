@@ -8,8 +8,8 @@ import InfoSection from '../components/InfoSection';
 import { homeObjOne, homeObjTwo, homeObjThree, homeObjFour } from '../components/InfoSection/Data';
 import Footer from '../components/Footer';
 import PostSection from '../components/PostSection/index.js'
-
-import '../App.css';
+import SubmitPostLayout from '../components/WritePost/SubmitPost/SubmitPost';
+import EditPostLayout from '../components/WritePost/EditPost/EditPost';
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -54,4 +54,24 @@ const Post = () => {
     )
 }
 
-export {Home, Substock, Post}
+const SubmitPost = () => {
+    return (
+        <>
+        <SubstockNavbar/>
+        <SubmitPostLayout/>
+        <Footer />
+        </>
+    )
+}
+
+const EditPost = () => {
+    return (
+        <>
+        <SubstockNavbar/>
+        <EditPostLayout/>
+        <Footer />
+        </>
+    )
+}
+
+export {Home, Substock, Post, SubmitPost, EditPost}

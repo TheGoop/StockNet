@@ -38,6 +38,9 @@
     height: 150px;
     padding: 10px 10px;
     border-color: #cccccc;
+    max-width: 1170px;
+    min-width: 1170px;
+    border-radius: 6px;
 }
 
 

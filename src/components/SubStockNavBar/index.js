@@ -40,7 +40,7 @@ const SubstockNavbar = () => {
                         
                         value={input}
                         onChange={updateInput}
-                        onKeyPress={event => event.key === 'Enter' ? window.location.href = `/${input}` : null}
+                        onKeyPress={event => event.key === 'Enter' ? window.location.href = `/${input.toUpperCase()}` : null}
                     />
 
                     <NavButton>

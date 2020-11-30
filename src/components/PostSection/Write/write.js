@@ -11,6 +11,9 @@ const Write = ({ comments, setComments, loggeduser }) => {
         setInput(e.target.value)
     }
 
+    
+//NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+
     const handleSubmit = () => {
         if (commentInput !== '') {
             console.log(`Posted: ${commentInput}`)
@@ -22,6 +25,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
                 commentID: 'null'
             }
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
+            //COMMENTS
 
             setComments([newcomment, ...comments])
             setInput('')

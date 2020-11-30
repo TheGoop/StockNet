@@ -11,6 +11,7 @@ import {
 
 const StockSection = () => {
     const [hover, setHover] = useState(false);
+    const [postAmount, setPostAmount] = useState(0)
     let { ticker } = useParams()
 
     const Submit = () => {
@@ -18,7 +19,7 @@ const StockSection = () => {
     }
 
     const Load = () => {
-        //LOAD 20 more!!!
+        setPostAmount(postAmount + 1)
     }
     //Need Fetch data here, then pass over props down to individual messages
 
@@ -32,11 +33,11 @@ const StockSection = () => {
                 </div>
             
                 <PostSetup>
-                <div class="multi-button2">
+                <div className="multi-button2">
                     <button onClick={Submit}> Submit New Post </button>
                     <button onClick={Load}> Load More Posts </button>
                 </div>
-                <Posts/>
+                <Posts postAmount={postAmount}/>
                 </PostSetup>
 
                 {/*Fetch posts IN REACT STATE

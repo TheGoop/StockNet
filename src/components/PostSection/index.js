@@ -6,6 +6,7 @@ import Write from './Write/write.js'
 import {
     useParams
 } from "react-router-dom";
+import {PORT} from '../../CONSTANTS'
 
 let tempcommentsREF = [
     {user: 'cootneyiscoolerthanbrandon', 
@@ -60,12 +61,25 @@ const PostSection = () => {
     const [loadedpost, load2] = useState(null)
 
     useEffect(() => {
-        //MOVED fetching comments into comments
-    }, [tempcomments])
-
-    useEffect(() => {
         //FETCH POST HERE BASED ON TICKER/POSTID
         //FETCH COMMENTS HERE ONE TIME
+
+        fetch(`${PORT}/singlepost?postID=${postID}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setPost({
+                user: data.user,
+                title: data.title,
+                time: data.time,
+                content: data.content,
+                flair: data.flair,
+                upvotes: data.upvotes,
+                // ticker: data.ticker,
+            })
+            setComments(data.comments)
+            load2(true)
+        })
+        
         setComments(tempcommentsREF)
         setPost(temppostREF)
         load2(true)
