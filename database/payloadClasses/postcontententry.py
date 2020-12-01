@@ -1,16 +1,17 @@
 class PostContentEntry(object):
-    def __init__(self, userName, postTitle, time, message, flair, upvoteCount=0,comments=[]):
+    def __init__(self, userName, postTitle, time, message, flair, ticker, upvoteCount=0,comments=[]):
         self.userName = userName
         self.postTitle = postTitle
         self.time = time
         self.message = message
         self.flair = flair
+        self.ticker = ticker
         self.upvoteCount = upvoteCount
         self.comments = comments
 
     @staticmethod
     def from_dict(source):
-        postEntry = PostContentEntry(source['userName'], source['postTitle'],source['time'], source['message'], source['flair'])
+        postEntry = PostContentEntry(source['userName'], source['postTitle'],source['time'], source['message'], source['flair'], source['ticker'])
 
         if 'upvoteCount' in source:
             postEntry.upvoteCount = source['upvoteCount']
@@ -25,6 +26,7 @@ class PostContentEntry(object):
             'time': self.time,
             'message': self.message,
             'flair': self.flair,
+            'ticker': self.ticker,
         }
 
         if self.upvoteCount:
@@ -42,6 +44,7 @@ class PostContentEntry(object):
                 time={self.time}, \
                 message={self.message}, \
                 flair={self.flair}, \
+                ticker={self.ticker}, \
                 upvoteCount={self.upvoteCount}, \
                 comments={self.comments}\
             )'
