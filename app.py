@@ -3,11 +3,13 @@ from flask import request
 from flask import jsonify
 from flask import json
 from flask import Response
+from flask_cors import CORS
 
-from apis.backendApi import postAPI
+from apis.backendApi import postAPI, commentAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
+CORS(app)
 manager = DBClientManager()
 
 @app.route('/')
@@ -92,13 +94,13 @@ def createPost():
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
     # do something, eg. return json response
-    result = postAPI.create_post(db, body)
-    if result == 0:
-        return Response("{ 'Result': 'Created Post' }", status=200, mimetype='application/json')
-    elif result == 1:
-        return Response("{ 'Result': 'Error: Post ID already exists, did not create post' }", status=304, mimetype='application/json')
-    else:
+    returnPayloadTuple = postAPI.create_post(db, body)
+    if returnPayloadTuple[1] == 1:
+        return Response("{ 'Result': 'Error: Post ID is already stored' }", status=404, mimetype='application/json')
+    elif returnPayloadTuple[1] == 2:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+    else:
+        return jsonify(returnPayloadTuple[0])
 
 # # we deal with giving this comment an ID
 # @app.route('/comment', methods=['POST'])
@@ -129,6 +131,28 @@ def deletePost():
         return Response("{ 'Result': 'Removed Post' }", status=200, mimetype='application/json')
     elif result == 1:
         return Response("{ 'Result': 'Error: Could Not Find Tagged Post with given ID' }", status=400, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
+@app.route('/comment', methods=['POST'])
+def createComment():
+    db = manager.getDBConnection()
+    args = request.args
+    if not args:
+        return Response("{ 'Result': 'Error: No arguments given' }", status=400, mimetype='application/json')
+    if 'postID' not in args or len(args) > 1:
+        return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
+
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+
+    # do something, eg. return json response
+    result = commentAPI.create_comment(db,args,body)
+    if result == 0:
+        return Response("{ 'Result': 'Created Comment' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Error: Could Not Find Post with given ID' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 

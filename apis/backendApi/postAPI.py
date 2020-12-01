@@ -1,3 +1,4 @@
+from datetime import datetime,timezone
 import random
 
 from database.payloadClasses.postcontententry import PostContentEntry
@@ -20,6 +21,7 @@ def get_post(db,body):
     returnPayload['content'] = post.message
     returnPayload['flair'] = post.flair
     returnPayload['time'] = post.time
+    returnPayload['ticker'] = post.ticker
     returnPayload['upvotes'] = post.upvoteCount
     returnPayload['comments'] = []
     return (returnPayload,0)
@@ -42,6 +44,7 @@ def get_post_preview(db, body):
         returnPost['content'] = post.message[0:100] + "..."
         returnPost['postID'] = postID
         returnPost['time'] = post.time
+        returnPost['ticker'] = post.ticker
         returnPost['upvotes'] = post.upvoteCount
         returnPost['flair'] = post.flair
         returnPayload.append(returnPost)
@@ -72,23 +75,24 @@ def update_post(db, body,args):
 
 
 def create_post(db, body):
-    postEntry = PostContentEntry(body['user'],body['title'],body['time'],body['content'],body['flair'],body['upvotes'])
+    time = datetime.now(tz=timezone.utc).timestamp()
+    postEntry = PostContentEntry(body['user'],body['title'],time,body['content'],body['flair'],body['ticker'],body['upvotes'])
     postID = 0
     while True:
         postID = random.randint(0,1000000)
         if queryutils.validatePostID(db,postID):
             break
-    taggedEntry = TaggedPostEntry(postID,body['time'])
+    taggedEntry = TaggedPostEntry(postID,time)
 
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
     except KeyError:
-        return 1
+        return (None,1)
     except Exception:
-       return 2
+       return (None,2)
 
-    return 0
+    return (postID,0)
 
 
 def delete_post(db, body):

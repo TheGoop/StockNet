@@ -2,8 +2,8 @@ from database.payloadClasses.postcontententry import PostContentEntry
 
 
 def runTests():
-    entry1 = PostContentEntry("goop", "jello dealer", "3AM","Monday is Wednesday", "fluff",-4,["no", "u"])
-    entry2 = PostContentEntry("blizzardgale", "please, no johns","5AM", "I lost because I dont have a chair, I can't sit down", "salt")
+    entry1 = PostContentEntry("goop", "jello dealer", "3AM","Monday is Wednesday", "fluff","AAPL",-4,["no", "u"])
+    entry2 = PostContentEntry("blizzardgale", "please, no johns","5AM", "I lost because I dont have a chair, I can't sit down", "ALPH", "salt")
     print(entry1)
     print(entry2)
     dict1 = entry1.to_dict()
