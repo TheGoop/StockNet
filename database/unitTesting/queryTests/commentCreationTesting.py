@@ -7,7 +7,7 @@ from database.utils.dbclientmanager import DBClientManager
 
 def testCommentAddition(manager):
     db = manager.getDBConnection()
-    commentEntry = CommentEntry("Sam",time.time(),"I too commented on this post", 789)
+    commentEntry = CommentEntry("Ok",time.time(),"miao", 156)
     queryutils.addComment(db,254921,commentEntry)
 
 if __name__ == "__main__":
