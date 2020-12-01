@@ -3,11 +3,13 @@ from flask import request
 from flask import jsonify
 from flask import json
 from flask import Response
+from flask_cors import CORS
 
 from apis.backendApi import postAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
+CORS(app)
 manager = DBClientManager()
 
 @app.route('/')
