@@ -1,0 +1,70 @@
+
+#comment-preview-container {
+    display: flex;
+    border: 2px solid #cccccc;
+    background-color: #ffffff;
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    padding: 20px 20px;
+
+    flex-direction: row;
+    margin: 5px;
+    max-width: 1215px;
+    width: 1215px;
+    font-family: monospace;
+    border-radius: 6px;
+}
+
+#stats{
+    border: 5px solid #45a163;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 20px;
+    padding: 8px 8px;
+    font-size: 10px;
+    color: #45a163;
+    max-height: 60px;
+}
+
+#stats2{
+    border: 5px solid #a0473e;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 20px;
+    padding: 8px 8px;
+    font-size: 10px;
+    color: #a0473e;
+    max-height: 60px;
+}
+
+#summary{
+    display: flex;
+    flex-direction: column;
+}
+
+#bar{
+    display: flex;
+    flex-direction: row;
+}
+
+#user{
+    color: #2c5777;
+    font-size: 15px;
+    display: inline;
+    font-weight: 700;
+}
+
+#time{
+    color: #2c5777;
+    font-size: 14px;
+    display: inline;
+}
+
+#content{
+    /* margin-top: 20px; */
+    padding-top: 10px;
+    color: black;
+    font-size: 14px;
+}

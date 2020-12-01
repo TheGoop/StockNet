@@ -1,0 +1,23 @@
+
+#expanded-post-preview-container {
+    display: flex;
+    border: 2px solid #cccccc;
+    background-color: #ffffff;
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    padding: 20px 20px;
+
+    flex-direction: row;
+    margin: 15px;
+    margin-bottom: 45px;
+    max-width: 1215px;
+    width: 1215px;
+    font-family: monospace;
+    border-radius: 6px;
+}
+
+#expanded-post-preview-container:hover {
+    border-color: #cccccc;
+    border-radius: 6px;
+    cursor: auto;
+ }
