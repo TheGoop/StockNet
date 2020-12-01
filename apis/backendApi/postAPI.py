@@ -82,7 +82,7 @@ def create_post(db, body):
         postID = random.randint(0,1000000)
         if queryutils.validatePostID(db,postID):
             break
-    taggedEntry = TaggedPostEntry(postID,body['time'])
+    taggedEntry = TaggedPostEntry(postID,time)
 
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
