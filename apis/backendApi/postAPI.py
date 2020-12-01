@@ -20,6 +20,7 @@ def get_post(db,body):
     returnPayload['content'] = post.message
     returnPayload['flair'] = post.flair
     returnPayload['time'] = post.time
+    returnPayload['ticker'] = post.ticker
     returnPayload['upvotes'] = post.upvoteCount
     returnPayload['comments'] = []
     return (returnPayload,0)
@@ -42,6 +43,7 @@ def get_post_preview(db, body):
         returnPost['content'] = post.message[0:100] + "..."
         returnPost['postID'] = postID
         returnPost['time'] = post.time
+        returnPost['ticker'] = post.ticker
         returnPost['upvotes'] = post.upvoteCount
         returnPost['flair'] = post.flair
         returnPayload.append(returnPost)
