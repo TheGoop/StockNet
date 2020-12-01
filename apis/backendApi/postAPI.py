@@ -1,3 +1,4 @@
+from datetime import datetime,timezone
 import random
 
 from database.payloadClasses.postcontententry import PostContentEntry
@@ -74,7 +75,8 @@ def update_post(db, body,args):
 
 
 def create_post(db, body):
-    postEntry = PostContentEntry(body['user'],body['title'],body['time'],body['content'],body['flair'],body['ticker'],body['upvotes'])
+    time = datetime.now(tz=timezone.utc).timestamp()
+    postEntry = PostContentEntry(body['user'],body['title'],time,body['content'],body['flair'],body['ticker'],body['upvotes'])
     postID = 0
     while True:
         postID = random.randint(0,1000000)
