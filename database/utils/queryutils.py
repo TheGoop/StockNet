@@ -153,9 +153,25 @@ def addComment(db,postID, commentEntry):
     #document 'tag' format
     transaction = db.transaction()
     postRef = db.collection("Posts").document(postID)
-    # result = __transactionalPostTagStore(transaction,postRef,taggedPostEntry)
-    # if not result:
-    #     raise KeyError("Post ID attempting to be stored is already in the database", taggedPostEntry.postID)
+    result = __transactionalCommentStore(transaction,postRef,commentEntry)
+    if not result:
+        raise KeyError("Post with given ID does not exist in database", postID)
+
+@firestore.transactional
+def __transactionalCommentStore(transaction, postRef, commentEntry):
+    snapshot = postRef.get(transaction=transaction)
+    if snapshot.exists:
+        comments = []
+        snapshotdict = snapshot.to_dict()
+        if 'comments' in snapshotdict:
+            comments = snapshotdict['comments']
+        comments.insert(0,commentEntry.to_dict())
+        transaction.update(postRef, {
+            'comments': comments
+        })
+        return True
+    else:
+        return False
 
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
