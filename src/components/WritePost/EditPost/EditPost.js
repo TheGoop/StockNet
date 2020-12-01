@@ -35,7 +35,7 @@ const EditPostLayout = () => {
     useEffect(() => {
         async function editPost() {
             axios
-                .post(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
+                .put(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
                 .then(function (response) {
                     console.log(response.data);
                 })

@@ -12,6 +12,7 @@ const SubmitPostLayout = () => {
     const [flairInput, setFlairInput] = useState('')
 
     const [loadedBool, setBool] = useState(null)
+    const [submitbool, setsubmitbool] = useState(null)
     const [stockname, setstockname] = useState('')
 
     const [NEWPOST, setNewPost] = useState(null)
@@ -43,7 +44,7 @@ const SubmitPostLayout = () => {
               });
         }
 
-        if (NEWPOST !== null){
+        if (submitbool !== null){
             makePost()
         }
 
@@ -63,8 +64,10 @@ const SubmitPostLayout = () => {
                 flair: flairInput,
                 upvotes: 0,
                 comments: [],
-                // ticker: ticker.toUpperCase(),
+                ticker: ticker.toUpperCase(),
             })
+
+            setsubmitbool(true)
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
         }
     }

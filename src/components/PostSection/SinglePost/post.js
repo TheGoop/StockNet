@@ -15,16 +15,16 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
         stattext = "upvotes"
     }
 
-    const handleClick = () => {
-        window.location.href = `/${ticker}/${postID}`
-    }
+    // const handleClick = () => {
+    //     window.location.href = `/${ticker}/${postID}`
+    // }
 
     if (upvotes.toString().length > 3){
         upvotes = `${(upvotes / 1000).toFixed(1)}k`
     }
     
     return(
-        <div id="expanded-post-preview-container" onClick={handleClick}>
+        <div id="expanded-post-preview-container">
             <div id={statcolor}>
                 <h1>{`${upvotes}`}</h1>
                 <h3>{`${stattext}`}</h3>
