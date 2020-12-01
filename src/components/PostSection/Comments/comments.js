@@ -15,8 +15,8 @@ const Comments = ({comments}) => (
 
 // const Comment = ({comment: {user, time, content, upvotes, commentID}}) => {
 const Comment = ({comment: {user, content}}) => {
-    let { ticker } = useParams()
-    let { postID } = useParams()
+    // let { ticker } = useParams()
+    // let { postID } = useParams()
 
     let upvotes = 0
 

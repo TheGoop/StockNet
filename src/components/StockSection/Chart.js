@@ -13,7 +13,7 @@ function ChartComponent(props) {
     const [mdata, setmdata] = useState(null)
     const [moptions, setmoptions] = useState(null)
     const [timescale, setTimescale] = useState(1)
-    const [res, setRes] = useState(1)
+    const [res, setRes] = useState(5)
     const [loading, setloading] = useState(false)
     const [daydata, setdaydata] = useState(false)
     const [weekdata, setweekdata] = useState(false)
@@ -277,7 +277,7 @@ function ChartComponent(props) {
         if (!loading && timescale !== 1) {
             event.preventDefault()
             setTimescale(1)
-            setRes(1)
+            setRes(5)
             setloading(true)
         }
     }

@@ -18,8 +18,7 @@ const StockSection = () => {
     let history = useHistory()
 
     const Submit = () => {
-        // window.location.href = `/${ticker}/submit`
-        history.push(`/${ticker}/submit`)
+        history.push(`/${ticker.toUpperCase()}/submit`)
     }
 
     const Load = () => {

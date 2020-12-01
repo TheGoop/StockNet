@@ -4,6 +4,7 @@ import {
     useParams
 } from "react-router-dom";
 import {PORT, NORMALIZE_TIME} from "../../../CONSTANTS"
+import { useHistory } from 'react-router-dom'
 
 // let TEMPPOSTTEST = [
 //     {
@@ -118,6 +119,7 @@ const Posts = ({postAmount}) => {
 
 const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker}}) => {
     // let { ticker } = useParams()
+    let history = useHistory()
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -127,7 +129,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker
     }
 
     const handleClick = () => {
-        window.location.href = `/${ticker}/${postID}`
+        history.push(`/${ticker}/${postID}`)
     }
 
     if (upvotes.toString().length > 3){

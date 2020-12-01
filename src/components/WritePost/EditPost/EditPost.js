@@ -5,11 +5,13 @@ import {
 } from "react-router-dom";
 import axios from 'axios'
 import { apiKey, PORT } from '../../../CONSTANTS'
+import { useHistory } from 'react-router-dom'
 
 const EditPostLayout = () => {
     const [postInput, setPostInput] = useState('')
     const [titleInput, setTitleInput] = useState('')
     const [flairInput, setFlairInput] = useState('')
+    const [STOREDticker, setTicker] = useState('')
 
     const [loadedBool, setBool] = useState(null)
     const [stockname, setstockname] = useState('')
@@ -17,6 +19,8 @@ const EditPostLayout = () => {
     const [EDITPOST, setEditPost] = useState(null)
     const [editedBool, seteditedBool] = useState(null)
     const [clickedSubmit, setSubmit] = useState(false)
+
+    let history = useHistory()
 
     let { postID } = useParams()
     let { ticker } = useParams()
@@ -39,7 +43,7 @@ const EditPostLayout = () => {
                 .put(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
                 .then(function (response) {
                     console.log(response.data);
-                    window.location.href = `/${EDITPOST.ticker}/${postID}`
+                    history.push(`/${STOREDticker}/${postID}`)
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -70,18 +74,19 @@ const EditPostLayout = () => {
     }
 
     useEffect(() => {
+        fetch(`${PORT}/singlepost?postID=${postID}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setPostInput(data.content)
+            setTitleInput(data.title)
+            setFlairInput(data.flair)
+            setTicker(data.ticker)
+            setBool(true)
+        })
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
                 setstockname(data.name) // new
-            })
-        fetch(`${PORT}/singlepost?postID=${postID}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setPostInput(data.content)
-                setTitleInput(data.title)
-                setFlairInput(data.flair)
-                setBool(true)
             })
     }, [])
 

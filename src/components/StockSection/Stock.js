@@ -83,7 +83,7 @@ function Stock() {
                 </div>
             </div>
 
-            <ChartComponent tick={ticker} pc={stockData.pc} />
+            <ChartComponent tick={ticker.toUpperCase()} pc={stockData.pc} />
 
             {/* <Route exact path={`/${ticker}/:postID`} component={Post}/>  */}
 

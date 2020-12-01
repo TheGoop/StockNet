@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import axios from 'axios'
 import {apiKey, PORT} from '../../../CONSTANTS'
+import { useHistory } from 'react-router-dom'
 
 const SubmitPostLayout = () => {
     const [postInput, setPostInput] = useState('')
@@ -17,6 +18,8 @@ const SubmitPostLayout = () => {
 
     const [NEWPOST, setNewPost] = useState(null)
     const [clickedSubmit, setSubmit] = useState(false)
+
+    let history = useHistory()
 
     let { ticker } = useParams()
 
@@ -39,7 +42,7 @@ const SubmitPostLayout = () => {
               .post(`${PORT}/singlepost`, NEWPOST)
               .then(function(response) {
                 //console.log(response.data);
-                window.location.href = `/${NEWPOST.ticker}/${response.data}`
+                history.push(`/${NEWPOST.ticker.toUpperCase()}/${response.data}`)
               })
               .catch(function(error) {
                 console.log(error);
