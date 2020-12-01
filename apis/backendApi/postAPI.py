@@ -86,11 +86,11 @@ def create_post(db, body):
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
     except KeyError:
-        return 1
+        return (None,1)
     except Exception:
-       return 2
+       return (None,2)
 
-    return 0
+    return (postID,0)
 
 
 def delete_post(db, body):
