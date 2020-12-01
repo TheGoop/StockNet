@@ -19,7 +19,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
             console.log(`Posted: ${commentInput}`)
             let newcomment = {
                 user: loggeduser,
-                time: new Date(),
+                // time: new Date(),
                 content: commentInput,
                 upvotes: 0,
                 commentID: 'null'

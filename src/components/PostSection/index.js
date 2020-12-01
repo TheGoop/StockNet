@@ -49,7 +49,7 @@ let tempLoggedUser = "Eggert"
 //FETCH FROM WITHIN POSTSECTION
 
 const PostSection = () => {
-    let { ticker } = useParams()
+    // let { ticker } = useParams()
     let { postID } = useParams()
 
     //const post = fetch post
@@ -76,7 +76,7 @@ const PostSection = () => {
                 upvotes: data.upvotes,
                 // postID: 
                 time: data.time,
-                // ticker: data.ticker,
+                ticker: data.ticker,
             })
             setComments(data.comments)
             load2(true)

@@ -37,7 +37,8 @@ const SubmitPostLayout = () => {
             axios
               .post(`${PORT}/singlepost`, NEWPOST)
               .then(function(response) {
-                console.log(response.data);
+                //console.log(response.data);
+                window.location.href = `/${NEWPOST.ticker}/${response.data}`
               })
               .catch(function(error) {
                 console.log(error);
@@ -53,13 +54,13 @@ const SubmitPostLayout = () => {
     const handleSubmit = () => {
         if (postInput !== '' && titleInput !== '' && flairInput !== '') {
             // console.log(`Posted: ${postInput}`)
-            let normalized = new Date()
-            normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
+            // let normalized = new Date()
+            // normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
 
             setNewPost({
                 user: "Eggert",
                 title: titleInput,
-                time: normalized,
+                // time: 1,
                 content: postInput,
                 flair: flairInput,
                 upvotes: 0,

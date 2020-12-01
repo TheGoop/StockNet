@@ -116,8 +116,8 @@ const Posts = ({postAmount}) => {
     )
 }
 
-const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
-    let { ticker } = useParams()
+const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker}}) => {
+    // let { ticker } = useParams()
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -145,6 +145,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
             <summary>
                 <div id="titlebar">
                     <div id="flair">{`${flair}`}</div>
+                    <div id="stockflair">{`${ticker}`}</div>
                     <h1 id="title">{`${title}`}</h1>
                 </div>
 

@@ -4,9 +4,10 @@ import './post.css'
 import {
     useParams
 } from "react-router-dom";
+import {NORMALIZE_TIME} from '../../../CONSTANTS'
 
-const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
-    let { ticker } = useParams()
+const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker}}) => {
+    // let { ticker } = useParams()
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -33,6 +34,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
             <summary>
                 <div id="titlebar">
                     <div id="flair">{`${flair}`}</div>
+                    <div id="stockflair">{`${ticker}`}</div>
                     <h1 id="title">{`${title}`}</h1>
                 </div>
 
@@ -41,7 +43,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
                 <div id="lower">
                 </div>
 
-                <div id="timeuser">{`Posted by ${user} on ${time}.`}</div>
+                <div id="timeuser">{`Posted by ${user} on ${NORMALIZE_TIME(time)}.`}</div>
             </summary>
         </div>
     )
