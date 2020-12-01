@@ -58,7 +58,7 @@ export const NavLogo = styled(LinkR)`
     text-decoration: none;
 `;
 
-export const NavLogo2 = styled(LinkR)`
+export const NavLogo2 = styled.div`
     color: black;
     justify-self: flex-start;
     cursor: pointer;

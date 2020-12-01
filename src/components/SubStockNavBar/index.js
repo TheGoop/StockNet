@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { animateScroll as scroll } from 'react-scroll';
+import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+
 
 import {
     NavbarContainer,
@@ -23,24 +26,32 @@ const SubstockNavbar = () => {
     const updateInput = (e) => {
         setInput(e.target.value);
     }
+    let history = useHistory()
 
-    const handleClick = () => {
-        window.location.href = `/`;
+    const Submit = (e) => {
+        console.log(e.key == "Enter")
+        if (e.key === "Enter" && input !== ''){
+            history.push(`/${input.toUpperCase()}`)
+        }
+
     }
 
     return (
         <>
             <Nav2>
-                <NavLogo2 onClick={handleClick}
-                    >StockNet</NavLogo2>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <NavLogo2>
+                        StockNet
+                    </NavLogo2>
+                </Link>
                 <NavbarContainer>
 
                     <SearchBar
                         placeholder="Input Stock Ticker"
-                        
+
                         value={input}
                         onChange={updateInput}
-                        onKeyPress={event => event.key === 'Enter' ? window.location.href = `/${input.toUpperCase()}` : null}
+                        onKeyPress={Submit}
                     />
 
                     <NavButton>

@@ -16,6 +16,7 @@ const EditPostLayout = () => {
 
     const [EDITPOST, setEditPost] = useState(null)
     const [editedBool, seteditedBool] = useState(null)
+    const [clickedSubmit, setSubmit] = useState(false)
 
     let { postID } = useParams()
     let { ticker } = useParams()
@@ -38,13 +39,15 @@ const EditPostLayout = () => {
                 .put(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
                 .then(function (response) {
                     console.log(response.data);
+                    window.location.href = `/${EDITPOST.ticker}/${postID}`
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
 
-        if (editedBool !== null) {
+        if (editedBool !== null && clickedSubmit !== true) {
+            setSubmit(true)
             editPost()
         }
 

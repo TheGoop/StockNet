@@ -4,6 +4,7 @@ import { PageSetup, PostSetup } from './StockStyling'
 import './StockStyling.css'
 import '../Multibutton/Multibutton2.css'
 import Posts from './PostPreviews/posts'
+import { useHistory } from 'react-router-dom'
 
 import {
     useParams
@@ -14,8 +15,11 @@ const StockSection = () => {
     const [postAmount, setPostAmount] = useState(0)
     let { ticker } = useParams()
 
+    let history = useHistory()
+
     const Submit = () => {
-        window.location.href = `/${ticker}/submit`
+        // window.location.href = `/${ticker}/submit`
+        history.push(`/${ticker}/submit`)
     }
 
     const Load = () => {

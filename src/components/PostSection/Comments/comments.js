@@ -13,9 +13,12 @@ const Comments = ({comments}) => (
     </>
 )
 
-const Comment = ({comment: {user, time, content, upvotes, commentID}}) => {
+// const Comment = ({comment: {user, time, content, upvotes, commentID}}) => {
+const Comment = ({comment: {user, content}}) => {
     let { ticker } = useParams()
     let { postID } = useParams()
+
+    let upvotes = 0
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -38,7 +41,7 @@ const Comment = ({comment: {user, time, content, upvotes, commentID}}) => {
 
             <summary>
                 <div id="user">{`${user}`}</div>
-                <div id="time">{` - ${time}`}</div>
+                {/* <div id="time">{` - ${time}`}</div> */}
                 <div id="content">{`${content}`}</div>
             </summary>
         </div>

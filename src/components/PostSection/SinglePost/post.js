@@ -1,6 +1,7 @@
 
 import React from 'react'
 import './post.css'
+import {Link} from 'react-router-dom'
 import {
     useParams
 } from "react-router-dom";
@@ -16,10 +17,6 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker
         stattext = "upvotes"
     }
 
-    // const handleClick = () => {
-    //     window.location.href = `/${ticker}/${postID}`
-    // }
-
     if (upvotes.toString().length > 3){
         upvotes = `${(upvotes / 1000).toFixed(1)}k`
     }
@@ -34,7 +31,9 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker
             <summary>
                 <div id="titlebar">
                     <div id="flair">{`${flair}`}</div>
+                    <Link to={`/${ticker}`}>
                     <div id="stockflair">{`${ticker}`}</div>
+                    </Link>
                     <h1 id="title">{`${title}`}</h1>
                 </div>
 

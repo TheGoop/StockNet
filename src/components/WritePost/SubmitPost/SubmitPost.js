@@ -16,6 +16,7 @@ const SubmitPostLayout = () => {
     const [stockname, setstockname] = useState('')
 
     const [NEWPOST, setNewPost] = useState(null)
+    const [clickedSubmit, setSubmit] = useState(false)
 
     let { ticker } = useParams()
 
@@ -45,7 +46,8 @@ const SubmitPostLayout = () => {
               });
         }
 
-        if (submitbool !== null){
+        if (submitbool !== null && clickedSubmit !== true){ //Lock mechanism to prevent spam submit
+            setSubmit(true)
             makePost()
         }
 
