@@ -5,7 +5,7 @@ from flask import json
 from flask import Response
 from flask_cors import CORS
 
-from apis.backendApi import postAPI
+from apis.backendApi import postAPI, commentAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
@@ -127,6 +127,23 @@ def deletePost():
         return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
     # do something, eg. return json response
     result = postAPI.delete_post(db, body)
+    if result == 0:
+        return Response("{ 'Result': 'Removed Post' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Error: Could Not Find Tagged Post with given ID' }", status=400, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
+@app.route('/comment', methods=['POST'])
+def createComment():
+    db = manager.getDBConnection()
+    body = request.args
+    if not body:
+        return Response("{ 'Result': 'Error: No arguments given' }", status=400, mimetype='application/json')
+    if 'postID' not in body or len(body) > 1:
+        return Response("{ 'Result': 'Error: Bad args given' }", status=400, mimetype='application/json')
+    # do something, eg. return json response
+    result = commentAPI.create_comment(db,body)
     if result == 0:
         return Response("{ 'Result': 'Removed Post' }", status=200, mimetype='application/json')
     elif result == 1:

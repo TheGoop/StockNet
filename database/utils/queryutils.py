@@ -148,7 +148,14 @@ def removePost(db, tag, postID):
     deletePostUnderTag(db, tag, postID)
     deletePostEntry(db,postID)
 
-
+def addComment(db,postID, commentEntry):
+    postID = str(postID)
+    #document 'tag' format
+    transaction = db.transaction()
+    postRef = db.collection("Posts").document(postID)
+    # result = __transactionalPostTagStore(transaction,postRef,taggedPostEntry)
+    # if not result:
+    #     raise KeyError("Post ID attempting to be stored is already in the database", taggedPostEntry.postID)
 
 def storeAuthentication(db, username, authenticationEntry):
     db.collection('Authentication').document(username).set(authenticationEntry.to_dict())
