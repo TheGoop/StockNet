@@ -4,7 +4,7 @@ import {
     useParams
 } from "react-router-dom";
 import {PORT, NORMALIZE_TIME} from "../../../CONSTANTS"
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 // let TEMPPOSTTEST = [
 //     {
@@ -86,8 +86,11 @@ import { useHistory } from 'react-router-dom'
 
 const Posts = ({postAmount}) => {
     let { ticker } = useParams()
+    const location = useLocation()
+
     const [posts, setPosts] = useState(null)
     const [loadedpost, load2] = useState(null)
+    
 
     useEffect(() => {
         //FETCH POSTS HERE BASED ON TICKER HERE 
@@ -105,7 +108,11 @@ const Posts = ({postAmount}) => {
             setPosts(data)
             load2(true)
         })
-    }, [postAmount])
+        .catch(function (error) {
+            setPosts([])
+            load2(true)
+        });
+    }, [postAmount, ticker])
 
     if (!loadedpost)
         return(<div></div>)

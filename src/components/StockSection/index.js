@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Stock from './Stock'
 import { PageSetup, PostSetup } from './StockStyling'
 import './StockStyling.css'
 import '../Multibutton/Multibutton2.css'
 import Posts from './PostPreviews/posts'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import {
     useParams
@@ -13,8 +13,10 @@ import {
 const StockSection = () => {
     const [hover, setHover] = useState(false);
     const [postAmount, setPostAmount] = useState(0)
-    let { ticker } = useParams()
+    const [tickerState, setTicker] = useState('')
 
+    // const location = useLocation()
+    let {ticker} = useParams()
     let history = useHistory()
 
     const Submit = () => {
@@ -25,6 +27,11 @@ const StockSection = () => {
         setPostAmount(postAmount + 1)
     }
     //Need Fetch data here, then pass over props down to individual messages
+
+    // useEffect(() => {
+    //     setTicker(ticker)
+    //     console.log(location)
+    // }, [location])
 
     return (
         <div>

@@ -5,7 +5,8 @@ import {
     // Switch,
     Link,
     // Route,
-    useParams
+    useParams,
+    useLocation
 } from "react-router-dom";
 // import ApexCharts from 'apexcharts'
 import ChartComponent from './Chart'
@@ -31,6 +32,9 @@ function Stock() {
     const [stockData2, setStock2] = useState([])
     const [loadedBool, setBool] = useState(null)
     let { ticker } = useParams()
+    const location = useLocation()
+
+    const [validStock, setValid] = useState(false)
 
     //useEffect analagous to component did mount and component did update
 
@@ -45,17 +49,27 @@ function Stock() {
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
-                setStock2(data) // new
+                if (Object.keys(data).length === 0 && data.constructor === Object){
+                    setValid(false)
+                }
+                else{
+                    setStock2(data) // new
+                    setValid(true)
+                }
             })
+
         
         // finnhubClient.quote(`${ticker}`, (error, data, response) => {
         //     setStock(data)
         //     setBool(true)
         // })
-    }, [])
+    }, [location])
 
     if (!loadedBool) {
         return <div />
+    }
+    else if (!validStock){
+        return <div id="smalltext"><h1>Whoops! Looks like this is not a NYSE stock!</h1></div>
     }
     let cost;
     if (stockData.c - stockData.pc > 0) {
@@ -83,7 +97,7 @@ function Stock() {
                 </div>
             </div>
 
-            <ChartComponent tick={ticker.toUpperCase()} pc={stockData.pc} />
+            <ChartComponent valid={validStock} pc={stockData.pc} />
 
             {/* <Route exact path={`/${ticker}/:postID`} component={Post}/>  */}
 
