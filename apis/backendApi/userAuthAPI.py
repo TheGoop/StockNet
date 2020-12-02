@@ -8,15 +8,13 @@ def createUserAuth(db, body):
     
     else:
         # if either username or password not given in body
-        return 3
+        return 1
     
     userAuth = AuthenticationEntry(password)
     try:
         queryutils.storeAuthentication(db, username, userAuth)
-    except KeyError:
-        return 2
     except Exception:
-        return 4
+        return 2
     
     return 0
 
