@@ -6,6 +6,7 @@ import {
 import axios from 'axios'
 import { apiKey, PORT } from '../../../CONSTANTS'
 import { useHistory } from 'react-router-dom'
+import {Page404Element} from '../../../pages/index'
 
 const EditPostLayout = () => {
     const [postInput, setPostInput] = useState('')
@@ -108,8 +109,7 @@ const EditPostLayout = () => {
     //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
     if (error){
-        history.push(`/404`)
-        return(<div/>)
+        return(<Page404Element/>)
     }
     else if (!loadedBool) {
         return (<div></div>)

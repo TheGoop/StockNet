@@ -7,7 +7,8 @@ import {
     useParams
 } from "react-router-dom";
 import {PORT} from '../../CONSTANTS'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
+import {Page404Element} from '../../pages/index'
 
 // let tempcommentsREF = [
 //     {user: 'cootneyiscoolerthanbrandon', 
@@ -52,7 +53,6 @@ let tempLoggedUser = "Eggert"
 const PostSection = () => {
     // let { ticker } = useParams()
     let { postID } = useParams()
-    let history = useHistory()
 
     //const post = fetch post
     //const comments = fetch comments
@@ -94,8 +94,7 @@ const PostSection = () => {
     }, [])
 
     if (error){
-        history.push(`/404`)
-        return(<div/>)
+        return(<Page404Element/>)
     }
     else if (!loadedpost)
         return(<div/>)

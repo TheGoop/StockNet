@@ -12,7 +12,6 @@ function App() {
       <ScrollToTop/>
       <Switch>
         <Route path="/" component={Home} exact />
-        <Route path="/404" component={Page404} exact/>
         <Route path="/signin" component={SigninPage} exact />
         <Route path="/account" component={AccountPage} exact />
         <Route exact path='/:ticker' component={Substock} />
@@ -20,7 +19,7 @@ function App() {
         {/* Note it is critical that submit is above, otherwise will read submit as a postID */}
         <Route exact path='/:ticker/:postID' component={Post} />
         <Route exact path='/:ticker/:postID/edit' component={EditPost} />
-        <Redirect from="*" to="/404"/>
+        <Route path="*" component={Page404}/>
       </Switch>
     </Router>
   );
