@@ -21,3 +21,19 @@
     border-radius: 6px;
     cursor: auto;
  }
+
+ #loweredit {
+    color: #2c5777;
+    display: inline;
+    padding-right: 12px;
+ }
+
+ #loweredit:hover {
+    cursor: pointer;
+ }
+
+ #lowerbuttonbox {
+    padding-top: 10px;
+     display: flex;
+     flex-direction: row;
+ }

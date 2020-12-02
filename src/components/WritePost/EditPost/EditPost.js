@@ -5,17 +5,22 @@ import {
 } from "react-router-dom";
 import axios from 'axios'
 import { apiKey, PORT } from '../../../CONSTANTS'
+import { useHistory } from 'react-router-dom'
 
 const EditPostLayout = () => {
     const [postInput, setPostInput] = useState('')
     const [titleInput, setTitleInput] = useState('')
     const [flairInput, setFlairInput] = useState('')
+    const [STOREDticker, setTicker] = useState('')
 
     const [loadedBool, setBool] = useState(null)
     const [stockname, setstockname] = useState('')
 
     const [EDITPOST, setEditPost] = useState(null)
     const [editedBool, seteditedBool] = useState(null)
+    const [clickedSubmit, setSubmit] = useState(false)
+
+    let history = useHistory()
 
     let { postID } = useParams()
     let { ticker } = useParams()
@@ -38,13 +43,15 @@ const EditPostLayout = () => {
                 .put(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
                 .then(function (response) {
                     console.log(response.data);
+                    history.push(`/${STOREDticker}/${postID}`)
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
 
-        if (editedBool !== null) {
+        if (editedBool !== null && clickedSubmit !== true) {
+            setSubmit(true)
             editPost()
         }
 
@@ -67,23 +74,31 @@ const EditPostLayout = () => {
     }
 
     useEffect(() => {
+        let tempticker = ''
+        fetch(`${PORT}/singlepost?postID=${postID}`)
+        .then((response) => response.json())
+        .then((data) => {
+            setPostInput(data.content)
+            setTitleInput(data.title)
+            setFlairInput(data.flair)
+            setTicker(data.ticker)
+            setBool(true)
+            tempticker = data.ticker
+        })
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
                 setstockname(data.name) // new
             })
-        fetch(`${PORT}/singlepost?postID=${postID}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setPostInput(data.content)
-                setTitleInput(data.title)
-                setFlairInput(data.flair)
-                setBool(true)
-            })
+            .catch(function (error) {
+                setstockname(tempticker) // defaults to ticker if 429
+            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
-    //THIS IS ALL MENTIONS OF EGGERT ON THIS PAGE
+    //CROSS VERIFY WITH THE FETCH FROM DB FOR SAME USERNAME
+
+    //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
     if (!loadedBool) {
         return (<div></div>)

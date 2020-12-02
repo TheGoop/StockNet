@@ -49,7 +49,7 @@ let tempLoggedUser = "Eggert"
 //FETCH FROM WITHIN POSTSECTION
 
 const PostSection = () => {
-    let { ticker } = useParams()
+    // let { ticker } = useParams()
     let { postID } = useParams()
 
     //const post = fetch post
@@ -74,9 +74,9 @@ const PostSection = () => {
                 content: data.content,
                 flair: data.flair,
                 upvotes: data.upvotes,
-                // postID: 
+                postID: postID,
                 time: data.time,
-                // ticker: data.ticker,
+                ticker: data.ticker,
             })
             setComments(data.comments)
             load2(true)
@@ -88,7 +88,7 @@ const PostSection = () => {
 
     if (!loadedpost)
         return(<div/>)
-
+    // console.log(temppost)
     return(
         <div id="post-container">
             <Post post={temppost}/>

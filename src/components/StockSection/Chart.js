@@ -3,41 +3,63 @@ import dayjs from "dayjs"
 import ApexCharts from "react-apexcharts"
 import './StockStyling.css'
 import '../Multibutton/Multibutton.css'
-import {apiKey} from '../../CONSTANTS'
+import { apiKey } from '../../CONSTANTS'
+import { useParams } from 'react-router-dom'
 let utc = require('dayjs/plugin/utc')
 let timezone = require('dayjs/plugin/timezone')
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-function ChartComponent(props) {
+function ChartComponent({ pc }) {
     const [mdata, setmdata] = useState(null)
     const [moptions, setmoptions] = useState(null)
     const [timescale, setTimescale] = useState(1)
-    const [res, setRes] = useState(1)
+    const [res, setRes] = useState(5)
     const [loading, setloading] = useState(false)
     const [daydata, setdaydata] = useState(false)
     const [weekdata, setweekdata] = useState(false)
     const [monthdata, setmonthdata] = useState(false)
+    const [prevpc, setprevpc] = useState('')
 
-    let tick = props.tick
-    let pc = props.pc
+    let { ticker } = useParams()
+
     console.log(loading)
+
     useEffect(() => {
+        let TIMEDIFF = timescale//3600 * 24 * 7 
+        let RES = res
 
         async function fetchChart() {
-            if (daydata !== false && timescale === 1)
-                return daydata
 
-            if (weekdata !== false && timescale === 7)
-                return weekdata
-            if (monthdata !== false && timescale === 31)
-                return monthdata
+            if (pc !== prevpc) {
+                console.log('reset')
+                setTimescale(1)
+                setRes(5)
+
+                TIMEDIFF = 1
+                RES = 5
+
+                setloading(true)
+                setprevpc(pc)
+                setmonthdata(false)
+                setweekdata(false)
+                setdaydata(false)
+            }
+            else {
+                if (daydata !== false && timescale === 1)
+                    return daydata
+
+                if (weekdata !== false && timescale === 7)
+                    return weekdata
+                if (monthdata !== false && timescale === 31)
+                    return monthdata
+            }
 
             //UNIX time 2:30 PM to 9 PM for NYSE
             let date = new Date()
             let UTCDate = date - date.getTimezoneOffset() * 60000
 
-            console.log('OFFSET', Math.abs(date.getTimezoneOffset()) % 60)
+            //console.log('OFFSET', Math.abs(date.getTimezoneOffset()) % 60)
             // let OFFSET = (Math.abs(date.getTimezoneOffset()) % 100) * 60000
             // let tmp = UTCDate - OFFSET
             // console.log(tmp)
@@ -52,7 +74,7 @@ function ChartComponent(props) {
             }
 
             let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
-            console.log(open)
+            //console.log(open)
 
 
 
@@ -60,7 +82,6 @@ function ChartComponent(props) {
             //     console.log(data)
             // });
 
-            let TIMEDIFF = timescale//3600 * 24 * 7 
             //timescale is the amount of time we want to look back in (1 day or 7 days)
             let t1 = []
             let t2 = []
@@ -73,7 +94,7 @@ function ChartComponent(props) {
 
             let fullchart = []
             for (let i = 0; i < t1.length; i++) {
-                const response = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${tick}&resolution=${res}&from=${t1[i]}&to=${t2[i]}&token=${apiKey}`)
+                const response = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${ticker}&resolution=${RES}&from=${t1[i]}&to=${t2[i]}&token=${apiKey}`)
                 const chart = await response.json();
                 await fullchart.push(chart)
             }
@@ -82,14 +103,14 @@ function ChartComponent(props) {
                 fullchart = []
                 t1[0] -= (3600 * 24)
                 t2[0] += (3600 * 10.5) - (3600 * 24)
-                const response = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${tick}&resolution=${res}&from=${t1[0]}&to=${t2[0]}&token=${apiKey}`)
+                const response = await fetch(`https://finnhub.io/api/v1/stock/candle?symbol=${ticker}&resolution=${RES}&from=${t1[0]}&to=${t2[0]}&token=${apiKey}`)
                 const chart = await response.json();
                 await fullchart.push(chart)
             }
 
-            if (timescale === 1)
+            if (TIMEDIFF === 1)
                 setdaydata(fullchart)
-            else if (timescale === 7)
+            else if (TIMEDIFF === 7)
                 setweekdata(fullchart)
             else
                 setmonthdata(fullchart)
@@ -99,22 +120,21 @@ function ChartComponent(props) {
 
         // use a candle to create a graph
 
-
         fetchChart().then(data => {
             // const charts = [];
             // charts.push(<Chart data={chart} />);
             //console.log(data)
 
             let tmpdate = new Date()
-            console.log(tmpdate.getTimezoneOffset())
-            console.log('OFFSET', Math.abs(tmpdate.getTimezoneOffset()) % 60)
+            //console.log(tmpdate.getTimezoneOffset())
+            //console.log('OFFSET', Math.abs(tmpdate.getTimezoneOffset()) % 60)
             let OFFSET = Math.abs(tmpdate.getTimezoneOffset()) % 60;
 
             let timefix = 0;
-            if (OFFSET === 30){
+            if (OFFSET === 30) {
                 timefix = -60000 * 30;
             }
-            else if (OFFSET === 45){
+            else if (OFFSET === 45) {
                 timefix = 60000 * 15;
             }
 
@@ -153,7 +173,6 @@ function ChartComponent(props) {
             // let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
             // console.log(open, 'OPEN1')
             // //
-
             //console.log(newchart, 'NEWCHART')
             let options = {
                 chart: {
@@ -195,15 +214,15 @@ function ChartComponent(props) {
                             if (hr < 12 && !(hr >= 12 && min >= 0)) {
                                 str3 = " AM"
                             }
- 
-                            if(hr === 12){
+
+                            if (hr === 12) {
                                 str2 += ` 12:` + dayjs(val).format('mm') + str3
                             }
-                            else{
+                            else {
                                 str2 += ` ${hr % 12}:` + dayjs(val).format('mm') + str3
                             }
 
-                            if (timescale !== 1) {
+                            if (TIMEDIFF !== 1) {
                                 return dayjs(val).format('MMM DD')
                             }
                             else return str2
@@ -220,7 +239,7 @@ function ChartComponent(props) {
                 },
                 annotations: {
                     yaxis: [
-                        (timescale === 1 ?
+                        (TIMEDIFF === 1 ?
                             {
                                 y: pc,
                                 strokeDashArray: 2,
@@ -271,13 +290,13 @@ function ChartComponent(props) {
             setmdata(series);
             setloading(false)
         })
-    }, [timescale])
+    }, [timescale, pc])
 
     const dayUpdate = (event) => {
         if (!loading && timescale !== 1) {
             event.preventDefault()
             setTimescale(1)
-            setRes(1)
+            setRes(5)
             setloading(true)
         }
     }

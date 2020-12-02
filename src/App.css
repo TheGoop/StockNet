@@ -8,5 +8,7 @@
 
 #page-container {
     position: relative;
-    min-height:100vh;
+    min-height:75vh;
+    flex-direction: column;
+    background-color: #dae0e6;
 }

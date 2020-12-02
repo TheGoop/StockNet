@@ -10,6 +10,8 @@ import Footer from '../components/Footer';
 import PostSection from '../components/PostSection/index.js'
 import SubmitPostLayout from '../components/WritePost/SubmitPost/SubmitPost';
 import EditPostLayout from '../components/WritePost/EditPost/EditPost';
+import { FaTruckLoading } from 'react-icons/fa';
+import Stock from '../components/StockSection/Stock';
 
 const Home = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,10 +26,10 @@ const Home = () => {
             <Navbar toggle={toggle} />
             <div id="page-container">
                 <HeroSection />
-                <InfoSection {...homeObjOne}/>
-                <InfoSection {...homeObjTwo}/>
-                <InfoSection {...homeObjThree}/>
-                <InfoSection {...homeObjFour}/>
+                <InfoSection {...homeObjOne} />
+                <InfoSection {...homeObjTwo} />
+                <InfoSection {...homeObjThree} />
+                <InfoSection {...homeObjFour} />
                 <Footer />
             </div>
         </>
@@ -36,42 +38,50 @@ const Home = () => {
 
 const Substock = () => {
     return (
-        <>
-        <SubstockNavbar/>
-        <StockSection />
-        <Footer />
-        </>
+        <div>
+            <div id="page-container">
+                <SubstockNavbar />
+                <StockSection />
+            </div>
+            <Footer />
+        </div>
     )
 }
 
 const Post = () => {
     return (
-        <>
-        <SubstockNavbar/>
-        <PostSection/>
-        <Footer />
-        </>
+        <div>
+            <div id="page-container">
+                <SubstockNavbar />
+                <PostSection />
+            </div>
+            <Footer />
+        </div>
     )
 }
 
 const SubmitPost = () => {
     return (
-        <>
-        <SubstockNavbar/>
-        <SubmitPostLayout/>
-        <Footer />
-        </>
+        <div>
+            <div id="page-container">
+                <SubstockNavbar />
+                <SubmitPostLayout />
+            </div>
+            <Footer />
+        </div>
     )
 }
 
 const EditPost = () => {
     return (
-        <>
-        <SubstockNavbar/>
-        <EditPostLayout/>
-        <Footer />
-        </>
+        <div>
+            <div id="page-container">
+                <SubstockNavbar />
+                <EditPostLayout />
+            </div>
+            <Footer />
+        </div>
     )
 }
 
-export {Home, Substock, Post, SubmitPost, EditPost}
+export { Home, Substock, Post, SubmitPost, EditPost }

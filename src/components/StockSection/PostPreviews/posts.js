@@ -4,6 +4,7 @@ import {
     useParams
 } from "react-router-dom";
 import {PORT, NORMALIZE_TIME} from "../../../CONSTANTS"
+import { useHistory, useLocation } from 'react-router-dom'
 
 // let TEMPPOSTTEST = [
 //     {
@@ -85,8 +86,11 @@ import {PORT, NORMALIZE_TIME} from "../../../CONSTANTS"
 
 const Posts = ({postAmount}) => {
     let { ticker } = useParams()
+    const location = useLocation()
+
     const [posts, setPosts] = useState(null)
     const [loadedpost, load2] = useState(null)
+    
 
     useEffect(() => {
         //FETCH POSTS HERE BASED ON TICKER HERE 
@@ -104,7 +108,11 @@ const Posts = ({postAmount}) => {
             setPosts(data)
             load2(true)
         })
-    }, [postAmount])
+        .catch(function (error) {
+            setPosts([])
+            load2(true)
+        });
+    }, [postAmount, ticker])
 
     if (!loadedpost)
         return(<div></div>)
@@ -116,8 +124,9 @@ const Posts = ({postAmount}) => {
     )
 }
 
-const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
-    let { ticker } = useParams()
+const Post = ({post: {user, title, content, flair, upvotes, postID, time, ticker}}) => {
+    // let { ticker } = useParams()
+    let history = useHistory()
 
     let statcolor = "stats"
     let stattext = "upvotes"
@@ -127,7 +136,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
     }
 
     const handleClick = () => {
-        window.location.href = `/${ticker}/${postID}`
+        history.push(`/${ticker}/${postID}`)
     }
 
     if (upvotes.toString().length > 3){
@@ -145,6 +154,7 @@ const Post = ({post: {user, title, content, flair, upvotes, postID, time}}) => {
             <summary>
                 <div id="titlebar">
                     <div id="flair">{`${flair}`}</div>
+                    <div id="stockflair">{`${ticker}`}</div>
                     <h1 id="title">{`${title}`}</h1>
                 </div>
 

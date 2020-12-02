@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {FaBars} from 'react-icons/fa';
 import { animateScroll as scroll} from 'react-scroll';
+import { useHistory } from 'react-router-dom'
 
 import { 
     Nav,
@@ -18,6 +19,7 @@ import {
 const Navbar = ({ toggle }) => {
     const [input, setInput] = useState('');
     const [scrollNav, setScrollNav] = useState(false)
+    let history = useHistory()
 
     //ScrollNav makes the nav bar transparent when you scroll down
     const changeNav = ()=> {
@@ -31,6 +33,14 @@ const Navbar = ({ toggle }) => {
     const updateInput = (e) => {
         setInput(e.target.value);
      }
+
+    const Submit = (e) => {
+        console.log(e.key == "Enter")
+        if (e.key === "Enter" && input !== ''){
+            history.push(`/${input.toUpperCase()}`)
+        }
+
+    }
 
     useEffect(() => {
         window.addEventListener('scroll', changeNav)
@@ -77,7 +87,7 @@ const Navbar = ({ toggle }) => {
                     placeholder="Input Stock Ticker"
                     value={input} 
                     onChange={updateInput}
-                    onKeyPress={event => event.key === 'Enter' ? window.location.href = `/${input}` : null}
+                    onKeyPress={Submit}
                     />
 
                     <NavButton>

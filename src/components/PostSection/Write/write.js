@@ -3,32 +3,65 @@ import './write.css'
 import {
     useParams
 } from "react-router-dom";
+import axios from 'axios'
+import { PORT } from '../../../CONSTANTS'
 
 const Write = ({ comments, setComments, loggeduser }) => {
     const [commentInput, setInput] = useState('')
+    const [postingComment, setPosting] = useState(null)
+    const [clicked, setClicked] = useState(null)
+    
+    const [NEWCOMMENT, setNEWCOMMENT] = useState(null)
+    let { postID } = useParams()
 
     const handleChange = (e) => {
         setInput(e.target.value)
     }
 
-    
-//NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+    useEffect(() => {
+        async function makePost() {
+            setPosting(true)
+
+            axios
+                .post(`${PORT}/comment?postID=${postID}`, NEWCOMMENT)
+                .then(function (response) {
+                    console.log(response.data);
+                    setPosting(null)
+                    setClicked(null)
+                    setComments([NEWCOMMENT, ...comments])
+
+                    //makes it so page is dynamic, get back comment ID later
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        if (clicked !== null && postingComment !== true) {
+            makePost()
+        }
+    }, [clicked])
+
+
+    //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
+    //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
 
     const handleSubmit = () => {
         if (commentInput !== '') {
             console.log(`Posted: ${commentInput}`)
-            let newcomment = {
-                user: loggeduser,
-                time: new Date(),
-                content: commentInput,
-                upvotes: 0,
-                commentID: 'null'
-            }
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
             //COMMENTS
 
-            setComments([newcomment, ...comments])
+            let tempnewcomment = {
+                user: "Eggert",
+                // time: new Date(),
+                content: commentInput,
+                // upvotes: 0,
+                // commentID: 'null'
+            }
+            setNEWCOMMENT(tempnewcomment)
             setInput('')
+            setClicked(true)
         }
     }
 
@@ -39,7 +72,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
                 <div id="user2">{loggeduser}</div>
             </label>
             <textarea placeholder="What are your thoughts?" id="textbox" type="text" value={commentInput} onChange={handleChange} />
-            <button class="submit" onClick={handleSubmit}> Submit </button>
+            <button className="submit" onClick={handleSubmit}> Submit </button>
         </div>
     )
 }

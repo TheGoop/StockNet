@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import axios from 'axios'
 import {apiKey, PORT} from '../../../CONSTANTS'
+import { useHistory } from 'react-router-dom'
 
 const SubmitPostLayout = () => {
     const [postInput, setPostInput] = useState('')
@@ -16,6 +17,9 @@ const SubmitPostLayout = () => {
     const [stockname, setstockname] = useState('')
 
     const [NEWPOST, setNewPost] = useState(null)
+    const [clickedSubmit, setSubmit] = useState(false)
+
+    let history = useHistory()
 
     let { ticker } = useParams()
 
@@ -37,14 +41,16 @@ const SubmitPostLayout = () => {
             axios
               .post(`${PORT}/singlepost`, NEWPOST)
               .then(function(response) {
-                console.log(response.data);
+                //console.log(response.data);
+                history.push(`/${NEWPOST.ticker.toUpperCase()}/${response.data}`)
               })
               .catch(function(error) {
                 console.log(error);
               });
         }
 
-        if (submitbool !== null){
+        if (submitbool !== null && clickedSubmit !== true){ //Lock mechanism to prevent spam submit
+            setSubmit(true)
             makePost()
         }
 
@@ -53,13 +59,13 @@ const SubmitPostLayout = () => {
     const handleSubmit = () => {
         if (postInput !== '' && titleInput !== '' && flairInput !== '') {
             // console.log(`Posted: ${postInput}`)
-            let normalized = new Date()
-            normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
+            // let normalized = new Date()
+            // normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
 
             setNewPost({
                 user: "Eggert",
                 title: titleInput,
-                time: normalized,
+                // time: 1,
                 content: postInput,
                 flair: flairInput,
                 upvotes: 0,
@@ -79,10 +85,15 @@ const SubmitPostLayout = () => {
                 setstockname(data.name) // new
                 setBool(true)
             })
+            .catch(function (error) {
+                setstockname(ticker) // defaults to ticker if 429
+                setBool(true)
+            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
-    //THIS IS ALL MENTIONS OF EGGERT ON THIS PAGE
+
+    //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
     if (!loadedBool){
         return(<div></div>)
