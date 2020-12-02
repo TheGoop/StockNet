@@ -156,5 +156,17 @@ def createComment():
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
+@app.route('/login', methods=['GET'])
+def authenticateUser():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+    
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
