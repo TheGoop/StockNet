@@ -127,8 +127,9 @@ def is_valid_login(db, body):
         return 4
 
     #Return 0 to authenticate user,
-    if (authEntry.password == authEntry):
+    if (authEntry.password == password):
         return 0
     #return 1 if user given bad password
     else:
         return 1
+
