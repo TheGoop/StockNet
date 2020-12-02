@@ -97,24 +97,30 @@ const EditPost = () => {
     )
 }
 
+const Page404Element = () => {
+    return(
+    <PageSetup>
+    <Link to={`/AAPL`}>
+    <img src={vader} alt="Vader" />
+    </Link>
+    <h1 id="text404">The darkside of the search query is a pathway to many stocks</h1>
+    <h1 id="text404">some consider to be unnatural.</h1>
+    <br/>
+    <h1 id="text404">Click Vader to return to a real stock.</h1>
+    </PageSetup>
+    )
+}
+
 const Page404 = () => {
     return (
         <div>
             <div id="page-container">
                 <SubstockNavbar />
-                <PageSetup>
-                    <Link to={`/AAPL`}>
-                    <img src={vader} alt="Vader" />
-                    </Link>
-                    <h1 id="text404">The darkside of the search query is a pathway to many stocks</h1>
-                    <h1 id="text404">some consider to be unnatural.</h1>
-                    <br/>
-                    <h1 id="text404">Click Vader to return to a real stock.</h1>
-                </PageSetup>
+                <Page404Element />
             </div>
             <Footer />
         </div>
     )
 }
 
-export { Home, Substock, Post, SubmitPost, EditPost, Page404 }
+export { Home, Substock, Post, SubmitPost, EditPost, Page404, Page404Element }
