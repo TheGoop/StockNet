@@ -5,7 +5,7 @@ from flask import json
 from flask import Response
 from flask_cors import CORS
 
-from apis.backendApi import postAPI, commentAPI
+from apis.backendApi import postAPI, commentAPI, userAuthAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
@@ -164,7 +164,7 @@ def authenticateUser():
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
 
-    result = postAPI.is_valid_login(db, body)
+    result = userAuthAPI.is_valid_login(db, body)
     if result == 0:
         return Response("{ 'Result': 'User Authenticated' }", status=200, mimetype='application/json')
     elif result == 1:
