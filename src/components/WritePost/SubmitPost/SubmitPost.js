@@ -85,6 +85,10 @@ const SubmitPostLayout = () => {
                 setstockname(data.name) // new
                 setBool(true)
             })
+            .catch(function (error) {
+                setstockname(ticker) // defaults to ticker if 429
+                setBool(true)
+            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS

@@ -27,50 +27,36 @@ dayjs.extend(timezone)
 
 //IDEA: have S&P 500 loaded in for common stocks when searching
 
-function Stock() {
-    const [stockData, setStock] = useState([])
-    const [stockData2, setStock2] = useState([])
-    const [loadedBool, setBool] = useState(null)
+function Stock({stockData, stockData2}) {
+    // const [stockData, setStock] = useState([])
+    // const [stockData2, setStock2] = useState([])
+    // const [loadedBool, setBool] = useState(null)
     let { ticker } = useParams()
-    const location = useLocation()
+    // const location = useLocation()
 
-    const [validStock, setValid] = useState(false)
+    // const [validStock, setValid] = useState(false)
 
     //useEffect analagous to component did mount and component did update
 
-    useEffect(() => {
-        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
-            .then((response) => response.json())
-            .then((data) => {
-                setStock(data) // new
-                setBool(true)
-            })
-
-        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
-            .then((response) => response.json())
-            .then((data) => {
-                if (Object.keys(data).length === 0 && data.constructor === Object){
-                    setValid(false)
-                }
-                else{
-                    setStock2(data) // new
-                    setValid(true)
-                }
-            })
+    // useEffect(() => {
+    //     fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+    //         .then((response) => response.json())
+    //         .then((data) => {
+    //             setStock(data) // new
+    //             setBool(true)
+    //         })
 
         
-        // finnhubClient.quote(`${ticker}`, (error, data, response) => {
-        //     setStock(data)
-        //     setBool(true)
-        // })
-    }, [location])
+    //     // finnhubClient.quote(`${ticker}`, (error, data, response) => {
+    //     //     setStock(data)
+    //     //     setBool(true)
+    //     // })
+    // }, [location])
 
-    if (!loadedBool) {
-        return <div />
-    }
-    else if (!validStock){
-        return <div id="smalltext"><h1>Whoops! Looks like this is not a NYSE stock!</h1></div>
-    }
+
+    // if (!validStock){
+    //     return <div id="smalltext"><h1>Whoops! Looks like this is not a NYSE stock!</h1></div>
+    // }
     let cost;
     if (stockData.c - stockData.pc > 0) {
         cost = <h2 id="green">{`+${(stockData.c - stockData.pc).toFixed(2)} ${stockData2.currency} (${((stockData.c - stockData.pc)/stockData.pc*100).toFixed(2)}%)`}</h2>
@@ -79,6 +65,7 @@ function Stock() {
       }
 
     //put onclick button into chart component from here
+
     return (
         <>
             <div id="serif">
@@ -97,7 +84,7 @@ function Stock() {
                 </div>
             </div>
 
-            <ChartComponent valid={validStock} pc={stockData.pc} />
+            <ChartComponent pc={stockData.pc} />
 
             {/* <Route exact path={`/${ticker}/:postID`} component={Post}/>  */}
 

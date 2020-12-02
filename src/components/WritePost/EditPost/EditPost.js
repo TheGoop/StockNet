@@ -74,6 +74,7 @@ const EditPostLayout = () => {
     }
 
     useEffect(() => {
+        let tempticker = ''
         fetch(`${PORT}/singlepost?postID=${postID}`)
         .then((response) => response.json())
         .then((data) => {
@@ -82,12 +83,16 @@ const EditPostLayout = () => {
             setFlairInput(data.flair)
             setTicker(data.ticker)
             setBool(true)
+            tempticker = data.ticker
         })
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
                 setstockname(data.name) // new
             })
+            .catch(function (error) {
+                setstockname(tempticker) // defaults to ticker if 429
+            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
