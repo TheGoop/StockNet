@@ -3,6 +3,7 @@ import random
 
 from database.payloadClasses.postcontententry import PostContentEntry
 from database.payloadClasses.taggedpostentry import TaggedPostEntry
+from database.payloadClasses.authenticationEntry import AuthenticationEntry
 from database.utils import queryutils
 
 
