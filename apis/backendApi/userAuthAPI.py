@@ -8,7 +8,7 @@ def createUserAuth(db, body):
     
     else:
         # if either username or password not given in body
-        return 1
+        return 2
     
     result = None
     '''
@@ -18,11 +18,16 @@ def createUserAuth(db, body):
     '''
     try:
         result = queryutils.fetchAuthentication(db, username)
+    # when a keyerror is thrown, that means that the username
+    # was not found/reserved, so then the user can proceed 
+    # and use it
     except KeyError:
         pass
     except Exception:
         return 3
 
+    #if result is not None, then it contains something from db
+    #meaning that the username is reserved
     if result:
         return 1
     '''
@@ -33,7 +38,7 @@ def createUserAuth(db, body):
     try:
         queryutils.storeAuthentication(db, username, userAuth)
     except Exception:
-        return 3
+        return 4
     
     return 0
 

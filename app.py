@@ -172,7 +172,7 @@ def authenticateUser():
     elif result == 2:
         return Response("{ 'Result': 'No Authentication Data Found For User' }", status=400, mimetype='application/json')
     elif result == 3:
-        return Response("{ 'Result': 'Username/Password Not Given In REST Body' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
       
@@ -190,7 +190,11 @@ def createUserAuth():
     elif result == 1:
         return Response("{ 'Result': 'Username Already In Use' }", status=401, mimetype='application/json')
     elif result == 2:
-        return Response("{ 'Result': 'Username/Password Not Given In REST Body' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'Unknown Error With Checking Database For Given Username' }", status=400, mimetype='application/json')
+    elif result == 4:
+        return Response("{ 'Result': 'Unknown Error With Storing UserAuth Into Database' }", status=500, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
