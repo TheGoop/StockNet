@@ -5,7 +5,7 @@ from flask import json
 from flask import Response
 from flask_cors import CORS
 
-from apis.backendApi import postAPI, commentAPI
+from apis.backendApi import postAPI, commentAPI, userAuthAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
@@ -155,6 +155,49 @@ def createComment():
         return Response("{ 'Result': 'Error: Could Not Find Post with given ID' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
+@app.route('/login', methods=['GET'])
+def authenticateUser():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+
+    result = userAuthAPI.is_valid_login(db, body)
+    if result == 0:
+        return Response("{ 'Result': 'User Authenticated' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Incorrect Password' }", status=401, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'No Authentication Data Found For User' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+      
+@app.route('/createUserAuth', methods=['POST'])
+def createUserAuth():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+    
+    result = userAuthAPI.createUserAuth(db, body)
+    if result == 0:
+        return Response("{ 'Result': 'User Authentication Created' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Username Already In Use' }", status=401, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'Unknown Error With Checking Database For Given Username' }", status=400, mimetype='application/json')
+    elif result == 4:
+        return Response("{ 'Result': 'Unknown Error With Storing UserAuth Into Database' }", status=500, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
