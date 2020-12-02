@@ -10,11 +10,30 @@ def createUserAuth(db, body):
         # if either username or password not given in body
         return 1
     
+    result = None
+    '''
+    Before trying to create an account for the user, must 
+    see if their username is already taken to prevent
+    multiple users with same name.
+    '''
+    try:
+        result = queryutils.fetchAuthentication(db, username)
+    except KeyError:
+        pass
+    except Exception:
+        return 3
+
+    if result:
+        return 1
+    '''
+    Now proceed with creating an account with that username
+    and password
+    '''
     userAuth = AuthenticationEntry(password)
     try:
         queryutils.storeAuthentication(db, username, userAuth)
     except Exception:
-        return 2
+        return 3
     
     return 0
 

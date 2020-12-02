@@ -188,6 +188,8 @@ def createUserAuth():
     if result == 0:
         return Response("{ 'Result': 'User Authentication Created' }", status=200, mimetype='application/json')
     elif result == 1:
+        return Response("{ 'Result': 'Username Already In Use' }", status=401, mimetype='application/json')
+    elif result == 2:
         return Response("{ 'Result': 'Username/Password Not Given In REST Body' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
