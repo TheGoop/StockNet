@@ -163,10 +163,20 @@ def authenticateUser():
     body = request.json
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
-    
 
-
-
+    result = postAPI.is_valid_login(db, body)
+    if result == 0:
+        return Response("{ 'Result': 'User Authenticated' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Incorrect Password' }", status=200, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'No Authentication Data Found For User' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'Username/Password Not Given In REST Body' }", status=400, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+        
+        
 
 if __name__ == '__main__':
     app.run(debug=True)
