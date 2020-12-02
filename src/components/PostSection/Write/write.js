@@ -8,7 +8,6 @@ import { PORT } from '../../../CONSTANTS'
 
 const Write = ({ comments, setComments, loggeduser }) => {
     const [commentInput, setInput] = useState('')
-    const [postingComment, setPosting] = useState(null)
     const [clicked, setClicked] = useState(null)
     
     const [NEWCOMMENT, setNEWCOMMENT] = useState(null)
@@ -20,13 +19,11 @@ const Write = ({ comments, setComments, loggeduser }) => {
 
     useEffect(() => {
         async function makePost() {
-            setPosting(true)
 
             axios
                 .post(`${PORT}/comment?postID=${postID}`, NEWCOMMENT)
                 .then(function (response) {
                     console.log(response.data);
-                    setPosting(null)
                     setClicked(null)
                     setComments([NEWCOMMENT, ...comments])
 
@@ -37,13 +34,14 @@ const Write = ({ comments, setComments, loggeduser }) => {
                 });
         }
 
-        if (clicked !== null && postingComment !== true) {
+        if (clicked !== null) {
             makePost()
         }
     }, [clicked])
 
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
+    //THIS IS FOR POSTING COMMENTS
     //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
 
     const handleSubmit = () => {

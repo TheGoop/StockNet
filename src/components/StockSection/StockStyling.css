@@ -27,4 +27,9 @@
     color: red;
     line-height: 2;
   }
+
+  #text404 {
+    font-family: Courier, monospace;
+    font-size: 20px;
+  }
   
