@@ -1,6 +1,26 @@
 from database.payloadClasses.authenticationEntry import AuthenticationEntry
 from database.utils import queryutils
 
+def createUserAuth(db, body):
+    if 'username' in body and 'password' in body:
+        username = body['username']
+        password = body['password']
+    
+    else:
+        # if either username or password not given in body
+        return 3
+    
+    userAuth = AuthenticationEntry(password)
+    try:
+        queryutils.storeAuthentication(db, username, userAuth)
+    except KeyError:
+        return 2
+    except Exception:
+        return 4
+    
+    return 0
+
+
 def is_valid_login(db, body):
     if 'username' in body and 'password' in body:
         username = body['username']

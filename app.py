@@ -175,8 +175,15 @@ def authenticateUser():
         return Response("{ 'Result': 'Username/Password Not Given In REST Body' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
-        
-        
+      
+@app.route('/createUserAuth', methods=['POST'])
+def createUserAuth():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
