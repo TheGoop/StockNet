@@ -7,6 +7,7 @@ import {
     useParams
 } from "react-router-dom";
 import {PORT} from '../../CONSTANTS'
+import { useHistory } from 'react-router-dom'
 
 // let tempcommentsREF = [
 //     {user: 'cootneyiscoolerthanbrandon', 
@@ -51,6 +52,7 @@ let tempLoggedUser = "Eggert"
 const PostSection = () => {
     // let { ticker } = useParams()
     let { postID } = useParams()
+    let history = useHistory()
 
     //const post = fetch post
     //const comments = fetch comments
@@ -59,6 +61,8 @@ const PostSection = () => {
 
     const [loadedcomments, load1] = useState(null)
     const [loadedpost, load2] = useState(null)
+
+    const [error, seterror] = useState(null)
 
     useEffect(() => {
         //FETCH POST HERE BASED ON TICKER/POSTID
@@ -81,12 +85,19 @@ const PostSection = () => {
             setComments(data.comments)
             load2(true)
         })
+        .catch(function() {
+            seterror(true)
+        });
         
         // setComments(tempcommentsREF)
         // setPost(temppostREF)
     }, [])
 
-    if (!loadedpost)
+    if (error){
+        history.push(`/404`)
+        return(<div/>)
+    }
+    else if (!loadedpost)
         return(<div/>)
     // console.log(temppost)
     return(

@@ -18,7 +18,8 @@ const EditPostLayout = () => {
 
     const [EDITPOST, setEditPost] = useState(null)
     const [editedBool, seteditedBool] = useState(null)
-    const [clickedSubmit, setSubmit] = useState(false)
+
+    const [error, seterror] = useState(null)
 
     let history = useHistory()
 
@@ -50,12 +51,11 @@ const EditPostLayout = () => {
                 });
         }
 
-        if (editedBool !== null && clickedSubmit !== true) {
-            setSubmit(true)
+        if (editedBool !== null) {
             editPost()
         }
 
-    }, [EDITPOST]);
+    }, [editedBool]);
 
     const handleSubmit = () => {
         if (postInput !== '' && titleInput !== '' && flairInput !== '') {
@@ -85,22 +85,33 @@ const EditPostLayout = () => {
             setBool(true)
             tempticker = data.ticker
         })
+        .catch(function() {
+            seterror(true)
+        });
+
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
-                setstockname(data.name) // new
+                if (data.name === undefined){
+                    setstockname(ticker) //default
+                }
+                else{
+                    setstockname(data.name) // new
+                }
             })
-            .catch(function (error) {
-                setstockname(tempticker) // defaults to ticker if 429
-            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
-    //CROSS VERIFY WITH THE FETCH FROM DB FOR SAME USERNAME
+    //THIS IS FOR EDITING A POST
+    //CROSS VERIFY WITH THE FETCH FROM DB FOR SAME USER
 
     //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
-    if (!loadedBool) {
+    if (error){
+        history.push(`/404`)
+        return(<div/>)
+    }
+    else if (!loadedBool) {
         return (<div></div>)
     }
 

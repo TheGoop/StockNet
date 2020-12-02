@@ -17,7 +17,8 @@ const SubmitPostLayout = () => {
     const [stockname, setstockname] = useState('')
 
     const [NEWPOST, setNewPost] = useState(null)
-    const [clickedSubmit, setSubmit] = useState(false)
+
+    const [error, seterror] = useState(null)
 
     let history = useHistory()
 
@@ -49,12 +50,11 @@ const SubmitPostLayout = () => {
               });
         }
 
-        if (submitbool !== null && clickedSubmit !== true){ //Lock mechanism to prevent spam submit
-            setSubmit(true)
+        if (submitbool !== null){ //Lock mechanism to prevent spam submit
             makePost()
         }
 
-    },[NEWPOST]);
+    },[submitbool]);
 
     const handleSubmit = () => {
         if (postInput !== '' && titleInput !== '' && flairInput !== '') {
@@ -82,19 +82,28 @@ const SubmitPostLayout = () => {
         fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
-                setstockname(data.name) // new
+                if (data.name === undefined){
+                    setstockname(ticker) //default
+                }
+                else{
+                    setstockname(data.name) // new
+                }
                 setBool(true)
             })
-            .catch(function (error) {
-                setstockname(ticker) // defaults to ticker if 429
-                setBool(true)
-            });
+            // .catch(function() {
+            //     seterror(true)
+            // });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+    //THIS IS FOR SUBMITTING A POST
 
     //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
+    // if (error){
+    //     history.push(`/404`)
+    //     return(<div/>)
+    // }
     if (!loadedBool){
         return(<div></div>)
     }
