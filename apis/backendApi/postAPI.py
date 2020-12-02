@@ -119,7 +119,7 @@ def is_valid_login(db, body):
 
     try:
         authEntry = queryutils.fetchAuthentication(db, username)
-    #if the username is not found, will through KeyError
+    #if the username is not found, will throw KeyError
     except KeyError:
         return 2
     #Undefined Behavior
@@ -129,6 +129,6 @@ def is_valid_login(db, body):
     #Return 0 to authenticate user,
     if (authEntry.password == authEntry):
         return 0
-    #return 4 if user given bad password
+    #return 1 if user given bad password
     else:
         return 1
