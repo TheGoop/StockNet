@@ -71,7 +71,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
                 <div id="user2">{loggeduser}</div>
             </label>
             <textarea placeholder="What are your thoughts?" id="textbox" type="text" value={commentInput} onChange={handleChange} />
-            <button class="submit" onClick={handleSubmit}> Submit </button>
+            <button className="submit" onClick={handleSubmit}> Submit </button>
         </div>
     )
 }

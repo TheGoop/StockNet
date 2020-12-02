@@ -74,7 +74,7 @@ const PostSection = () => {
                 content: data.content,
                 flair: data.flair,
                 upvotes: data.upvotes,
-                // postID: 
+                postID: postID,
                 time: data.time,
                 ticker: data.ticker,
             })
@@ -88,7 +88,7 @@ const PostSection = () => {
 
     if (!loadedpost)
         return(<div/>)
-
+    // console.log(temppost)
     return(
         <div id="post-container">
             <Post post={temppost}/>

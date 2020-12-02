@@ -54,9 +54,6 @@ function Stock({stockData, stockData2}) {
     // }, [location])
 
 
-    // if (!validStock){
-    //     return <div id="smalltext"><h1>Whoops! Looks like this is not a NYSE stock!</h1></div>
-    // }
     let cost;
     if (stockData.c - stockData.pc > 0) {
         cost = <h2 id="green">{`+${(stockData.c - stockData.pc).toFixed(2)} ${stockData2.currency} (${((stockData.c - stockData.pc)/stockData.pc*100).toFixed(2)}%)`}</h2>

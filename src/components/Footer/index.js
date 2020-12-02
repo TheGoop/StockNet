@@ -1,10 +1,12 @@
 import React from 'react';
-import {animateScroll as scroll} from 'react-scroll';
-import {FooterContainer, FooterWrap, FooterLinksContainer,
-FooterLinksWrapper, FooterLinkItems,FooterLinkTitle,FooterLink,
-SocialMedia, SocialLogo, SocialMediaIcons, SocialMediaIconsLink,
-SocialMediaWrap, WebsiteRights} from './FooterElements';
-import {FaFacebook, FaInstagram, FaTwitter, FaLinkedin} from 'react-icons/fa';
+import { animateScroll as scroll } from 'react-scroll';
+import {
+    FooterContainer, FooterWrap, FooterLinksContainer,
+    FooterLinksWrapper, FooterLinkItems, FooterLinkTitle, FooterLink,
+    SocialMedia, SocialLogo, SocialMediaIcons, SocialMediaIconsLink,
+    SocialMediaWrap, WebsiteRights
+} from './FooterElements';
+import { FaFacebook, FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';
 
 const Footer = () => {
 
@@ -36,26 +38,27 @@ const Footer = () => {
                         All rights reserved.</WebsiteRights>
                         <SocialMediaIcons>
                             <SocialMediaIconsLink href='//www.facebook.com' target='_blank'
-                            aria-label='Facebook'>
+                                aria-label='Facebook'>
                                 <FaFacebook />
                             </SocialMediaIconsLink>
                             <SocialMediaIconsLink href='//www.instagram.com' target='_blank'
-                            aria-label='Instagram'>
+                                aria-label='Instagram'>
                                 <FaInstagram />
                             </SocialMediaIconsLink>
                             <SocialMediaIconsLink href='//www.twitter.com/' target='_blank'
-                            aria-label='Twitter'>
+                                aria-label='Twitter'>
                                 <FaTwitter />
                             </SocialMediaIconsLink>
                             <SocialMediaIconsLink href='//www.linkedin.com' target='_blank'
-                            aria-label='Linkedin'>
+                                aria-label='Linkedin'>
                                 <FaLinkedin />
                             </SocialMediaIconsLink>
                         </SocialMediaIcons>
                     </SocialMediaWrap>
                 </SocialMedia>
-            </FooterWrap>         
+            </FooterWrap>
         </FooterContainer>
+
     )
 }
 

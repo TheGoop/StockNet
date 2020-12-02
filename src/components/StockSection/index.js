@@ -19,6 +19,7 @@ const StockSection = () => {
     const [stockData, setStock] = useState([])
     const [validStock, setValid] = useState(false)
     const [stockData2, setStock2] = useState([])
+
     const [loadedBool, setBool] = useState(null)
 
     const location = useLocation()
@@ -35,24 +36,23 @@ const StockSection = () => {
     //Need Fetch data here, then pass over props down to individual messages
 
     useEffect(() => {
-
+        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (Object.keys(data).length === 0 && data.constructor === Object) {
+                setValid(false)
+            }
+            else {
+                setStock2(data) // new
+                setValid(true)
+            }
+        })
+        
         fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
                 setStock(data) // new
                 setBool(true)
-            })
-
-        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
-            .then((response) => response.json())
-            .then((data) => {
-                if (Object.keys(data).length === 0 && data.constructor === Object) {
-                    setValid(false)
-                }
-                else {
-                    setStock2(data) // new
-                    setValid(true)
-                }
             })
     }, [location])
 
