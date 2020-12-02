@@ -74,7 +74,9 @@ const Post = ({ post: { user, title, content, flair, upvotes, postID, time, tick
 
                 <div id="timeuser">{`Posted by ${user} on ${NORMALIZE_TIME(time)}.`}</div>
 
-                {/* CHECK HERE IF YOU HAVE USERNAME TO EDIT OR DELETE POST */}
+                {/* CHECK HERE IF YOU HAVE USERNAME TO EDIT OR DELETE POST 
+                THIS IS FOR THE LINK TO EDIT AND LINK TO DELETE
+                */}
                 <div id="lowerbuttonbox">
                     <Link to={`/${ticker}/${postID}/edit`} style={{ textDecoration: 'none' }}>
                         <div id="loweredit">

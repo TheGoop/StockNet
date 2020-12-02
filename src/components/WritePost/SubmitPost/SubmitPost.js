@@ -92,7 +92,8 @@ const SubmitPostLayout = () => {
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
-    //THIS IS ALL MENTIONS OF EGGERT ON THIS PAGE
+
+    //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
     if (!loadedBool){
         return(<div></div>)

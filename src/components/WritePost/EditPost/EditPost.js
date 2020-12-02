@@ -96,7 +96,9 @@ const EditPostLayout = () => {
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
-    //THIS IS ALL MENTIONS OF EGGERT ON THIS PAGE
+    //CROSS VERIFY WITH THE FETCH FROM DB FOR SAME USERNAME
+
+    //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
     if (!loadedBool) {
         return (<div></div>)

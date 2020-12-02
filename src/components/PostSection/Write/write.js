@@ -43,7 +43,8 @@ const Write = ({ comments, setComments, loggeduser }) => {
     }, [clicked])
 
 
-    //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+    //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
+    //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
 
     const handleSubmit = () => {
         if (commentInput !== '') {
