@@ -90,6 +90,9 @@ const SubmitPostLayout = () => {
                 }
                 setBool(true)
             })
+            .catch(function() {
+                setstockname(ticker) //default
+            });
             // .catch(function() {
             //     seterror(true)
             // });

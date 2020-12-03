@@ -100,6 +100,9 @@ const EditPostLayout = () => {
                     setstockname(data.name) // new
                 }
             })
+            .catch(function() {
+                setstockname(ticker) //default
+            });
     }, [])
 
     //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
