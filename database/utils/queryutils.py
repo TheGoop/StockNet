@@ -186,17 +186,16 @@ def fetchAuthentication(db,username):
 def removeAuthenticationEntry(db,username):
     db.collection('Authentication').document(username).delete()
 
-'''
-def storeUserProfile(db, userName, userProfileEntry):
-    db.collection('Users').document(userName).set(userProfileEntry.to_dict())
+def storeUserProfile(db, username, userProfileEntry):
+    username = str(username)
+    db.collection('Users').document(username).set(userProfileEntry.to_dict())
 
-def fetchUserProfile(db,userName):
-    profiledata = db.collection('Users').document(userName).get()
-    if profiledata.exists:
-        return UserProfileEntry.from_dict(profiledata.to_dict())
+def fetchUserProfile(db, username):
+    userProfile = db.collection('Users').document(username).get()
+    if userProfile.exist:
+        return UserProfileEntry.from_dict(userProfile.to_dict())
     else:
-        raise KeyError("No profile data found for user", userName)
-'''
+        raise KeyError("No user profile data found for user ", username)
 
 if __name__ == "__main__":
     from database.unitTesting.queryTests.queryTestRunner import runTests

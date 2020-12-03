@@ -23,7 +23,14 @@ def get_post(db,body):
     returnPayload['time'] = post.time
     returnPayload['ticker'] = post.ticker
     returnPayload['upvotes'] = post.upvoteCount
-    returnPayload['comments'] = []
+    returnPayload['comments'] = post.comments
+
+    for comment in returnPayload['comments']:
+        comment['content'] = comment['message']
+        comment['user'] = comment['userName']
+        del comment['message']
+        del comment['userName']
+
     return (returnPayload,0)
 
 def get_post_preview(db, body):

@@ -1,8 +1,9 @@
 class UserProfileEntry(object):
-    def __init__(self, joinDate, favStocks=[],posts=[]):
+    def __init__(self, joinDate, favStocks=[],posts=[], upvotes=dict()):
         self.joinDate = joinDate
         self.favStocks = favStocks
         self.posts = posts
+        self.upvotes = upvotes
 
     @staticmethod
     def from_dict(source):
@@ -11,6 +12,8 @@ class UserProfileEntry(object):
             userEntry.favStocks = source['favStocks']
         if 'posts' in source:
             userEntry.posts = source['posts']
+        if 'upvotes' in source:
+            userEntry.upvotes = source['upvotes']
         return userEntry
 
     def to_dict(self):
@@ -22,6 +25,8 @@ class UserProfileEntry(object):
             dest['favStocks'] = self.favStocks
         if self.posts:
             dest['posts'] = self.posts
+        if self.upvotes:
+            dest['upvotes'] = self.upvotes
 
         return dest
 
@@ -31,6 +36,7 @@ class UserProfileEntry(object):
                 joinDate={self.joinDate}, \
                 favStocks={self.favStocks}, \
                 posts={self.posts}\
+                upvotes={self.upvotes}\
             )'
         )
 

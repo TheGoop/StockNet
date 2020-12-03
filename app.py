@@ -148,10 +148,10 @@ def createComment():
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
 
     # do something, eg. return json response
-    result = commentAPI.create_comment(db,args,body)
-    if result == 0:
-        return Response("{ 'Result': 'Created Comment' }", status=200, mimetype='application/json')
-    elif result == 1:
+    returnPayloadTuple = commentAPI.create_comment(db,args,body)
+    if returnPayloadTuple[1] == 0:
+        return jsonify(returnPayloadTuple[0])
+    elif returnPayloadTuple[1] == 1:
         return Response("{ 'Result': 'Error: Could Not Find Post with given ID' }", status=400, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')

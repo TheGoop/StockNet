@@ -11,7 +11,11 @@ def create_comment(db, args, body):
     try:
         queryutils.addComment(db,postID,commentEntry)
     except KeyError:
-        return 1
+        return (None,1)
     except Exception:
-        return 2
-    return 0
+        return (None,2)
+    commentPayload = {}
+    commentPayload['time'] = commentEntry.time
+    commentPayload['content'] = commentEntry.message
+    commentPayload['user'] = commentEntry.userName
+    return (commentPayload,0)
