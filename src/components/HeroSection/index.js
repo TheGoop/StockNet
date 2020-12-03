@@ -7,6 +7,7 @@ import {
     HeroH1,
     HeroP,
     HeroButtonWrapper,
+    HeroButtonLink,
     ArrowForward,
     ArrowRight
 } from './HeroElements'
@@ -28,8 +29,7 @@ const HeroSection = () => {
                     into the stock market together!
                 </HeroP>
                 <HeroButtonWrapper>
-                    <Button 
-                    to="signup" 
+                    <Button                    
                     onMouseEnter={onHover}
                     onMouseLeave={onHover}
                     primary='true'
@@ -37,7 +37,8 @@ const HeroSection = () => {
                     smooth={true} duration={500} spy={true}
                             exact='true' offset={0}>
                         Get started {hover ? <ArrowForward /> : <ArrowRight
-                       />} 
+                       />}
+                       <HeroButtonLink to='/sign-up'>Sign up</HeroButtonLink> 
                     </Button>
                 </HeroButtonWrapper>
             </HeroContent>
