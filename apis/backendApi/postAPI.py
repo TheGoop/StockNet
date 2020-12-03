@@ -48,12 +48,15 @@ def get_post_preview(db, body):
         returnPost = {}
         returnPost['user'] = post.userName
         returnPost['title'] = post.postTitle
-        returnPost['content'] = post.message[0:100] + "..."
         returnPost['postID'] = postID
         returnPost['time'] = post.time
         returnPost['ticker'] = post.ticker
         returnPost['upvotes'] = post.upvoteCount
         returnPost['flair'] = post.flair
+        words = post.message.split(' ')
+        if len(words) > 100:
+            words.append("...")
+        returnPost['content'] = " ".join(words)
         returnPayload.append(returnPost)
     return (returnPayload,0)
 
