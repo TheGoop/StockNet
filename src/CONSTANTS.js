@@ -2,6 +2,7 @@ import dayjs from "dayjs"
 
 export const PORT = "http://127.0.0.1:5000"
 
+//Eventually need to hide apiKey?
 export const apiKey = "bv0ve6n48v6u4eacgpmg"
 
 export const NORMALIZE_TIME = (time) => {

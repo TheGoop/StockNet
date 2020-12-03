@@ -4,6 +4,7 @@ import './comments.css'
 import {
     useParams
 } from "react-router-dom";
+import {NORMALIZE_TIME} from '../../../CONSTANTS'
 
 //
 
@@ -14,7 +15,7 @@ const Comments = ({comments}) => (
 )
 
 // const Comment = ({comment: {user, time, content, upvotes, commentID}}) => {
-const Comment = ({comment: {user, content}}) => {
+const Comment = ({comment: {user, content, time}}) => {
     // let { ticker } = useParams()
     // let { postID } = useParams()
 
@@ -41,7 +42,7 @@ const Comment = ({comment: {user, content}}) => {
 
             <summary>
                 <div id="user">{`${user}`}</div>
-                {/* <div id="time">{` - ${time}`}</div> */}
+                <div id="time">{` - ${NORMALIZE_TIME(time)}`}</div>
                 <div id="content">{`${content}`}</div>
             </summary>
         </div>

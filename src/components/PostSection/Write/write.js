@@ -9,8 +9,8 @@ import { PORT } from '../../../CONSTANTS'
 const Write = ({ comments, setComments, loggeduser }) => {
     const [commentInput, setInput] = useState('')
     const [clicked, setClicked] = useState(null)
-    
-    const [NEWCOMMENT, setNEWCOMMENT] = useState(null)
+
+    // const [NEWCOMMENT, setNEWCOMMENT] = useState(null)
     let { postID } = useParams()
 
     const handleChange = (e) => {
@@ -20,13 +20,27 @@ const Write = ({ comments, setComments, loggeduser }) => {
     useEffect(() => {
         async function makePost() {
 
-            axios
-                .post(`${PORT}/comment?postID=${postID}`, NEWCOMMENT)
-                .then(function (response) {
-                    console.log(response.data);
-                    setClicked(null)
-                    setComments([NEWCOMMENT, ...comments])
+            //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
+            //THIS IS FOR POSTING COMMENTS
+            //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
 
+            let tempnewcomment = {
+                user: "Eggert",
+                content: commentInput,
+                // upvotes: 0,
+                // commentID: 'null'
+            }
+
+            axios
+                .post(`${PORT}/comment?postID=${postID}`, tempnewcomment)
+                .then(function (response) {
+                    //console.log(response.data);
+                    // console.log(response.data);
+                    tempnewcomment.time = response.data.time
+                    setClicked(null)
+
+                    setInput('')
+                    setComments([tempnewcomment, ...comments])
                     //makes it so page is dynamic, get back comment ID later
                 })
                 .catch(function (error) {
@@ -40,25 +54,12 @@ const Write = ({ comments, setComments, loggeduser }) => {
     }, [clicked])
 
 
-    //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
-    //THIS IS FOR POSTING COMMENTS
-    //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
-
     const handleSubmit = () => {
         if (commentInput !== '') {
             console.log(`Posted: ${commentInput}`)
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
             //COMMENTS
 
-            let tempnewcomment = {
-                user: "Eggert",
-                // time: new Date(),
-                content: commentInput,
-                // upvotes: 0,
-                // commentID: 'null'
-            }
-            setNEWCOMMENT(tempnewcomment)
-            setInput('')
             setClicked(true)
         }
     }
