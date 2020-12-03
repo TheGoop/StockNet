@@ -76,11 +76,14 @@ const StockSection = () => {
             <h1 id="text404">some consider to be unnatural.</h1>
             <br />
             <h1 id="text404">But if our stock API is down momentarily, you can still make a post.</h1>
+            
+            <PostSetup>
             <div className="multi-button2">
                 <button onClick={Submit}> Submit New Post </button>
                 <button onClick={Load}> Load More Posts </button>
             </div>
             <Posts postAmount={postAmount} />
+            </PostSetup>
         </PageSetup>)
     }
     else if (!loadedBool || !loadedBool2) {

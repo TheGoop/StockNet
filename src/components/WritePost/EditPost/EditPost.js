@@ -17,7 +17,6 @@ const EditPostLayout = () => {
     const [loadedBool, setBool] = useState(null)
     const [stockname, setstockname] = useState('')
 
-    const [EDITPOST, setEditPost] = useState(null)
     const [editedBool, seteditedBool] = useState(null)
 
     const [error, seterror] = useState(null)
@@ -40,6 +39,12 @@ const EditPostLayout = () => {
     }
 
     useEffect(() => {
+        let EDITPOST = {
+            title: titleInput,
+            content: postInput,
+            flair: flairInput,
+        }
+
         async function editPost() {
             axios
                 .put(`${PORT}/singlepost?postID=${postID}`, EDITPOST)
@@ -65,11 +70,6 @@ const EditPostLayout = () => {
             normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
 
             seteditedBool(true)
-            setEditPost({
-                title: titleInput,
-                content: postInput,
-                flair: flairInput,
-            })
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
         }
     }
@@ -105,7 +105,7 @@ const EditPostLayout = () => {
             });
     }, [])
 
-    //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+    //NEED TO CHECK HERE IF YOU HAVE USERNAME
     //THIS IS FOR EDITING A POST
     //CROSS VERIFY WITH THE FETCH FROM DB FOR SAME USER
 

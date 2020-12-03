@@ -16,10 +16,6 @@ const SubmitPostLayout = () => {
     const [submitbool, setsubmitbool] = useState(null)
     const [stockname, setstockname] = useState('')
 
-    const [NEWPOST, setNewPost] = useState(null)
-
-    const [error, seterror] = useState(null)
-
     let history = useHistory()
 
     let { ticker } = useParams()
@@ -37,7 +33,19 @@ const SubmitPostLayout = () => {
     }
 
     useEffect(() => {
-        console.log(NEWPOST)
+        // console.log(NEWPOST)
+        
+        //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
+        let NEWPOST = {
+            user: "Eggert",
+            title: titleInput,
+            content: postInput,
+            flair: flairInput,
+            upvotes: 0,
+            comments: [],
+            ticker: ticker.toUpperCase(),
+        }
+
         async function makePost() {
             axios
               .post(`${PORT}/singlepost`, NEWPOST)
@@ -62,17 +70,6 @@ const SubmitPostLayout = () => {
             // let normalized = new Date()
             // normalized = normalized - normalized.getTimezoneOffset() * 60000 //later do + normalized.getTimezoneOffset() * 60000 to get back
 
-            setNewPost({
-                user: "Eggert",
-                title: titleInput,
-                // time: 1,
-                content: postInput,
-                flair: flairInput,
-                upvotes: 0,
-                comments: [],
-                ticker: ticker.toUpperCase(),
-            })
-
             setsubmitbool(true)
             //POST TO DB THEN GET BACK THE ID OPTIMAL WAY
         }
@@ -92,6 +89,7 @@ const SubmitPostLayout = () => {
             })
             .catch(function() {
                 setstockname(ticker) //default
+                setBool(true)
             });
             // .catch(function() {
             //     seterror(true)
@@ -103,7 +101,7 @@ const SubmitPostLayout = () => {
 
     //FIX ALL MENTIONS OF EGGERT ON THIS PAGE
 
-    // if (error){
+    // if (error){ No error since you can submit even when API is down
     //     history.push(`/404`)
     //     return(<div/>)
     // }
