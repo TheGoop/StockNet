@@ -205,7 +205,7 @@ def upvotePost():
     body = request.json
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
-
+    
     
 
 
