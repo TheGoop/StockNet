@@ -14,6 +14,8 @@ def createUserProfile(db, body):
         userProfile = queryutils.fetchUserProfile(db, username)
     #if the user profile is not found, this is good
     except KeyError:
+        #at some point, should use a validate call 
+        # instead of testing keyerror
         pass
     except Exception:
         return 3

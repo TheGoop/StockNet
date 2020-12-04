@@ -87,6 +87,7 @@ def create_post(db, body):
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
+        #insert postID in user profile via queryUtils
     except KeyError:
         return (None,1)
     except Exception:
@@ -106,3 +107,16 @@ def delete_post(db, body):
         return 2
 
     return 0
+
+def upvotePost(db, body, args):
+    if "postID" in args and "upvote" in args:
+        postID = args["postID"]
+        upvote = args["upvote"]
+        try:
+            upvote = int(upvote)
+        except:
+            return 2
+    else:
+        return 3
+
+    
