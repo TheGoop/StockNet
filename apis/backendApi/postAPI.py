@@ -115,8 +115,25 @@ def upvotePost(db, body, args):
         try:
             upvote = int(upvote)
         except:
-            return 2
+            return 1
     else:
-        return 3
+        return 2
 
+    try:
+        postEntry = queryutils.readPostbyID(db, postID)
+    except KeyError:
+        return 3
+    except Exception:
+        return 4
+
+    updateDict = dict()
+    updateDict["upvoteCount"] = postEntry.upvoteCount + upvote
+    try:
+        queryutils.updatePost(db, postID, updateDict)
+    except KeyError:
+        return 5
+    except Exception:
+        return 6
+    
+    return 0
     

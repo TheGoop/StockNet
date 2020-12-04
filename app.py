@@ -206,9 +206,24 @@ def upvotePost():
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
     
-    
-
-
+    result = postAPI.upvotePost(db, body, args)
+    if result == 0:
+        return Response("{ 'Result': 'Post Upvotes Updated' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'Invalid upvote Provided In Args' }", status=400, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'postID/upvote Not Given In Args' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'Invalid postID Provided In Args Cannot Read From DB' }", status=400, mimetype='application/json')
+    elif result == 4:
+        return Response("{ 'Result': 'Unknown Error With Reading DB' }", status=500, mimetype='application/json')
+    elif result == 5:
+        return Response("{ 'Result': 'Invalid postID Provided In Args Cannot Update To DB' }", status=500, mimetype='application/json')
+    elif result == 6:
+        return Response("{ 'Result': 'Unknown Error With Updating DB' }", status=500, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+        
 if __name__ == '__main__':
     app.run(debug=True)
 
