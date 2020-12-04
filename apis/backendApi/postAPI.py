@@ -84,10 +84,17 @@ def create_post(db, body):
             break
     taggedEntry = TaggedPostEntry(postID,time)
 
+    #NEED USERNAME
+    #userProfile = fetchUserProfile(db, username)
+    #userProfile["posts"].append(postID)
+    #updateDict = dict()
+    #updateDict["posts"] = userProfile["posts"]
+
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
         #insert postID in user profile via queryUtils
+        #use queryutils.updateUserProfile(updateDict)
     except KeyError:
         return (None,1)
     except Exception:
@@ -119,6 +126,17 @@ def upvotePost(db, body, args):
     else:
         return 2
 
+    #ADD postID TO USERPROFILES DICT OF UPVOTED POSTS
+    if upvote > 0:
+        pass
+    #REMOVE postID FROM USERPROFILES LIST OF UPVOTED POSTS
+    else:
+        pass
+
+
+
+
+    #UPDATE THE POST UPVOTE COUNT 
     try:
         postEntry = queryutils.readPostbyID(db, postID)
     except KeyError:
@@ -136,4 +154,6 @@ def upvotePost(db, body, args):
         return 6
     
     return 0
+
+
     

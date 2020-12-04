@@ -204,7 +204,7 @@ def upvotePost():
     args = request.args
     body = request.json
     if not args:
-        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'Error: No JSON Args given' }", status=400, mimetype='application/json')
     
     result = postAPI.upvotePost(db, body, args)
     if result == 0:
@@ -223,6 +223,10 @@ def upvotePost():
         return Response("{ 'Result': 'Unknown Error With Updating DB' }", status=500, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
