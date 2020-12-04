@@ -99,6 +99,16 @@ def createPost():
         return Response("{ 'Result': 'Error: Post ID is already stored' }", status=404, mimetype='application/json')
     elif returnPayloadTuple[1] == 2:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+    elif returnPayloadTuple[1] == 3:
+        return Response("{ 'Result': 'Username Not Provided' }", status=400, mimetype='application/json')
+    elif returnPayloadTuple[1] == 4:
+        return Response("{ 'Result': 'Username Not Found' }", status=500, mimetype='application/json')
+    elif returnPayloadTuple[1] == 5:
+        return Response("{ 'Result': 'Unknown Error With Fetching UserProfile' }", status=500, mimetype='application/json')
+    elif returnPayloadTuple[1] == 6:
+        return Response("{ 'Result': 'Username Not Found When Updating' }", status=500, mimetype='application/json')
+    elif returnPayloadTuple[1] == 7:
+        return Response("{ 'Result': 'Unknown Error With Updating UserProfile' }", status=500, mimetype='application/json')
     else:
         return jsonify(returnPayloadTuple[0])
 

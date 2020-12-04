@@ -94,17 +94,31 @@ def create_post(db, body):
             break
     taggedEntry = TaggedPostEntry(postID,time)
 
-    #NEED USERNAME
-    #userProfile = fetchUserProfile(db, username)
-    #userProfile["posts"].append(postID)
-    #updateDict = dict()
-    #updateDict["posts"] = userProfile["posts"]
+    if "username" in body:
+        username = body["username"]
+    else:
+        return (None, 3)
+    
+    try:
+        userProfile = queryutils.fetchUserProfile(db, username)
+    except KeyError:
+        return (None, 4)
+    except Exception:
+        return (None, 5)
+    
+    userProfile["posts"].append(postID)
+    updateDict = dict()
+    updateDict["posts"] = userProfile["posts"]
 
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
-        #insert postID in user profile via queryUtils
-        #use queryutils.updateUserProfile(updateDict)
+        try:
+            queryutils.updateUserProfile(updateDict)
+        except KeyError:
+            return (None, 6)
+        except Exception:
+            return (None, 7)
     except KeyError:
         return (None,1)
     except Exception:
