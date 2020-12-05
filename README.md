@@ -9,13 +9,11 @@
 
 ###   - Download tar.gz the desired release on Github into the working directory
 
-###   - Take Firebase key and store at /path/to/key
-
 ###   - Open bash terminal and navigate to working directory containing tar.gz
 
 ###   - Enter the following commands into the terminal:
 
-`tar -xzvf StockNet-0.1.tar.gz`
+`tar -xzvf StockNet-X.X.tar.gz`
 
 `cd StockNet-X.X`
 
