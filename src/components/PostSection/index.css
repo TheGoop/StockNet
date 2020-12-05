@@ -1,0 +1,11 @@
+#post-container{
+    background: #dae0e6;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 30px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    /* min-height: 100vh; */
+    
+}
