@@ -7,13 +7,13 @@
 
 ## MacOS Instructions
 
-###-  Download tar.gz the desired release on Github into the working directory
+###   - Download tar.gz the desired release on Github into the working directory
 
-###- Take Firebase key and store at /path/to/key
+###   - Take Firebase key and store at /path/to/key
 
-###- Open bash terminal and navigate to working directory containing tar.gz
+###   - Open bash terminal and navigate to working directory containing tar.gz
 
-###- Enter the following commands into the terminal:
+###   - Enter the following commands into the terminal:
 
 `tar -xzvf StockNet-0.1.tar.gz`
 `cd StockNet-X.X`
@@ -26,11 +26,11 @@
 `npm i`
 `python ./app.py`
 
-###- Without closing the current bash terminal, open another tab/window in bash terminal
+###   - Without closing the current bash terminal, open another tab/window in bash terminal
 
-###- *Verify that the current working direction is StockNet-X.X*
+###   - *Verify that the current working direction is StockNet-X.X*
 
-###- Run the following:
+###   - Run the following:
 
 `npm start`
 
