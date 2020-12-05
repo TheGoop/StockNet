@@ -16,11 +16,10 @@ export const SignIn = () => {
                             <FormLabel htmlFor='for'>Password</FormLabel>
                             <FormInput type='password' required />
                             <FormButton>
-                                <FormButtonLink to='/account'>
+                                <FormButtonLink to='/'>
                                 Continue
                                 </FormButtonLink>
                             </FormButton>
-                            <Text>Forgot password</Text>
                         </Form>
                     </FormContent>
                 </FormWrap>
