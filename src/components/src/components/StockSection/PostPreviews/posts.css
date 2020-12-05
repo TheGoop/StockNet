@@ -1,0 +1,104 @@
+
+#post-preview-container {
+    display: flex;
+    border: 2px solid #cccccc;
+    background-color: #ffffff;
+    /* padding-top: 15px;
+    padding-bottom: 15px; */
+    padding: 20px 20px;
+
+    flex-direction: row;
+    margin: 15px;
+    max-width: 1215px;
+    width: 1215px;
+    font-family: monospace;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+#post-preview-container:hover {
+    border-color: #777879;
+    border-radius: 6px;
+    cursor: hand;
+ }
+
+#stats{
+    border: 5px solid #45a163;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 20px;
+    padding: 8px 8px;
+    font-size: 10px;
+    color: #45a163;
+    max-height: 60px;
+}
+
+#stats2{
+    border: 5px solid #a0473e;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 20px;
+    padding: 8px 8px;
+    font-size: 10px;
+    color: #a0473e;
+    max-height: 60px;
+}
+
+#summary{
+    display: flex;
+    flex-direction: column;
+}
+
+#titlebar{
+    display: flex;
+}
+
+#title{
+    color: #2c5777;
+    font-size: 18px;
+}
+
+#content{
+    /* margin-top: 20px; */
+    padding-top: 10px;
+    color: black;
+    font-size: 14px;
+}
+
+#lower{
+    padding-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+}
+
+#flair{
+    float: left;
+    background-color: #e1ecf4;
+    color: #4c8dc6;
+    border: 2px solid #4c8dc6;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 10px;
+    padding: 3px 5px;
+}
+
+#stockflair{
+    float: left;
+    background-color: #f4e1e1;
+    color: #c64c4c;
+    border: 2px solid #c64c4c;
+    border-width: 1px;
+    border-radius: 4px;
+    text-align: center;
+    margin-right: 10px;
+    padding: 3px 5px;
+}
+
+#timeuser{
+    padding-top: 10px;
+    color: rgb(136, 152, 172);
+}
