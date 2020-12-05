@@ -16,15 +16,21 @@
 ###   - Enter the following commands into the terminal:
 
 `tar -xzvf StockNet-0.1.tar.gz`
+
 `cd StockNet-X.X`
+
 `python -m venv env`
+
 `echo “export GOOGLE_APPLICATION_CREDENTIALS=’./keys/stocknet-4a790-firebase-adminsdk-7kocx-f12acbcbc0.json’” >> env/bin/activate`
 
-
 `source env/bin/activate`
+
 `pip install -r requirements.txt`
+
 `npm i`
+
 `python ./app.py`
+
 
 ###   - Without closing the current bash terminal, open another tab/window in bash terminal
 
