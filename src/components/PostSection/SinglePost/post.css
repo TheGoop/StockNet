@@ -37,3 +37,40 @@
      display: flex;
      flex-direction: row;
  }
+
+ .statsClick{
+   border: 5px solid #45a163;
+   border-width: 1px;
+   border-radius: 4px;
+   text-align: center;
+   margin-right: 20px;
+   padding: 8px 8px;
+   font-size: 10px;
+   color: #45a163;
+   max-height: 60px;
+   background-color: #ffffff;
+   cursor: auto
+}
+
+.stats2Click{
+   border: 5px solid #a0473e;
+   border-width: 1px;
+   border-radius: 4px;
+   text-align: center;
+   margin-right: 20px;
+   padding: 8px 8px;
+   font-size: 10px;
+   color: #a0473e;
+   max-height: 60px;
+   cursor: auto
+}
+
+.statsClick:hover {
+   background-color: #e9fff0;
+   cursor: pointer
+ }
+
+ .stats2Click:hover {
+   background-color: #ffe0e0;
+   cursor: pointer
+ }
