@@ -30,7 +30,7 @@ def createUserProfile(db, username):
     return 0
 
     
-def favoriteStock(db, body):
+def favoriteTicker(db, body):
     if 'username' in body and 'ticker' in body:
         username = body['username']
         ticker = body['ticker']
@@ -69,6 +69,7 @@ def favoriteStock(db, body):
     # don't do anything just return 1
     else:
         '''
+        #code for unfavoriting the ticker if it is already favorited
         for i in range(len(userProfile.favStocks)):
             if userProfile.favStocks[i] == "ticker":
                 userProfile.favStocks.pop(i)
