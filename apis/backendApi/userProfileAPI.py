@@ -32,11 +32,10 @@ def createUserProfile(db, username):
     
 def favoriteStock(db, body):
     if 'username' in body and 'ticker' in body:
-        username = body['ticker']
+        username = body['username']
         ticker = body['ticker']
     else:
         return 2
-    
 
     userProfile = None
     try: 
@@ -58,7 +57,7 @@ def favoriteStock(db, body):
         update_dict = dict()
         update_dict["favStocks"] = userProfile.favStocks
         try:
-            queryutils.updateUserProfile(update_dict)
+            queryutils.updateUserProfile(db, username, update_dict)
         except KeyError:
             return 5
         except Exception:
@@ -69,7 +68,22 @@ def favoriteStock(db, body):
     #else the ticker is already in user favorite stocks, 
     # don't do anything just return 1
     else:
-        return 1
+        '''
+        for i in range(len(userProfile.favStocks)):
+            if userProfile.favStocks[i] == "ticker":
+                userProfile.favStocks.pop(i)
+                break
+        
+        update_dict = dict()
+        update_dict["favStocks"] = userProfile.favStocks
 
+        try:
+            queryutils.updateUserProfile(update_dict)
+        except KeyError:
+            return 7
+        except Exception:
+            return 8
+            '''
+        return 1
 
 

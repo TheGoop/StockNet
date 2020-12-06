@@ -234,6 +234,34 @@ def upvotePost():
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
+#NOTE: IF USER HAS ALREADY FAVORITED THE STOCK, THIS
+#REST CALL WILL NOT UNFAVORITE IT
+@app.route('/favoriteStock', methods=['PUT'])
+def favoriteStock():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+    
+    result = userProfileAPI.favoriteStock(db, body)
+    if result == 0:
+        return Response("{ 'Result': 'User Favorited The Stock' }", status=200, mimetype='application/json')
+    elif result == 1:
+        return Response("{ 'Result': 'User Has Already Favorited The Stock' }", status=200, mimetype='application/json')
+    elif result == 2:
+        return Response("{ 'Result': 'username/ticker Not Given In Body' }", status=400, mimetype='application/json')
+    elif result == 3:
+        return Response("{ 'Result': 'Unknown Error With Retriving User Profile' }", status=500, mimetype='application/json')
+    elif result == 4:
+        return Response("{ 'Result': 'User Profile Not Found In Database' }", status=400, mimetype='application/json')
+    elif result == 5:
+        return Response("{ 'Result': 'User Profile Not Found In Database When Updating' }", status=400, mimetype='application/json')
+    elif result == 6:
+        return Response("{ 'Result': 'Unknown Error With Updating User Profile' }", status=500, mimetype='application/json')
+    else:
+        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+
 
 
 
