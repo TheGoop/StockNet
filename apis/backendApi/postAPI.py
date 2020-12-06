@@ -42,7 +42,8 @@ def get_post_preview(db, body):
     except Exception:
         return (None,2)
 
-    postsToFormat = postsUnderTag[0:int(body['num'])]
+    startIndex = int(body['num'])
+    postsToFormat = postsUnderTag[startIndex*10:(startIndex+1)*10]
     returnPayload = []
     for (postID,post) in postsToFormat:
         returnPost = {}
