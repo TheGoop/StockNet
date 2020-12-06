@@ -9,16 +9,18 @@ import { NORMALIZE_TIME } from '../../../CONSTANTS'
 import axios from 'axios'
 import { PORT } from '../../../CONSTANTS'
 
-const Post = ({ post: { user, title, content, flair, upvotes, postID, time, ticker } }) => {
+const Post = ({ post: { user, title, content, flair, upvotes, postID, time, ticker }, modifyUpvote}) => {
     // let { ticker } = useParams()
     const [clicked, setClicked] = useState(null)
+    const [clickedUpvote, setClickedUpvote] = useState(null)
+    const [upvoteState, setUpvoteState] = useState(false)
 
     let history = useHistory()
 
-    let statcolor = "stats"
+    let statcolor = "statsClick"
     let stattext = "upvotes"
     if (upvotes < 0) {
-        statcolor = "stats2"
+        statcolor = "stats2Click"
         stattext = "upvotes"
     }
 
@@ -50,9 +52,41 @@ const Post = ({ post: { user, title, content, flair, upvotes, postID, time, tick
         setClicked(true)
     }
 
+    //CHECK USERNAME 
+    //SHOULD ONLY UPVOTE IF USERNAME HAS NOT ALREADY
+
+    useEffect(() => {
+        let tempCount = upvoteState === true ? -1 : 1
+        
+        async function upVoteChange() {
+            //set true -> 1 as you already clicked it
+
+            axios
+                .put(`${PORT}/upvotePost?postID=${postID}&upvote=${tempCount}`)
+                .then(function (response) {
+                    console.log(response.data);
+                    setClickedUpvote(null)
+                    setUpvoteState(!upvoteState)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+        if (clickedUpvote !== null) {
+            modifyUpvote(tempCount)
+            upVoteChange()
+        }
+    }, [clickedUpvote])
+
+    const handleUpvote = (e) => {
+        e.preventDefault()
+        setClickedUpvote(true)
+    }
+
     return (
         <div id="expanded-post-preview-container">
-            <div id={statcolor}>
+            <div className={statcolor} onClick={handleUpvote}>
                 <h1>{`${upvotes}`}</h1>
                 <h3>{`${stattext}`}</h3>
             </div>
