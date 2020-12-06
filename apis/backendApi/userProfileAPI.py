@@ -1,14 +1,9 @@
 from database.payloadClasses.userprofileentry import UserProfileEntry
 from database.utils import queryutils
+from datetime import timezone, datetime
 
-
-def createUserProfile(db, body):
-    if 'username' in body and 'joinDate' in body:
-        username = body['username']
-        joinDate = body['joinDate']
-    else:
-        return 2
-    
+def createUserProfile(db, username):
+    joinDate = datetime.now(tz=timezone.utc).timestamp()
     userProfile = None
     try: 
         userProfile = queryutils.fetchUserProfile(db, username)
@@ -22,12 +17,11 @@ def createUserProfile(db, body):
     
     #if theres something in the userProfile var, then we can't 
     #create a user profile for this because it already exists
-    if not userProfile:
+    if userProfile:
         return 1
     
-
+    userProfile = UserProfileEntry(joinDate)
     #create userProfile
-    userProfile = UserProfileEntry.from_dict(body)
     try:
         queryutils.storeUserProfile(db, username, userProfile)
     except Exception:

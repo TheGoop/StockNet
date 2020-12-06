@@ -192,7 +192,7 @@ def storeUserProfile(db, username, userProfileEntry):
 
 def fetchUserProfile(db, username):
     userProfile = db.collection('Users').document(username).get()
-    if userProfile.exist:
+    if userProfile.exists:
         return UserProfileEntry.from_dict(userProfile.to_dict())
     else:
         raise KeyError("No user profile data found for user ", username)

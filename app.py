@@ -5,7 +5,7 @@ from flask import json
 from flask import Response
 from flask_cors import CORS
 
-from apis.backendApi import postAPI, commentAPI, userAuthAPI
+from apis.backendApi import postAPI, commentAPI, userAuthAPI, userProfileAPI
 from database.utils.dbclientmanager import DBClientManager
 
 app = Flask(__name__)
