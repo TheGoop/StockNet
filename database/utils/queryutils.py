@@ -192,10 +192,24 @@ def storeUserProfile(db, username, userProfileEntry):
 
 def fetchUserProfile(db, username):
     userProfile = db.collection('Users').document(username).get()
-    if userProfile.exist:
+    if userProfile.exists:
         return UserProfileEntry.from_dict(userProfile.to_dict())
     else:
         raise KeyError("No user profile data found for user ", username)
+
+def updateUserProfile(db, username, updateDict):
+    username = str(username)
+    try:
+        db.collection('Users').document(username).update(updateDict)
+    except Exception:
+        raise KeyError("User not found in database",username)
+    
+def fetchPostsUnderUsername(db,username):
+    userData = db.collection('Users').document(username).get()
+    if userData.exists:
+        return userData.to_dict()['posts']
+    else:
+        raise KeyError("No posts found under user", tag)
 
 if __name__ == "__main__":
     from database.unitTesting.queryTests.queryTestRunner import runTests
