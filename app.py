@@ -187,14 +187,14 @@ def authenticateUser():
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
       
 @app.route('/createUserAuth', methods=['POST'])
-def createUserAuth():
+def createUser():
     db = manager.getDBConnection()
     args = request.args
     body = request.json
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
     
-    result = userAuthAPI.createUserAuth(db, body)
+    result = userAuthAPI.createUser(db, body)
     if result == 0:
         return Response("{ 'Result': 'User Authentication Created' }", status=200, mimetype='application/json')
     elif result == 1:
@@ -204,7 +204,7 @@ def createUserAuth():
     elif result == 3:
         return Response("{ 'Result': 'Unknown Error With Checking Database For Given Username' }", status=400, mimetype='application/json')
     elif result == 4:
-        return Response("{ 'Result': 'Unknown Error With Storing UserAuth Into Database' }", status=500, mimetype='application/json')
+        return Response("{ 'Result': 'Unknown Error With Storing UserAuth/UserProfile Into Database' }", status=500, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
