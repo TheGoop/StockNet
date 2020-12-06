@@ -24,11 +24,10 @@ const StockSection = () => {
 
     const [loadedBool, setBool] = useState(null)
     const [loadedBool2, setBool2] = useState(null)
-    const [loadedBool3, setBool3] = useState(null)
 
     const [unknown, setUnknown] = useState(null)
 
-    const [posts, setPosts] = useState(null)
+    const [posts, setPosts] = useState([])
     const [loadStatus, setLoadStatus] = useState(null)
 
     const location = useLocation()
@@ -56,34 +55,38 @@ const StockSection = () => {
     //Need Fetch data here, then pass over props down to individual messages
 
     useEffect(() => {
-        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 setStock(data) // new
                 setBool(true)
-                if (data.c === 0 && data.t === 0)
-                    setUnknown(1)
-                else
-                    setUnknown(0)
+                // if (data.c === 0 && data.t === 0)
+                //     setUnknown(1)
+                // else
+                //     setUnknown(0)
             })
-            .catch(function() {
-                setUnknown(true)
-            });
+            // .catch(function() {
+            //     setUnknown(1)
+            // });
 
-        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${apiKey}`) //Loads faster
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 if (Object.keys(data).length === 0 && data.constructor === Object) {
                     setValid(false)
+                    setUnknown(1)
                 }
                 else {
                     setStock2(data) // new
                     setValid(true)
                     setBool2(true)
+                    setUnknown(0)
                 }
             })
             .catch(function() {
-                setUnknown(true)
+                setUnknown(1)
             });
 
     }, [location])
@@ -97,19 +100,37 @@ const StockSection = () => {
             }
             else{
                 setPosts(data)
-                console.log(data)
+                // console.log(data)
             }
             setLoadStatus(null)
-            setBool3(true)
         })
         .catch(function (error) {
+            setPosts([]) //If cannot find any posts
             setLoadStatus(null)
-            setBool3(true)
         });
-    }, [postAmount, ticker])
-    
+    }, [postAmount])
 
-    if (unknown == 1) {
+    useEffect(() => {
+        fetch(`${PORT}/postpreview?stock=${ticker}&num=0`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.length === 0){
+                setPostAmount(postAmount - 1)
+            }
+            else{
+                setPosts(data)
+                // console.log(data)
+            }
+            setLoadStatus(null)
+        })
+        .catch(function (error) {
+            setPosts([]) //If cannot find any posts
+            setLoadStatus(null)
+        });
+    }, [ticker]) //Needed to return to initial, most recent when navigating between stocks
+    
+    
+    if (unknown === 1) {
         return (<PageSetup>
             <img src={vader} alt="Vader" />
             <h1 id="text404">The darkside of the search query is a pathway to many stocks</h1>
@@ -129,18 +150,6 @@ const StockSection = () => {
     }
     else if (!loadedBool || !loadedBool2) {
         return <div />
-    }
-    else if (!loadedBool3){
-        return (
-            <div>
-                <PageSetup>
-                    <div id="stockbox">
-                        <Stock stockData={stockData} stockData2={stockData2} />
-                    </div>
-                </PageSetup>
-    
-            </div >
-        )
     }
     return (
         <div>
