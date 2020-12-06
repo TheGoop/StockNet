@@ -66,6 +66,9 @@ const StockSection = () => {
                     setBool2(true)
                 }
             })
+            .catch(function() {
+                setUnknown(true)
+            });
 
     }, [location])
 

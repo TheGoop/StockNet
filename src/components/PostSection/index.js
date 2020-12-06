@@ -93,6 +93,14 @@ const PostSection = () => {
         // setPost(temppostREF)
     }, [])
 
+    const modifyUpvote = (amt) => { //Need a setter function to be passed in for upvotes
+        let modifiedPost = temppost
+
+        modifiedPost.upvotes += amt
+
+        setPost(modifiedPost)
+    }
+
     if (error){
         return(<Page404Element/>)
     }
@@ -101,7 +109,7 @@ const PostSection = () => {
     // console.log(temppost)
     return(
         <div id="post-container">
-            <Post post={temppost}/>
+            <Post post={temppost} modifyUpvote={modifyUpvote}/>
             <Write comments={tempcomments} setComments={setComments} loggeduser={tempLoggedUser}/>
             <Comments comments={tempcomments}/>
         </div>
