@@ -7,6 +7,7 @@ import Posts from './PostPreviews/posts'
 import { useHistory, useLocation } from 'react-router-dom'
 import { apiKey } from '../../CONSTANTS'
 import vader from '../../images/Vader.png'
+import {PORT} from '../../CONSTANTS'
 
 import {
     useParams
@@ -23,8 +24,12 @@ const StockSection = () => {
 
     const [loadedBool, setBool] = useState(null)
     const [loadedBool2, setBool2] = useState(null)
+    const [loadedBool3, setBool3] = useState(null)
 
     const [unknown, setUnknown] = useState(null)
+
+    const [posts, setPosts] = useState(null)
+    const [loadStatus, setLoadStatus] = useState(null)
 
     const location = useLocation()
     let { ticker } = useParams()
@@ -35,12 +40,17 @@ const StockSection = () => {
     }
 
     const LoadOld = () => {
-        setPostAmount(postAmount + 1)
+        if (loadStatus !== true)
+            setLoadStatus(true)
+            setPostAmount(postAmount + 1)
     }
 
     const LoadRecent = () => {
-        if (postAmount !== 0){
-            setPostAmount(postAmount - 1)
+        if (loadStatus !== true){
+            if (postAmount !== 0){
+                setLoadStatus(true)
+                setPostAmount(postAmount - 1)
+            }
         }
     }
     //Need Fetch data here, then pass over props down to individual messages
@@ -77,6 +87,26 @@ const StockSection = () => {
             });
 
     }, [location])
+
+    useEffect(() => {
+        fetch(`${PORT}/postpreview?stock=${ticker}&num=${postAmount}`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.length === 0){
+                setPostAmount(postAmount - 1)
+            }
+            else{
+                setPosts(data)
+                console.log(data)
+            }
+            setLoadStatus(null)
+            setBool3(true)
+        })
+        .catch(function (error) {
+            setLoadStatus(null)
+            setBool3(true)
+        });
+    }, [postAmount, ticker])
     
 
     if (unknown == 1) {
@@ -93,12 +123,24 @@ const StockSection = () => {
                 <button onClick={LoadRecent}> Load More Recent Posts </button>
                 <button onClick={LoadOld}> Load Older Posts </button>
             </div>
-            <Posts postAmount={postAmount} />
+            <Posts posts={posts} />
             </PostSetup>
         </PageSetup>)
     }
     else if (!loadedBool || !loadedBool2) {
         return <div />
+    }
+    else if (!loadedBool3){
+        return (
+            <div>
+                <PageSetup>
+                    <div id="stockbox">
+                        <Stock stockData={stockData} stockData2={stockData2} />
+                    </div>
+                </PageSetup>
+    
+            </div >
+        )
     }
     return (
         <div>
@@ -114,7 +156,7 @@ const StockSection = () => {
                         <button onClick={LoadOld}> Load Older Posts </button>
                     </div>
                     {/* Conditional rendering, shows buttons only when stock is valid */}
-                    <Posts postAmount={postAmount} />
+                    <Posts posts={posts} />
                 </PostSetup>
 
             </PageSetup>
