@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import { PORT } from '../../CONSTANTS'
 
 const useForm = (callback, validate) => {
     const [values, setValues] = useState({
@@ -24,41 +25,19 @@ const useForm = (callback, validate) => {
         setIsSubmitting(true)
     }
 
-    // useEffect(() => {
-    //     async function makePost() {
-
-    //         //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
-    //         //THIS IS FOR POSTING COMMENTS
-    //         //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
-
-    //         let tempnewcomment = {
-    //             user: "Eggert",
-    //             content: commentInput,
-    //             // upvotes: 0,
-    //             // commentID: 'null'
-    //         }
-
-    //         axios
-    //             .post(`${PORT}/comment?postID=${postID}`, tempnewcomment)
-    //             .then(function (response) {
-    //                 //console.log(response.data);
-    //                 // console.log(response.data);
-    //                 tempnewcomment.time = response.data.time
-    //                 setClicked(null)
-
-    //                 setInput('')
-    //                 setComments([tempnewcomment, ...comments])
-    //                 //makes it so page is dynamic, get back comment ID later
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //             });
-    //     }
-
-    //     if (isSubmitting !== null) {
-    //         makePost()
-    //     }
-    // }, [isSubmitting])
+    useEffect(() => {
+        let submission = {
+            username: values.username,
+            password: values.password,
+        }
+        async function logInUser() {
+            axios
+                .post(`${PORT}/createUserAuth`, submission)
+                .then(function (response) {})
+        }
+        if (isSubmitting !== false)
+            logInUser()
+    },[isSubmitting])
 
     useEffect(() => {
         if(Object.keys(errors).length === 0 && isSubmitting){
