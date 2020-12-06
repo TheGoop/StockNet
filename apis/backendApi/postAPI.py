@@ -99,6 +99,8 @@ def create_post(db, body):
     else:
         return (None, 3)
     
+
+    # Add post to user profile
     try:
         userProfile = queryutils.fetchUserProfile(db, username)
     except KeyError:
@@ -109,6 +111,7 @@ def create_post(db, body):
     userProfile["posts"].append(postID)
     updateDict = dict()
     updateDict["posts"] = userProfile["posts"]
+    #
 
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
@@ -157,9 +160,6 @@ def upvotePost(db, body, args):
     else:
         pass
 
-
-
-
     #UPDATE THE POST UPVOTE COUNT 
     try:
         postEntry = queryutils.readPostbyID(db, postID)
@@ -178,6 +178,7 @@ def upvotePost(db, body, args):
         return 6
     
     return 0
+
 
 
     

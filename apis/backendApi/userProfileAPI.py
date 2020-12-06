@@ -36,19 +36,46 @@ def createUserProfile(db, body):
     return 0
 
     
-
-
-
-
-
+def favoriteStock(db, body):
+    if 'username' in body and 'ticker' in body:
+        username = body['ticker']
+        ticker = body['ticker']
+    else:
+        return 2
     
 
-
-
-
+    userProfile = None
+    try: 
+        userProfile = queryutils.fetchUserProfile(db, username)
+    #if the user profile is not found, this is good
+    except KeyError:
+        #at some point, should use a validate call 
+        # instead of testing keyerror
+        pass
+    except Exception:
+        return 3
+    # if we didn't find user
+    if not userProfile:
+        return 4
+    # if the ticker isn't already in the users favorite stocks, add it
+    if ticker not in userProfile.favStocks:
+        userProfile.favStocks.append(ticker)
     
+        update_dict = dict()
+        update_dict["favStocks"] = userProfile.favStocks
+        try:
+            queryutils.updateUserProfile(update_dict)
+        except KeyError:
+            return 5
+        except Exception:
+            return 6
     
-    pass
+        return 0
+
+    #else the ticker is already in user favorite stocks, 
+    # don't do anything just return 1
+    else:
+        return 1
 
 
 
