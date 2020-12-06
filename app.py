@@ -270,6 +270,39 @@ def favoriteTicker():
     '''
 
 
+@app.route('/userPosts', methods=['GET'])
+def getUserPosts():
+    db = manager.getDBConnection()
+    args = request.args
+    body = request.json
+    if not body:
+        return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
+
+    result = getUserPosts(db, body)
+    if result[0] == 1:
+        return
+    elif result[0] == 2:
+        return
+    elif result[0] == 3:
+        return
+    elif result[0] != 0:
+        return 
+
+    postPayload = []
+    postIDs = result[1]
+    for postID in postIDs:
+        d = dict()
+        d["postID"] = postID
+        returnPayloadTuple = postAPI.get_post(db, d)
+        if returnPayloadTuple[1] == 1:
+            return Response("{ 'Result': 'Error: Post ID was not found in database' }", status=400, mimetype='application/json')
+        elif returnPayloadTuple[1] == 2:
+            return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+        else:
+            postPayload.append(returnPayloadTuple[0])
+    
+    return (jsonify(postPayload))
+
 
 
 if __name__ == '__main__':

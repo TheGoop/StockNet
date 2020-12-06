@@ -88,3 +88,19 @@ def favoriteTicker(db, body):
         return 1
 
 
+def getUserPosts(db, body):
+    if "username" in body:
+        username = body["username"]
+    else:
+        return (1, None)
+    
+    try:
+        posts = queryutils.fetchPostsUnderUsername(db, username)
+    except KeyError:
+        return (2, None)
+    except Exception:
+        return (3, None)
+    
+    return (0, posts)
+
+

@@ -204,6 +204,13 @@ def updateUserProfile(db, username, updateDict):
     except Exception:
         raise KeyError("User not found in database",username)
     
+def fetchPostsUnderUsername(db,username):
+    userData = db.collection('Users').document(username).get()
+    if userData.exists:
+        return userData.to_dict()['posts']
+    else:
+        raise KeyError("No posts found under user", tag)
+
 if __name__ == "__main__":
     from database.unitTesting.queryTests.queryTestRunner import runTests
     runTests()
