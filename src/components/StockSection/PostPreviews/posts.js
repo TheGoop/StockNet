@@ -102,7 +102,7 @@ const Posts = ({postAmount}) => {
 
         //EVENTUALLY NEED TO FIX POSTAMOUNT INSTEAD OF 5
 
-        fetch(`${PORT}/postpreview?stock=${ticker}&num=5`)
+        fetch(`${PORT}/postpreview?stock=${ticker}&num=${postAmount}`)
         .then((response) => response.json())
         .then((data) => {
             setPosts(data)

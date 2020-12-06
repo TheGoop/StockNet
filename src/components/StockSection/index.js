@@ -34,8 +34,14 @@ const StockSection = () => {
         history.push(`/${ticker.toUpperCase()}/submit`)
     }
 
-    const Load = () => {
+    const LoadOld = () => {
         setPostAmount(postAmount + 1)
+    }
+
+    const LoadRecent = () => {
+        if (postAmount !== 0){
+            setPostAmount(postAmount - 1)
+        }
     }
     //Need Fetch data here, then pass over props down to individual messages
 
@@ -71,6 +77,7 @@ const StockSection = () => {
             });
 
     }, [location])
+    
 
     if (unknown == 1) {
         return (<PageSetup>
@@ -83,7 +90,8 @@ const StockSection = () => {
             <PostSetup>
             <div className="multi-button2">
                 <button onClick={Submit}> Submit New Post </button>
-                <button onClick={Load}> Load More Posts </button>
+                <button onClick={LoadRecent}> Load More Recent Posts </button>
+                <button onClick={LoadOld}> Load Older Posts </button>
             </div>
             <Posts postAmount={postAmount} />
             </PostSetup>
@@ -102,7 +110,8 @@ const StockSection = () => {
                 <PostSetup>
                     <div className="multi-button2">
                         <button onClick={Submit}> Submit New Post </button>
-                        <button onClick={Load}> Load More Posts </button>
+                        <button onClick={LoadRecent}> Load More Recent Posts </button>
+                        <button onClick={LoadOld}> Load Older Posts </button>
                     </div>
                     {/* Conditional rendering, shows buttons only when stock is valid */}
                     <Posts postAmount={postAmount} />
