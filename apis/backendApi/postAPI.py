@@ -48,12 +48,15 @@ def get_post_preview(db, body):
         returnPost = {}
         returnPost['user'] = post.userName
         returnPost['title'] = post.postTitle
-        returnPost['content'] = post.message[0:100] + "..."
         returnPost['postID'] = postID
         returnPost['time'] = post.time
         returnPost['ticker'] = post.ticker
         returnPost['upvotes'] = post.upvoteCount
         returnPost['flair'] = post.flair
+        words = post.message.split(' ')
+        if len(words) > 100:
+            words.append("...")
+        returnPost['content'] = " ".join(words)
         returnPayload.append(returnPost)
     return (returnPayload,0)
 
@@ -91,9 +94,37 @@ def create_post(db, body):
             break
     taggedEntry = TaggedPostEntry(postID,time)
 
+    '''
+    if "username" in body:
+        username = body["username"]
+    else:
+        return (None, 3)
+    
+    
+    # Add post to user profile
+    try:
+        userProfile = queryutils.fetchUserProfile(db, username)
+    except KeyError:
+        return (None, 4)
+    except Exception:
+        return (None, 5)
+    
+    userProfile["posts"].append(postID)
+    updateDict = dict()
+    updateDict["posts"] = userProfile["posts"]
+    #
+    '''
     try:
         queryutils.storePostTag(db,body['ticker'],taggedEntry)
         queryutils.storePost(db,postID,postEntry)
+        '''
+        try:
+            queryutils.updateUserProfile(db, username, updateDict)
+        except KeyError:
+            return (None, 6)
+        except Exception:
+            return (None, 7)
+        '''
     except KeyError:
         return (None,1)
     except Exception:
@@ -113,3 +144,44 @@ def delete_post(db, body):
         return 2
 
     return 0
+
+def upvotePost(db, body, args):
+    if "postID" in args and "upvote" in args:
+        postID = args["postID"]
+        upvote = args["upvote"]
+        try:
+            upvote = int(upvote)
+        except:
+            return 1
+    else:
+        return 2
+
+    #ADD postID TO USERPROFILES DICT OF UPVOTED POSTS
+    if upvote > 0:
+        pass
+    #REMOVE postID FROM USERPROFILES LIST OF UPVOTED POSTS
+    else:
+        pass
+
+    #UPDATE THE POST UPVOTE COUNT 
+    try:
+        postEntry = queryutils.readPostbyID(db, postID)
+    except KeyError:
+        return 3
+    except Exception:
+        return 4
+
+    updateDict = dict()
+    updateDict["upvoteCount"] = postEntry.upvoteCount + upvote
+    try:
+        queryutils.updatePost(db, postID, updateDict)
+    except KeyError:
+        return 5
+    except Exception:
+        return 6
+    
+    return 0
+
+
+
+    
