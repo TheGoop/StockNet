@@ -4,7 +4,6 @@ import axios from 'axios'
 const useForm = (callback, validate) => {
     const [values, setValues] = useState({
         username: '',
-        email: '',
         password: '',
         confirm_password: ''
     })

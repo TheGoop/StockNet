@@ -29,22 +29,6 @@ const FormSignup = ({submitForm}) => {
                         {errors.username && <p>{errors.username}</p>}
                 </div>
                 <div className='form-inputs'>
-                    <label htmlFor='email'
-                    className='form-label'>
-                        Email
-                    </label>
-                    <input
-                        id='email'
-                        type='email'
-                        name='email'
-                        className='form-input'
-                        placeholder='Enter your email'
-                        value={values.email}
-                        onChange={handleChange}
-                        />
-                        {errors.email && <p>{errors.email}</p>}
-                </div>
-                <div className='form-inputs'>
                     <label htmlFor='password'
                     className='form-label'>
                         Password
