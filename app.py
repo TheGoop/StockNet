@@ -93,16 +93,16 @@ def createPost():
     body = request.json
     if not body:
         return Response("{ 'Result': 'Error: No JSON body given' }", status=400, mimetype='application/json')
-    # do something, eg. return json response
     returnPayloadTuple = postAPI.create_post(db, body)
+    
     if returnPayloadTuple[1] == 1:
         return Response("{ 'Result': 'Error: Post ID is already stored' }", status=404, mimetype='application/json')
-    elif returnPayloadTuple[1] == 2:
-        return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
-    elif returnPayloadTuple[1] == 3:
-        return Response("{ 'Result': 'Username Not Provided' }", status=400, mimetype='application/json')
-    elif returnPayloadTuple[1] == 4:
-        return Response("{ 'Result': 'Username Not Found' }", status=500, mimetype='application/json')
+    #elif returnPayloadTuple[1] == 2:
+    #    return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
+    #elif returnPayloadTuple[1] == 3:
+    #    return Response("{ 'Result': 'Username Not Provided' }", status=400, mimetype='application/json')
+    #elif returnPayloadTuple[1] == 4:
+    #    return Response("{ 'Result': 'Username Not Found' }", status=500, mimetype='application/json')
     elif returnPayloadTuple[1] == 5:
         return Response("{ 'Result': 'Unknown Error With Fetching UserProfile' }", status=500, mimetype='application/json')
     elif returnPayloadTuple[1] == 6:
