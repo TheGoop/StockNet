@@ -30,13 +30,16 @@ const useForm = (callback, validate) => {
             username: values.username,
             password: values.password,
         }
-        async function logInUser() {
+        async function SignUpUser() {
             axios
                 .post(`${PORT}/createUserAuth`, submission)
                 .then(function (response) {})
+                {
+                    // error handling (if username is taken)
+                }
         }
         if (isSubmitting !== false)
-            logInUser()
+          SignUpUser()
     },[isSubmitting])
 
     useEffect(() => {
