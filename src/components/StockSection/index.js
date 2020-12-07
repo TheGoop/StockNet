@@ -7,6 +7,7 @@ import Posts from './PostPreviews/posts'
 import { useHistory, useLocation } from 'react-router-dom'
 import { apiKey } from '../../CONSTANTS'
 import vader from '../../images/Vader.png'
+import {PORT} from '../../CONSTANTS'
 
 import {
     useParams
@@ -26,6 +27,9 @@ const StockSection = () => {
 
     const [unknown, setUnknown] = useState(null)
 
+    const [posts, setPosts] = useState([])
+    const [loadStatus, setLoadStatus] = useState(null)
+
     const location = useLocation()
     let { ticker } = useParams()
     let history = useHistory()
@@ -34,45 +38,99 @@ const StockSection = () => {
         history.push(`/${ticker.toUpperCase()}/submit`)
     }
 
-    const Load = () => {
-        setPostAmount(postAmount + 1)
+    const LoadOld = () => {
+        if (loadStatus !== true)
+            setLoadStatus(true)
+            setPostAmount(postAmount + 1)
+    }
+
+    const LoadRecent = () => {
+        if (loadStatus !== true){
+            if (postAmount !== 0){
+                setLoadStatus(true)
+                setPostAmount(postAmount - 1)
+            }
+        }
     }
     //Need Fetch data here, then pass over props down to individual messages
 
     useEffect(() => {
-        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+        fetch(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=${apiKey}`)
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 setStock(data) // new
                 setBool(true)
-                if (data.c === 0 && data.t === 0)
-                    setUnknown(1)
-                else
-                    setUnknown(0)
+                // if (data.c === 0 && data.t === 0)
+                //     setUnknown(1)
+                // else
+                //     setUnknown(0)
             })
-            .catch(function() {
-                setUnknown(true)
-            });
+            // .catch(function() {
+            //     setUnknown(1)
+            // });
 
-        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&symbol=${ticker}&token=${apiKey}`)
+        fetch(`https://finnhub.io/api/v1/stock/profile2?symbol=${ticker}&token=${apiKey}`) //Loads faster
             .then((response) => response.json())
             .then((data) => {
+                console.log(data)
                 if (Object.keys(data).length === 0 && data.constructor === Object) {
                     setValid(false)
+                    setUnknown(1)
                 }
                 else {
                     setStock2(data) // new
                     setValid(true)
                     setBool2(true)
+                    setUnknown(0)
                 }
             })
             .catch(function() {
-                setUnknown(true)
+                setUnknown(1)
             });
 
     }, [location])
 
-    if (unknown == 1) {
+    useEffect(() => {
+        fetch(`${PORT}/postpreview?stock=${ticker}&num=${postAmount}`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.length === 0){
+                setPostAmount(postAmount - 1)
+            }
+            else{
+                setPosts(data)
+                // console.log(data)
+            }
+            setLoadStatus(null)
+        })
+        .catch(function (error) {
+            setPosts([]) //If cannot find any posts
+            setLoadStatus(null)
+        });
+    }, [postAmount])
+
+    useEffect(() => {
+        fetch(`${PORT}/postpreview?stock=${ticker}&num=0`)
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.length === 0){
+                setPostAmount(postAmount - 1)
+            }
+            else{
+                setPosts(data)
+                // console.log(data)
+            }
+            setLoadStatus(null)
+        })
+        .catch(function (error) {
+            setPosts([]) //If cannot find any posts
+            setLoadStatus(null)
+        });
+    }, [ticker]) //Needed to return to initial, most recent when navigating between stocks
+    
+    
+    if (unknown === 1) {
         return (<PageSetup>
             <img src={vader} alt="Vader" />
             <h1 id="text404">The darkside of the search query is a pathway to many stocks</h1>
@@ -83,9 +141,10 @@ const StockSection = () => {
             <PostSetup>
             <div className="multi-button2">
                 <button onClick={Submit}> Submit New Post </button>
-                <button onClick={Load}> Load More Posts </button>
+                <button onClick={LoadRecent}> Load More Recent Posts </button>
+                <button onClick={LoadOld}> Load Older Posts </button>
             </div>
-            <Posts postAmount={postAmount} />
+            <Posts posts={posts} />
             </PostSetup>
         </PageSetup>)
     }
@@ -102,10 +161,11 @@ const StockSection = () => {
                 <PostSetup>
                     <div className="multi-button2">
                         <button onClick={Submit}> Submit New Post </button>
-                        <button onClick={Load}> Load More Posts </button>
+                        <button onClick={LoadRecent}> Load More Recent Posts </button>
+                        <button onClick={LoadOld}> Load Older Posts </button>
                     </div>
                     {/* Conditional rendering, shows buttons only when stock is valid */}
-                    <Posts postAmount={postAmount} />
+                    <Posts posts={posts} />
                 </PostSetup>
 
             </PageSetup>

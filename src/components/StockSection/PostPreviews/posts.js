@@ -84,39 +84,38 @@ import { useHistory, useLocation } from 'react-router-dom'
 //     },
 // ]
 
-const Posts = ({postAmount}) => {
+const Posts = ({posts}) => {
     let { ticker } = useParams()
     const location = useLocation()
 
-    const [posts, setPosts] = useState(null)
+    // const [posts, setPosts] = useState(null)
     const [loadedpost, load2] = useState(null)
     
 
-    useEffect(() => {
-        //FETCH POSTS HERE BASED ON TICKER HERE 
-        // if (postAmount === 0)
-        //     setPosts(TEMPPOSTTEST)
-        // if (postAmount === 1)
-        //     setPosts(TEMPPOSTTEST2)
-        // load2(true)
+    // useEffect(() => {
+    //     //FETCH POSTS HERE BASED ON TICKER HERE 
+    //     // if (postAmount === 0)
+    //     //     setPosts(TEMPPOSTTEST)
+    //     // if (postAmount === 1)
+    //     //     setPosts(TEMPPOSTTEST2)
+    //     // load2(true)
 
-        //EVENTUALLY NEED TO FIX POSTAMOUNT INSTEAD OF 5
+    //     //EVENTUALLY NEED TO FIX POSTAMOUNT INSTEAD OF 5
 
-        fetch(`${PORT}/postpreview?stock=${ticker}&num=5`)
-        .then((response) => response.json())
-        .then((data) => {
-            setPosts(data)
-            load2(true)
-        })
-        .catch(function (error) {
-            setPosts([])
-            load2(true)
-        });
-    }, [postAmount, ticker])
+    //     fetch(`${PORT}/postpreview?stock=${ticker}&num=${postAmount}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         setPosts(data)
+    //         load2(true)
+    //     })
+    //     .catch(function (error) {
+    //         setPosts([])
+    //         load2(true)
+    //     });
+    // }, [postAmount, ticker])
 
-    if (!loadedpost)
-        return(<div></div>)
-
+    // if (!loadedpost)
+    //     return(<div></div>)
     return(
     <>
     {posts.map((post, i) => <div key={i}><Post post={post}/></div>)}
