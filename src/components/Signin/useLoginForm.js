@@ -9,6 +9,7 @@ const useLoginForm = (callback, validate) => {
     })
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [ account, setAccount ] = useState(null)
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -29,13 +30,13 @@ const useLoginForm = (callback, validate) => {
             username: values.username,
             password: values.password,
         }
+        // console.log(submission)
         async function logInUser() {
-            axios
-                .post(`${PORT}/login`, submission)
-                .then(function (response) {})
-                {
-                    // error handling (if username is taken)
-                }
+                axios.post(`${PORT}/login`, submission)
+                .then((response) => response.json())
+                .catch(function(error){
+                    console.log(error);
+                })
         }
         if (isSubmitting !== false)
             logInUser()
