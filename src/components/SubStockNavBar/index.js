@@ -28,6 +28,15 @@ const SubstockNavbar = () => {
     }
     let history = useHistory()
 
+    const [userSignedIn, setUserSignedIn] = useState(false)
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          setUserSignedIn(true)
+        }
+      }, []);
+
     const Submit = (e) => {
         console.log(e.key == "Enter")
         if (e.key === "Enter" && input !== ''){
@@ -54,9 +63,16 @@ const SubstockNavbar = () => {
                         onKeyPress={Submit}
                     />
 
+                    { userSignedIn &&                     
+                    <NavButton>
+                        <NavButtonLink to='/signin'>Sign Out</NavButtonLink>
+                    </NavButton>
+                    }
+                    { !userSignedIn &&                     
                     <NavButton>
                         <NavButtonLink to='/signin'>Sign In</NavButtonLink>
                     </NavButton>
+                    }
                 </NavbarContainer>
             </Nav2>
         </>
