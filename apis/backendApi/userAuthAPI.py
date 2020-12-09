@@ -1,7 +1,9 @@
 from database.payloadClasses.authenticationEntry import AuthenticationEntry
+from database.payloadClasses.userprofileentry import UserProfileEntry
 from database.utils import queryutils
+from datetime import timezone, datetime
 
-def createUserAuth(db, body):
+def createUser(db, body):
     if 'username' in body and 'password' in body:
         username = body['username']
         password = body['password']
@@ -35,8 +37,12 @@ def createUserAuth(db, body):
     and password
     '''
     userAuth = AuthenticationEntry(password)
+
+    joinDate = datetime.now(tz=timezone.utc).timestamp()
+    userProfile = UserProfileEntry(joinDate)
     try:
         queryutils.storeAuthentication(db, username, userAuth)
+        queryutils.storeUserProfile(db, username, userProfile)
     except Exception:
         return 4
     

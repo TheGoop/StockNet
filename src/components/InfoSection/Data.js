@@ -1,3 +1,8 @@
+import stock1 from '../../images/stock1.svg'
+import stock2 from '../../images/stock2.svg'
+import stock3 from '../../images/stock3.svg'
+import stock4 from '../../images/stock4.svg'
+
 export const homeObjOne = {
     id: 'about',
     lightBg: true,
@@ -8,7 +13,7 @@ export const homeObjOne = {
     description: 'Get access to the only app dedicated to providing the highs of the stock market with the highs of meeting like-minded financial connoisseurs.',
     buttonLabel: 'Get started',
     imgStart: false,
-    img: require('../../images/stock1.png'),
+    img: stock1,
     alt: 'Finance',
     dark: true,
     primary: true,
@@ -25,7 +30,7 @@ export const homeObjTwo = {
     description: 'Trade stocks and make money like a true gambler, only your luck will never run out.',
     buttonLabel: 'Dive in',
     imgStart: true,
-    img: require('../../images/stock2.png'),
+    img: stock2,
     alt: 'Investing',
     dark: true,
     primary: true,
@@ -42,7 +47,7 @@ export const homeObjThree = {
     description: 'Add cooperative traders as friends, share posts of huge gains akin to Wall Street, and more.',
     buttonLabel: 'Connect',
     imgStart: false,
-    img: '../../images/stock3.png',
+    img: stock3,
     alt: 'Network',
     dark: true,
     primary: true,
@@ -59,7 +64,7 @@ export const homeObjFour = {
     description: 'Once you create your account, the friends and stocks await!',
     buttonLabel: 'Sign up',
     imgStart: true,
-    img: '../../images/stock4.png',
+    img: stock4,
     alt: 'Sign-up',
     dark: true,
     primary: true,

@@ -7,6 +7,7 @@ import {
     HeroH1,
     HeroP,
     HeroButtonWrapper,
+    HeroButtonLink,
     ArrowForward,
     ArrowRight
 } from './HeroElements'
@@ -29,7 +30,6 @@ const HeroSection = () => {
                 </HeroP>
                 <HeroButtonWrapper>
                     <Button 
-                    to="signup" 
                     onMouseEnter={onHover}
                     onMouseLeave={onHover}
                     primary='true'
@@ -38,6 +38,7 @@ const HeroSection = () => {
                             exact='true' offset={0}>
                         Get started {hover ? <ArrowForward /> : <ArrowRight
                        />} 
+                       <HeroButtonLink to='/sign-up'>Sign up</HeroButtonLink>
                     </Button>
                 </HeroButtonWrapper>
             </HeroContent>

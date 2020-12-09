@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Form, FormButton, FormButtonLink, FormContent, FormH1, FormInput, FormLabel, 
-    FormWrap, Icon, Text } from './SigninElements'
+    FormWrap, Icon } from './SigninElements'
 
 export const SignIn = () => {
     return (
@@ -16,11 +16,10 @@ export const SignIn = () => {
                             <FormLabel htmlFor='for'>Password</FormLabel>
                             <FormInput type='password' required />
                             <FormButton>
-                                <FormButtonLink to='/account'>
+                                <FormButtonLink to='/'>
                                 Continue
                                 </FormButtonLink>
                             </FormButton>
-                            <Text>Forgot password</Text>
                         </Form>
                     </FormContent>
                 </FormWrap>
