@@ -8,6 +8,20 @@ import {apiKey, PORT} from '../../../CONSTANTS'
 import { useHistory } from 'react-router-dom'
 
 const SubmitPostLayout = () => {
+    const [username, setUser] = useState();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setUser(foundUser);
+        }
+        else { setUser("Anonymous") }
+      }, []);
+
+    const getUser= (e) => {
+        return username
+    }
     const [postInput, setPostInput] = useState('')
     const [titleInput, setTitleInput] = useState('')
     const [flairInput, setFlairInput] = useState('')
@@ -37,7 +51,7 @@ const SubmitPostLayout = () => {
         
         //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS
         let NEWPOST = {
-            user: "Eggert",
+            user: username,
             title: titleInput,
             content: postInput,
             flair: flairInput,
@@ -114,7 +128,7 @@ const SubmitPostLayout = () => {
             <div id="writepost-container">
                 <label>
                     <div id="user"> Post as </div>
-                    <div id="user2">{`Eggert to ${stockname}`}</div>
+                    <div id="user2">{ getUser `to ${stockname}`}</div>
                 </label>
                 <input id="postinput" placeholder="Title" value={titleInput} onChange={handleTitleInput}/>
                 <input id="postinput2" placeholder="Flair" value={flairInput} onChange={handleFlairInput}/>

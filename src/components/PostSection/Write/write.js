@@ -9,6 +9,7 @@ import { PORT } from '../../../CONSTANTS'
 const Write = ({ comments, setComments, loggeduser }) => {
     const [commentInput, setInput] = useState('')
     const [clicked, setClicked] = useState(null)
+    const [user, setUser] = useState();
 
     // const [NEWCOMMENT, setNEWCOMMENT] = useState(null)
     let { postID } = useParams()
@@ -18,6 +19,16 @@ const Write = ({ comments, setComments, loggeduser }) => {
     }
 
     useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setUser(foundUser);
+        }
+        else { setUser("Anonymous") }
+      }, []);
+
+
+    useEffect(() => {
         async function makePost() {
 
             //NEED TO CHECK HERE IF YOU HAVE USERNAME, OTHERWISE SUBMIT AS ANONYMOUS WHERE EGGERT IS
@@ -25,7 +36,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
             //THIS IS ALL MENTIONS OF LOGGEDUSER AND EGGERT ON THIS PAGE
 
             let tempnewcomment = {
-                user: "Eggert",
+                user: user,
                 content: commentInput,
                 // upvotes: 0,
                 // commentID: 'null'
@@ -68,7 +79,7 @@ const Write = ({ comments, setComments, loggeduser }) => {
         <div id="write-container">
             <label>
                 <div id="user"> Comment as </div>
-                <div id="user2">{loggeduser}</div>
+                <div id="user2">{user}</div>
             </label>
             <textarea placeholder="What are your thoughts?" id="textbox" type="text" value={commentInput} onChange={handleChange} />
             <button className="submit" onClick={handleSubmit}> Submit </button>

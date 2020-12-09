@@ -9,6 +9,17 @@ import { useHistory } from 'react-router-dom'
 import {Page404Element} from '../../../pages/index'
 
 const EditPostLayout = () => {
+    const [username, setUser] = useState();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setUser(foundUser);
+        }
+        else { setUser("Anonymous") }
+      }, []);
+
     const [postInput, setPostInput] = useState('')
     const [titleInput, setTitleInput] = useState('')
     const [flairInput, setFlairInput] = useState('')
@@ -26,6 +37,9 @@ const EditPostLayout = () => {
     let { postID } = useParams()
     let { ticker } = useParams()
 
+    const getUser= (e) => {
+        return username
+    }
     const handlePostInput = (e) => {
         setPostInput(e.target.value)
     }
@@ -123,7 +137,7 @@ const EditPostLayout = () => {
             <div id="writepost-container">
                 <label>
                     <div id="user"> Edit as </div>
-                    <div id="user2">{`Eggert to ${stockname}`}</div>
+                    <div id="user2">{getUser `to ${stockname}`}</div>
                 </label>
                 <input id="postinput" placeholder="Title" value={titleInput} onChange={handleTitleInput} />
                 <input id="postinput2" placeholder="Flair" value={flairInput} onChange={handleFlairInput} />
