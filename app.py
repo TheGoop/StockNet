@@ -166,7 +166,7 @@ def createComment():
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['POST'])
 def authenticateUser():
     db = manager.getDBConnection()
     args = request.args
@@ -182,7 +182,7 @@ def authenticateUser():
     elif result == 2:
         return Response("{ 'Result': 'No Authentication Data Found For User' }", status=400, mimetype='application/json')
     elif result == 3:
-        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=404, mimetype='application/json')
     else:
         return Response("{ 'Result': 'Unknown Error' }", status=500, mimetype='application/json')
       
