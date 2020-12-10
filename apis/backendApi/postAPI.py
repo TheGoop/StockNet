@@ -57,6 +57,7 @@ def get_post_preview(db, body):
         returnPost['flair'] = post.flair
         words = post.message.split(' ')
         if len(words) > 100:
+            words = words[:100]
             words.append("...")
         returnPost['content'] = " ".join(words)
         returnPayload.append(returnPost)
