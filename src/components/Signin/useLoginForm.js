@@ -10,6 +10,7 @@ const useLoginForm = (callback, validate) => {
     const [errors, setErrors] = useState({})
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [user, setUser] = useState();
+    const [status, setStatus] = useState('')
     
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -21,7 +22,7 @@ const useLoginForm = (callback, validate) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setErrors(validate(values))
+        setErrors(validate(values, status))
         setIsSubmitting(true)
     }
 
@@ -34,9 +35,11 @@ const useLoginForm = (callback, validate) => {
         async function logInUser() {
             axios.post(`${PORT}/login`, submission)
             .then((response) => {
-            setUser(submission.username);
-            // store the user in localStorage
-            localStorage.setItem("user", JSON.stringify(submission.username));
+                console.log(response.status)
+                setStatus(response.status)
+                setUser(submission.username);
+                // store the user in localStorage
+                localStorage.setItem("user", JSON.stringify(submission.username));
             })
             .catch(function(error){
                 console.log(error);

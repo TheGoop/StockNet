@@ -1,5 +1,5 @@
 
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import './post.css'
 import { Link, useHistory } from 'react-router-dom'
 import {
@@ -9,7 +9,7 @@ import { NORMALIZE_TIME } from '../../../CONSTANTS'
 import axios from 'axios'
 import { PORT } from '../../../CONSTANTS'
 
-const Post = ({ post: { user, title, content, flair, upvotes, postID, time, ticker }, modifyUpvote}) => {
+const Post = ({ post: { user, title, content, flair, upvotes, postID, time, ticker }, modifyUpvote, username }) => {
     // let { ticker } = useParams()
     const [clicked, setClicked] = useState(null)
     const [clickedUpvote, setClickedUpvote] = useState(null)
@@ -57,7 +57,7 @@ const Post = ({ post: { user, title, content, flair, upvotes, postID, time, tick
 
     useEffect(() => {
         let tempCount = upvoteState === true ? -1 : 1
-        
+
         async function upVoteChange() {
             //set true -> 1 as you already clicked it
 
@@ -83,6 +83,7 @@ const Post = ({ post: { user, title, content, flair, upvotes, postID, time, tick
         e.preventDefault()
         setClickedUpvote(true)
     }
+    console.log(username, user)
 
     return (
         <div id="expanded-post-preview-container">
@@ -111,17 +112,20 @@ const Post = ({ post: { user, title, content, flair, upvotes, postID, time, tick
                 {/* CHECK HERE IF YOU HAVE USERNAME TO EDIT OR DELETE POST 
                 THIS IS FOR THE LINK TO EDIT AND LINK TO DELETE
                 */}
+                {
+                    ((username !== user) || username === "Anonymous")  ? <div></div> : 
                 <div id="lowerbuttonbox">
                     <Link to={`/${ticker}/${postID}/edit`} style={{ textDecoration: 'none' }}>
                         <div id="loweredit">
                             Edit
-                </div>
+                    </div>
                     </Link>
 
                     <div id="loweredit" onClick={handleDelete}>
                         Delete
                     </div>
                 </div>
+                }
 
             </summary>
         </div>

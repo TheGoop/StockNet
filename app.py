@@ -181,7 +181,7 @@ def authenticateUser():
     elif result == 1:
         return Response("{ 'Result': 'Incorrect Password' }", status=401, mimetype='application/json')
     elif result == 2:
-        return Response("{ 'Result': 'No Authentication Data Found For User' }", status=400, mimetype='application/json')
+        return Response("{ 'Result': 'No Authentication Data Found For User' }", status=404, mimetype='application/json')
     elif result == 3:
         return Response("{ 'Result': 'username/password Not Given In REST Body' }", status=400, mimetype='application/json')
     else:

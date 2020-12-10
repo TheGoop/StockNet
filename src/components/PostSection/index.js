@@ -9,6 +9,7 @@ import {
 import {PORT} from '../../CONSTANTS'
 // import { useHistory } from 'react-router-dom'
 import {Page404Element} from '../../pages/index'
+import userEvent from '@testing-library/user-event'
 
 // let tempcommentsREF = [
 //     {user: 'cootneyiscoolerthanbrandon', 
@@ -120,7 +121,7 @@ const PostSection = () => {
     // console.log(temppost)
     return(
         <div id="post-container">
-            <Post post={temppost} modifyUpvote={modifyUpvote}/>
+            <Post post={temppost} username={username} modifyUpvote={modifyUpvote}/>
             <Write comments={tempcomments} setComments={setComments} loggeduser={username}/>
             <Comments comments={tempcomments}/>
         </div>
