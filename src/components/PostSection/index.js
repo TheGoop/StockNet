@@ -9,6 +9,7 @@ import {
 import {PORT} from '../../CONSTANTS'
 // import { useHistory } from 'react-router-dom'
 import {Page404Element} from '../../pages/index'
+import userEvent from '@testing-library/user-event'
 
 // let tempcommentsREF = [
 //     {user: 'cootneyiscoolerthanbrandon', 
@@ -46,12 +47,23 @@ import {Page404Element} from '../../pages/index'
 
 // }
 
-let tempLoggedUser = "Eggert"
+//let tempLoggedUser = "Eggert"
 
 //FETCH FROM WITHIN POSTSECTION
 
 const PostSection = () => {
     // let { ticker } = useParams()
+    const [username, setUser] = useState();
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setUser(foundUser);
+        }
+        else { setUser("Anonymous") }
+      }, []);
+
     let { postID } = useParams()
 
     //const post = fetch post
@@ -109,8 +121,8 @@ const PostSection = () => {
     // console.log(temppost)
     return(
         <div id="post-container">
-            <Post post={temppost} modifyUpvote={modifyUpvote}/>
-            <Write comments={tempcomments} setComments={setComments} loggeduser={tempLoggedUser}/>
+            <Post post={temppost} username={username} modifyUpvote={modifyUpvote}/>
+            <Write comments={tempcomments} setComments={setComments} loggeduser={username}/>
             <Comments comments={tempcomments}/>
         </div>
     )

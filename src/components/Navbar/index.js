@@ -19,7 +19,20 @@ import {
 const Navbar = ({ toggle }) => {
     const [input, setInput] = useState('');
     const [scrollNav, setScrollNav] = useState(false)
+    const [userSignedIn, setUserSignedIn] = useState(false)
     let history = useHistory()
+
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          setUserSignedIn(true)
+        }
+      }, []);
+
+    const handleLogout = () => {
+        setUserSignedIn(false)
+        localStorage.clear();
+    };
 
     //ScrollNav makes the nav bar transparent when you scroll down
     const changeNav = ()=> {
@@ -89,10 +102,16 @@ const Navbar = ({ toggle }) => {
                     onChange={updateInput}
                     onKeyPress={Submit}
                     />
-
+                    { userSignedIn &&                     
+                    <NavButton>
+                        <NavButtonLink onClick={handleLogout}>Sign Out</NavButtonLink>
+                    </NavButton>
+                    }
+                    { !userSignedIn &&                     
                     <NavButton>
                         <NavButtonLink to='/signin'>Sign In</NavButtonLink>
                     </NavButton>
+                    }
                 </NavbarContainer>
             </Nav>
         </>
