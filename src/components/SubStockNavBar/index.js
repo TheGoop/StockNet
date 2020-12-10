@@ -30,6 +30,11 @@ const SubstockNavbar = () => {
 
     const [userSignedIn, setUserSignedIn] = useState(false)
 
+    const handleLogout = () => {
+        setUserSignedIn(false)
+        localStorage.clear();
+    };
+
     useEffect(() => {
         const loggedInUser = localStorage.getItem("user");
         if (loggedInUser) {
@@ -65,7 +70,7 @@ const SubstockNavbar = () => {
 
                     { userSignedIn &&                     
                     <NavButton>
-                        <NavButtonLink to='/signin'>Sign Out</NavButtonLink>
+                        <NavButtonLink onClick={handleLogout}>Sign Out</NavButtonLink>
                     </NavButton>
                     }
                     { !userSignedIn &&                     

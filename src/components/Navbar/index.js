@@ -29,6 +29,11 @@ const Navbar = ({ toggle }) => {
         }
       }, []);
 
+    const handleLogout = () => {
+        setUserSignedIn(false)
+        localStorage.clear();
+    };
+
     //ScrollNav makes the nav bar transparent when you scroll down
     const changeNav = ()=> {
         if(window.scrollY >= 80) {
@@ -99,7 +104,7 @@ const Navbar = ({ toggle }) => {
                     />
                     { userSignedIn &&                     
                     <NavButton>
-                        <NavButtonLink to='/signin'>Sign Out</NavButtonLink>
+                        <NavButtonLink onClick={handleLogout}>Sign Out</NavButtonLink>
                     </NavButton>
                     }
                     { !userSignedIn &&                     
