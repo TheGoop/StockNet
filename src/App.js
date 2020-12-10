@@ -7,7 +7,7 @@ import FormValidationPage from './pages/form'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
-  localStorage.clear();
+  // localStorage.clear();
   return (
     <Router>
       <ScrollToTop/>
