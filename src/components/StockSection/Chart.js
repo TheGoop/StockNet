@@ -23,8 +23,6 @@ function ChartComponent({ pc }) {
 
     let { ticker } = useParams()
 
-    console.log(loading)
-
     useEffect(() => {
         let TIMEDIFF = timescale//3600 * 24 * 7 
         let RES = res
