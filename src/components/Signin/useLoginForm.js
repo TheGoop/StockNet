@@ -32,15 +32,15 @@ const useLoginForm = (callback, validate) => {
         }
         // console.log(submission)
         async function logInUser() {
-                axios.post(`${PORT}/login`, submission)
-                .then((response) => {
-                setUser(submission.username);
-                // store the user in localStorage
-                localStorage.setItem("user", JSON.stringify(submission.username));
-                })
-                .catch(function(error){
-                    console.log(error);
-                })
+            axios.post(`${PORT}/login`, submission)
+            .then((response) => {
+            setUser(submission.username);
+            // store the user in localStorage
+            localStorage.setItem("user", JSON.stringify(submission.username));
+            })
+            .catch(function(error){
+                console.log(error);
+            })
         }
         if (isSubmitting !== false)
             logInUser()
