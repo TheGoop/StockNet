@@ -158,20 +158,6 @@ function ChartComponent({ pc }) {
                 }
             }
 
-            // //
-            // let date = new Date()
-            // let UTCDate = date - date.getTimezoneOffset() * 60000
-            // UTCDate = new Date(UTCDate)
-
-            // let normalize = UTCDate.getUTCHours() * 3600 + UTCDate.getUTCMinutes() * 60 + UTCDate.getUTCSeconds()
-            // if (UTCDate.getUTCHours() + UTCDate.getUTCMinutes() / 60 < 14.5) {
-            //     normalize += 24 * 3600
-            // }
-
-            // let open = Math.floor(UTCDate / 1000) - normalize + (3600 * 14.5) //Sets to opening time of 9:30 NYSE
-            // console.log(open, 'OPEN1')
-            // //
-            //console.log(newchart, 'NEWCHART')
             let options = {
                 chart: {
                     background: '#ffffff',
@@ -263,27 +249,6 @@ function ChartComponent({ pc }) {
                 data: newchart
             }]
 
-            // let chart = new ApexCharts(document.querySelector("#chart"), options);
-            // chart.render();
-            // if (timescale == 1){
-            //     // console.log(open, 'OPEN2')
-            //     // console.log(new Date(open), 'OPEN')
-            //     options['annotations']['xaxis'].x = open * 1000
-            //     options['annotations']['xaxis'].x2 = open * 1000 + (3600 * 10.5) * 1000
-            //     options['annotations']['xaxis'].fillColor = '#B3F7CA'
-            //     options['annotations']['xaxis'].label = {text: 'X-axis range'}
-            //     console.log(options['annotations'])
-            //     console.log(options['annotations']['xaxis'])
-            //     setmoptions(options)
-            // }
-            // else{
-            //     delete options['annotations']['xaxis'].x
-            //     delete options['annotations']['xaxis'].x2
-            //     delete options['annotations']['xaxis'].fillColor
-            //     delete options['annotations']['xaxis'].label
-            //     setmoptions(options)
-            // }
-            //console.log(options)
             setmoptions(options)
             setmdata(series);
             setloading(false)
