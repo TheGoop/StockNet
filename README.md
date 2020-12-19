@@ -19,7 +19,7 @@
 
 `python -m venv env`
 
-`echo export GOOGLE_APPLICATION_CREDENTIALS="./keys/stocknet-4a790-firebase-adminsdk-7kocx-f12acbcbc0.json" >> env/bin/activate`
+`echo export GOOGLE_APPLICATION_CREDENTIALS="./keys/key.json" >> env/bin/activate`
 
 `source env/bin/activate`
 
