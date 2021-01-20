@@ -1,3 +1,7 @@
+<img  src="https://github.com/TheGoop/StockNet/blob/main/Screenshot/Screen1.png">
+<img  src="https://github.com/TheGoop/StockNet/blob/main/Screenshot/Screen3.png">
+<img src="https://github.com/TheGoop/StockNet/blob/main/Screenshot/Screen2.png">
+
 # System Requirements:
 > ##### Python v3.7.3
 > ##### Pip v19.0.3
